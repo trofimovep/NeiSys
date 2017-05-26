@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class StartWindow extends JFrame {
 
@@ -22,17 +23,22 @@ public class StartWindow extends JFrame {
         setLayout(new GridLayout(2, 1));
         drawPanel.setBackground(Color.DARK_GRAY);
         add(drawPanel);
+        final ArrayList<State> States = new ArrayList<State>();
+
         drawPanel.addMouseListener(new MouseListener() {
                                        public void mouseClicked(MouseEvent mouseEvent) {
                                            int x = mouseEvent.getX();
                                            int y = mouseEvent.getY();
+                                           int  clicks = mouseEvent.getClickCount();
+
                                            Graphics gr = drawPanel.getGraphics();
                                            System.out.println(x);
-                                           
-                                           gr.setColor(Color.YELLOW);
-                                           gr.fillOval(x, y, 20, 20);
 
-//                                           drawPanel.add(paintComponents(g, x, y));
+                                           States.add(new State(clicks, x, y));
+                                           State.drawState(gr, x, y);
+                                           int s = States.size();
+                                           System.out.println(s);
+
                                        }
 
                                        public void mousePressed(MouseEvent mouseEvent) {
@@ -53,7 +59,6 @@ public class StartWindow extends JFrame {
                                    });
 
 
-
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
         add(buttonsPanel);
@@ -63,16 +68,6 @@ public class StartWindow extends JFrame {
         jj.setBounds(20, 10, 200, 200);
         jj.setVisible(true);
         buttonsPanel.add(jj);
-
-
-
-//        public void paintComponents(Graphics g){
-//            super.paintComponents(g);
-//
-//            g.drawOval(x, y, 20, 20);
-//            g.setColor(Color.green);
-//        }
-
 
 
     }//StartWindow
