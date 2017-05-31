@@ -4,11 +4,8 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class main {
     public static void main(String[] Args){
-
-
         StartWindow window = new StartWindow("Heat equation");
         Toolkit tk = Toolkit.getDefaultToolkit();
         int xsize = (int) tk.getScreenSize().getWidth();

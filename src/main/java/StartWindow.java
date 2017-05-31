@@ -23,23 +23,70 @@ public class StartWindow extends JFrame {
         setLayout(new GridLayout(2, 1));
         drawPanel.setBackground(Color.DARK_GRAY);
         add(drawPanel);
+
         final ArrayList<State> States = new ArrayList<State>();
 
         drawPanel.addMouseListener(new MouseListener() {
-                                       public void mouseClicked(MouseEvent mouseEvent) {
-                                           int x = mouseEvent.getX();
-                                           int y = mouseEvent.getY();
-                                           int  clicks = mouseEvent.getClickCount();
 
-                                           Graphics gr = drawPanel.getGraphics();
-                                           System.out.println(x);
+            //clicks = id
+            int clicks = 0;
 
-                                           States.add(new State(clicks, x, y));
-                                           State.drawState(gr, x, y);
-                                           int s = States.size();
-                                           System.out.println(s);
 
-                                       }
+            public void mouseClicked(MouseEvent mouseEvent) {
+
+                int x = mouseEvent.getX();
+                int y = mouseEvent.getY();
+                Graphics gr = drawPanel.getGraphics();
+                clicks++;
+                System.out.println(clicks + "  = clicks");
+
+                boolean type = true;
+
+                if(clicks == 1){
+                    States.add(new State(type, clicks, x,y));
+                    State.drawState(gr, x, y);
+                }
+                else{
+                    for(int i = 0; i < clicks; i++){
+
+                        int oldx = States.get(i).getX();
+                        int oldy = States.get(i).getY();
+                        double rx = (oldx - x) * (oldx - x);
+                        double ry = (oldy - y) * (oldy - y);
+                        double raz = Math.sqrt(rx + ry);
+                        System.out.println("raz = " + raz);
+
+                        if(Math.abs(x - oldx) < 20){
+                            System.out.println("Меньше !");
+                            int s = States.size();
+                            System.out.println("s = " + s);
+//                            State.drawState(gr, x, y);
+                        }
+                        else{
+                            States.add(new State(type, clicks, x,y));
+                            State.drawState(gr, x, y);
+                        }
+
+//                        if(raz < 20){
+//                            System.out.println("Меньше !");
+//                            int s = States.size();
+//                            System.out.println("s = " + s);
+////                            State.drawState(gr, x, y);
+//                        }
+//                        else{
+//                            States.add(new State(type, clicks, x,y));
+//                            State.drawState(gr, x, y);
+//                        }
+                    }
+                }
+
+                //States.add(new State(type, clicks, x, y));
+//                State.drawState(gr, x, y);
+//                int s = States.size();
+//                System.out.println(s);
+
+
+            }
 
                                        public void mousePressed(MouseEvent mouseEvent) {
 
@@ -59,15 +106,26 @@ public class StartWindow extends JFrame {
                                    });
 
 
+
+        // low panel with buttons
+
+
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
         add(buttonsPanel);
         pack();
 
-        JLabel jj = new JLabel("ты пидор");
+        JLabel jj = new JLabel("label");
         jj.setBounds(20, 10, 200, 200);
         jj.setVisible(true);
         buttonsPanel.add(jj);
+
+        ButtonGroup type_knot = new ButtonGroup();
+        JRadioButton state_knot = new JRadioButton("Узел состояния");
+        state_knot.setBounds(20, 220, 100, 20);
+        type_knot.add(state_knot);
+        buttonsPanel.add(state_knot);
+
 
 
     }//StartWindow
