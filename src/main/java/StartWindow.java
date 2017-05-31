@@ -15,8 +15,6 @@ public class StartWindow extends JFrame {
 
     public StartWindow(String s) {
         super(s);
-
-
         /// draw Knots Panel
         final JPanel drawPanel = new JPanel();
         drawPanel.setLayout(null);
@@ -28,82 +26,51 @@ public class StartWindow extends JFrame {
 
         drawPanel.addMouseListener(new MouseListener() {
 
-            //clicks = id
             int clicks = 0;
-
-
             public void mouseClicked(MouseEvent mouseEvent) {
 
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
                 Graphics gr = drawPanel.getGraphics();
+                Graphics2D gr2d = (Graphics2D) gr;
                 clicks++;
-                System.out.println(clicks + "  = clicks");
 
                 boolean type = true;
+                // во не помню, добавлял ли я эту строчку, или из-за нее
+                States.add(new State(type, clicks, x, y));
+                int current = States.size() - 1;
+                for (int i = 0; i < States.size() - 1; i++) {
 
-                if(clicks == 1){
-                    States.add(new State(type, clicks, x,y));
-                    State.drawState(gr, x, y);
-                }
-                else{
-                    for(int i = 0; i < clicks; i++){
-
-                        int oldx = States.get(i).getX();
-                        int oldy = States.get(i).getY();
-                        double rx = (oldx - x) * (oldx - x);
-                        double ry = (oldy - y) * (oldy - y);
-                        double raz = Math.sqrt(rx + ry);
-                        System.out.println("raz = " + raz);
-
-                        if(Math.abs(x - oldx) < 20){
-                            System.out.println("Меньше !");
-                            int s = States.size();
-                            System.out.println("s = " + s);
-//                            State.drawState(gr, x, y);
-                        }
-                        else{
-                            States.add(new State(type, clicks, x,y));
-                            State.drawState(gr, x, y);
-                        }
-
-//                        if(raz < 20){
-//                            System.out.println("Меньше !");
-//                            int s = States.size();
-//                            System.out.println("s = " + s);
-////                            State.drawState(gr, x, y);
-//                        }
-//                        else{
-//                            States.add(new State(type, clicks, x,y));
-//                            State.drawState(gr, x, y);
-//                        }
+                    if (Math.abs(States.get(i).view.getCenterX() - States.get(current).view.getCenterX()) < 20 &&
+                            Math.abs(States.get(i).view.getCenterY() - States.get(current).view.getCenterY()) < 20
+                            ) {
+                        States.remove(current);
+                        break;
                     }
                 }
-
-                //States.add(new State(type, clicks, x, y));
-//                State.drawState(gr, x, y);
-//                int s = States.size();
-//                System.out.println(s);
-
+                gr2d.setColor(Color.YELLOW);
+                for (int i = 0; i < States.size(); i++)
+                    gr2d.fill(States.get(i).getView());
 
             }
 
-                                       public void mousePressed(MouseEvent mouseEvent) {
 
-                                       }
+               public void mousePressed(MouseEvent mouseEvent) {
 
-                                       public void mouseReleased(MouseEvent mouseEvent) {
+               }
 
-                                       }
+               public void mouseReleased(MouseEvent mouseEvent) {
 
-                                       public void mouseEntered(MouseEvent mouseEvent) {
+               }
 
-                                       }
+               public void mouseEntered(MouseEvent mouseEvent) {
 
-                                       public void mouseExited(MouseEvent mouseEvent) {
+               }
 
-                                       }
-                                   });
+               public void mouseExited(MouseEvent mouseEvent) {
+
+               }
+           });
 
 
 
