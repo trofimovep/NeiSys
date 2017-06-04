@@ -22,15 +22,14 @@ public class StartWindow extends JFrame  {
     public StartWindow(String s) {
         super(s);
         eHandler handler = new eHandler();
+        final ArrayList<State> States = new ArrayList<State>();
 
-        /// draw Knots Panel
-
+//        / draw Knots Panel
         final JPanel drawPanel = new JPanel();
         drawPanel.setLayout(null);
         setLayout(new GridLayout(2, 1));
         drawPanel.setBackground(Color.DARK_GRAY);
         add(drawPanel);
-
         // low panel with buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
@@ -54,7 +53,6 @@ public class StartWindow extends JFrame  {
         boolean type; //тип узла: состояние(true) или управление (false)
 
         drawPanel.addMouseListener(new MouseListener() {
-
             int clicks = 0;
             public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -63,22 +61,27 @@ public class StartWindow extends JFrame  {
                 Graphics gr = drawPanel.getGraphics();
                 Graphics2D gr2d = (Graphics2D) gr;
                 clicks++;
-//
-//                States.add(new State(true, clicks, x, y));
+                gr2d.setColor(Color.orange);
+                gr2d.fill(getView(gr2d, x, y));
+                States.add(new State(true, clicks, x, y));
+
 //                int current = States.size() - 1;
-//                for (int i = 0; i < States.size() - 1; i++) {
 //
-//                    if (Math.abs(States.get(i).view.getCenterX() - States.get(current).view.getCenterX()) < 30 &&
-//                            Math.abs(States.get(i).view.getCenterY() - States.get(current).view.getCenterY()) < 30
-//                            ) {
-//                        States.remove(current);
+//                for (int i = 0; i < States.size() - 1; i++) {
+//                    paint(gr2d, x, y);
+//                    if (Math.abs(States.get(i).getX() - States.get(current).getX()) > 30 &&
+//                            Math.abs(States.get(i).getX() - States.get(current).getX()) > 30) {
+////                        States.remove(current);
+//                        paint(gr2d, x, y);
 //                        break;
 //                    }
 //                }
 //                gr2d.setColor(Color.YELLOW);
-//                for (int i = 0; i < States.size(); i++)
-//                    gr2d.fill(States.get(i).getView());
-
+//                for (int i = 0; i < States.size(); i++) {
+//                 Graphics2D[] grKnot = new Graphics2D[i];
+//                       grKnot[i] =  paint(gr2d, x, y);
+////                    gr2d.fill(paint(gr2d););
+//                }
             }
 
                public void mousePressed(MouseEvent mouseEvent) {
@@ -121,10 +124,11 @@ public class StartWindow extends JFrame  {
     }
 
 
-    public void paint(Graphics2D gr, int x, int y){
-         view = new Ellipse2D.Double(x - 20 / 2 ,y - 20 / 2, 20, 20);
-          gr.setBackground(Color.orange);
+    public Ellipse2D getView(Graphics2D gr, int x, int y) {
+        view = new Ellipse2D.Double(x - 20 / 2 ,y - 20 / 2, 20, 20);
+        return view;
     }
+
 
 }//class
 
