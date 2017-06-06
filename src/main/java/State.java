@@ -6,9 +6,13 @@ public class State extends Knot{
     public void f() {
         System.out.println(x);
     }
+
     public State(boolean type, int id, int x, int y){
+       System.out.println("Внутри стэйт х = " + x);
     }
+
 }
+
 
 
 
