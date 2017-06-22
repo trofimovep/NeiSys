@@ -32,6 +32,7 @@ public class StartWindow extends JFrame {
         drawPanel.setBackground(Color.DARK_GRAY);
         add(drawPanel);
 
+//        JScrollPane Scroll = new JScrollPane(drawPanel);
         /*
          low panel with buttons
          */
@@ -70,8 +71,8 @@ public class StartWindow extends JFrame {
                 int current = knots.size() - 1;
 
                 for (int i = 0; i < knots.size() - 1; i++) {
-                    if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH &&
-                            Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT) {
+                    if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 10 &&
+                            Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 10) {
                         knots.remove(current);
                         break;
                     }
@@ -85,6 +86,7 @@ public class StartWindow extends JFrame {
                }
                public void mouseExited(MouseEvent mouseEvent) {
                }
+               
            });
     }//StartWindow
 
