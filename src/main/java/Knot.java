@@ -4,21 +4,29 @@ import java.awt.geom.Ellipse2D;
 /**
  * Created by nash on 5/26/17.
  */
-public abstract class Knot{
+public class Knot{
 
+    int id;
     boolean type; // тип узла: состояние(true) или управление (false)
     int x;      // координата x
     int y;     // координата y
+    public static int WIDTH = 40;
+    public static int HEIGHT = 40;
 
-     protected static Ellipse2D getView(Graphics2D g, int x, int y) {
-        Ellipse2D view = new Ellipse2D.Double(x - 40 / 2 ,y - 40 / 2, 40, 40);
+    public Knot(boolean type, int id, int x, int y){
+        this.x = x - WIDTH / 2;
+        this.y = y - HEIGHT / 2;
+        this.type = type;
+        this.id = id;
+    }
+
+     protected Ellipse2D getView(int x, int y) {
+        Ellipse2D view = new Ellipse2D.Double(x ,y, WIDTH, HEIGHT);
         return view;
     }
 
     public int getX() { return x; }
     public int getY() { return y; }
     public boolean isType() { return type; }
-
-
 
 }

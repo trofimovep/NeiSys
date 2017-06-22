@@ -1,6 +1,3 @@
-/**
- * Created by nash on 5/26/17.
- */
 import javax.swing.*;
 import java.awt.*;
 
