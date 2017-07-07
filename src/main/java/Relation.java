@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class Relation {
     ArrayList<Knot> knots;
     int x1, y1, x2, y2;
-    public Relation(ArrayList<Knot> knots, int x1, int y1, int x2, int y2) {
+    Graphics g;
+    public Relation(Graphics g, ArrayList<Knot> knots, int x1, int y1, int x2, int y2) {
+        this.g = g;
         this.knots = knots;
         this.x1 = x1;
         this.y1 = y1;
@@ -21,7 +23,6 @@ public class Relation {
             }
         }
     }
-
     void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
         final int ARR_SIZE = 4;
         Graphics2D g = (Graphics2D) g1.create();

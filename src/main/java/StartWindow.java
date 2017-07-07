@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 
@@ -13,7 +10,10 @@ public class StartWindow extends JFrame {
     ButtonGroup type_knot = new ButtonGroup();
     JRadioButton state_knot = new JRadioButton("Узел состояния");
     JRadioButton control_knot = new JRadioButton("Узел управления");
-
+    public static int startX;
+    private static int startY;
+    private static int endX;
+    private static int endY;
 //    Toolkit tk = Toolkit.getDefaultToolkit();
 //    int xsize = (int) tk.getScreenSize().getWidth();
 //    int ysize = (int) tk.getScreenSize().getHeight();
@@ -59,6 +59,7 @@ public class StartWindow extends JFrame {
         state_knot.addActionListener(handler);
         control_knot.addActionListener(handler);
 
+
         drawPanel.addMouseListener(new MouseListener() {
                  int clicks = 0;
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -71,23 +72,50 @@ public class StartWindow extends JFrame {
                 int current = knots.size() - 1;
 
                 for (int i = 0; i < knots.size() - 1; i++) {
-                    if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 10 &&
-                            Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 10) {
+                    if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
+                            Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
                         knots.remove(current);
                         break;
                     }
                }
                 drawPanel.repaint();
             }
-               public void mousePressed(MouseEvent mouseEvent) { }
+            public void mousePressed(MouseEvent mouseEvent) {
+                startX = mouseEvent.getX();
+                startY = mouseEvent.getY();
+
+               }
                public void mouseReleased(MouseEvent mouseEvent) {
                }
                public void mouseEntered(MouseEvent mouseEvent) {
                }
                public void mouseExited(MouseEvent mouseEvent) {
                }
-               
+
            });
+        drawPanel.addMouseMotionListener(new MouseMotionListener() {
+            public void mouseDragged(MouseEvent e) {
+                endX = e.getX();
+                endY = e.getY();
+                for(int i = 0; i < knots.size(); i++){
+                    for(int j = 0; j < knots.size(); j++) {
+                     if(Math.abs(startX - knots.get(i).getX()) < Knot.WIDTH + 5 &&
+                             Math.abs(startY - knots.get(i).getY()) < Knot.HEIGHT + 5){
+                         drawPanel.drawArrow(drawPanel.getGraphics(), startX, startY, endX, endY);
+                         repaint();
+                     }
+                    }
+                }
+                System.out.println(startX);
+                System.out.println(endX);
+
+            }
+
+            public void mouseMoved(MouseEvent mouseEvent) {
+
+            }
+        });
+
     }//StartWindow
 
     class eHandler implements ActionListener{
@@ -107,6 +135,11 @@ public class StartWindow extends JFrame {
         }
         public boolean getType(){ return type; }
     }
+//    public int getStartX() { return startX; }
+    public int getStartY() { return startY; }
+    public int getEndX() { return endX; }
+    public int getEndY() { return endY; }
+    ;
 }//class
 
 
