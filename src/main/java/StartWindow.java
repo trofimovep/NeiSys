@@ -84,32 +84,39 @@ public class StartWindow extends JFrame {
 
 
             public void mouseClicked(MouseEvent mouseEvent) {
-                int x = mouseEvent.getX();
-                int y = mouseEvent.getY();
-                boolean type = handler.getType(); //тип узла: состояние(true) или управление (false)
-                clicks++;
+
+                String type = handler.getType(); //тип узла:
+
+                if (type != null) {
+
+                    int x = mouseEvent.getX();
+                    int y = mouseEvent.getY();
+                    clicks++;
+
+                    knots.add(new Knot(type, clicks, x, y));
+                    int current = knots.size() - 1;
 
 
-                knots.add(new Knot(type, clicks, x, y));
-                int current = knots.size() - 1;
+                    for (int i = 0; i < knots.size() - 1; i++) {
 
+                        if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
+                                Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
 
-                for (int i = 0; i < knots.size() - 1; i++) {
+                            knots.remove(current);
+                            break;
 
-                    if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
-                            Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
-
-                        knots.remove(current);
-                        break;
-
+                        }
                     }
-               }
-                drawPanel.repaint();
+                    drawPanel.repaint();
+                    
+                }//if type != null
+
             }
 
 
-            public void mousePressed(MouseEvent e) {
 
+
+            public void mousePressed(MouseEvent e) {
 
                 startX = e.getX();
                 startY = e.getY();
@@ -138,15 +145,17 @@ public class StartWindow extends JFrame {
                                       Math.abs(endY - k.getY()) < Knot.HEIGHT + 3){
 
                                    id2 = k.getId();
-                                   relations.add(new Relation(id1, id2, knots));
-
+                                    System.out.println(isCorrect(id1, id2, knots));
+                                   if(isCorrect(id1, id2, knots) == true)
+                                        relations.add(new Relation(id1, id2, knots));
+                                   else
+                                       JOptionPane.showMessageDialog(null, "The operation is forbidden!");
                               }
 
                       }
                              drawPanel.repaint();
 
                }
-
 
                public void mouseEntered(MouseEvent mouseEvent) {
                }
@@ -173,22 +182,59 @@ public class StartWindow extends JFrame {
 
     /* cлушатель на узлы (их тип) */
     class eHandler implements ActionListener{
-        boolean type; // тип узла : состояние(true) или управление(false)
+
+        String type; // тип узла : состояние(true) или управление(false)
+
         public void actionPerformed(ActionEvent e) {
+
             try{
+                if(e.getSource() == null){
+                    type = null;
+                }
                 if(e.getSource() ==  state_knot){
-                type = true;
+                type = "State";
                 }
                 if(e.getSource() == control_knot){
-                type = false;
+                type = "Control";
                 }
             }
             catch (Exception ex){
 
             }
         }
-        public boolean getType(){ return type; }
+        public String getType(){ return type; }
     }
+
+
+    /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
+                              1. Control <--> Control
+    *                         2. State -> Control
+    * */
+
+    public boolean isCorrect(int id1, int id2, ArrayList<Knot> knots){
+
+        boolean correct;
+
+       String type_id1 = null;
+       String type_id2 = null;
+
+        for(Knot k : knots){
+            if(id1 == k.getId())
+                type_id1 = k.getType();
+
+                if(id2 == k.getId())
+                    type_id2 = k.getType();
+                }
+
+                if(type_id1 == "Control" && type_id2 == "Control")
+                    return false;
+
+                else if(type_id1 == "State" && type_id2 == "Control")
+                    return false;
+                else
+                    return true;
+    }
+
 
 
 }//class

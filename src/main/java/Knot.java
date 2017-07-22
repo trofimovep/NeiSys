@@ -7,13 +7,13 @@ import java.awt.geom.Ellipse2D;
 public class Knot{
 
     int id;
-    boolean type; // тип узла: состояние(true) или управление (false)
+    String type; // тип узла: состояние(true) или управление (false)
     int x;      // координата x
     int y;     // координата y
     public static int WIDTH = 40;
     public static int HEIGHT = 40;
 
-    public Knot(boolean type, int id, int x, int y){
+    public Knot(String type, int id, int x, int y){
         this.x = x - WIDTH / 2;
         this.y = y - HEIGHT / 2;
         this.type = type;
@@ -28,6 +28,6 @@ public class Knot{
     public int getId() { return id;  }
     public int getX() { return x; }
     public int getY() { return y; }
-    public boolean getType() { return type; }
+    public String getType() { return type; }
 
 }

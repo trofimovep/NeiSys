@@ -20,7 +20,7 @@ public class DrawPanel extends JComponent {
 
         for (Knot k: knots) {
 
-            if(k.getType() == true)
+            if(k.getType() == "State")
                 g2d.setColor(Color.ORANGE);
 
             else
