@@ -17,6 +17,8 @@ public class StartWindow extends JFrame {
     int startY;
     int endX;
     int endY;
+    int id1;
+    int id2;
 
 
     public StartWindow(String s) {
@@ -93,10 +95,13 @@ public class StartWindow extends JFrame {
 
 
                 for (int i = 0; i < knots.size() - 1; i++) {
+
                     if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
                             Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
+
                         knots.remove(current);
                         break;
+
                     }
                }
                 drawPanel.repaint();
@@ -105,36 +110,42 @@ public class StartWindow extends JFrame {
 
             public void mousePressed(MouseEvent e) {
 
+
                 startX = e.getX();
                 startY = e.getY();
 
+                for (Knot k: knots) {
 
+                    if (Math.abs(startX - k.getX()) < Knot.WIDTH + 3 &&
+                            Math.abs(startY - k.getY()) < Knot.HEIGHT + 3) {
+
+                        id1 = k.getId();
+
+                    }
+                }
             }
 
 
                public void mouseReleased(MouseEvent e) {
 
-                int id2;
 
                 endX = e.getX();
                 endY = e.getY();
 
-
                    for (Knot k: knots) {
 
-                   if (Math.abs(endX - k.getX()) < Knot.WIDTH + 3 &&
-                           Math.abs(endY - k.getY()) < Knot.HEIGHT + 3){
+                           if (Math.abs(endX - k.getX()) < Knot.WIDTH + 3 &&
+                                      Math.abs(endY - k.getY()) < Knot.HEIGHT + 3){
 
-                       id2 = k.getId();
-                       System.out.println("id2 = " + id2);
+                                   id2 = k.getId();
+                                   relations.add(new Relation(id1, id2, knots));
 
-                        relations.add(new Relation(startX, startY, endX, endY, knots));
+                              }
 
-                   }
+                      }
+                             drawPanel.repaint();
 
-                }
-                     drawPanel.repaint();
-            }
+               }
 
 
                public void mouseEntered(MouseEvent mouseEvent) {

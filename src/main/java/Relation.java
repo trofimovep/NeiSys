@@ -5,14 +5,22 @@ import java.util.ArrayList;
 public class Relation {
     ArrayList<Knot> knots;
     int x1, y1, x2, y2;
+    int id1, id2;
     Graphics g;
-    public Relation(int x1, int y1, int x2, int y2,ArrayList<Knot> knots) {
+    public Relation(int id1, int id2, ArrayList<Knot> knots) {
 
         this.knots = knots;
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+        this.id1 = id1;
+//        System.out.println("xid1 = " + id1 + knots.get(id1).getX());
+        this.id1 = id2;
+//        System.out.println("xid2 = " + id2 + knots.get(id2).getX());
+
+        this.x1 = findCoord(id1, knots)[0];
+        this.y1 = findCoord(id1, knots)[1];
+        System.out.println("x1 = " + x1);
+        this.x2 = findCoord(id2, knots)[0];
+        System.out.println("x2 = " + x2);
+        this.y2 = findCoord(id2, knots)[1];
 
     }
 
@@ -32,6 +40,27 @@ static void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
         g.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len}, new int[] {0, -4, 4, 0}, 3);
 
     }
+
+
+
+    private int[] findCoord(int id, ArrayList<Knot> knots) {
+
+        int[] XY = new int[2];
+
+        for(Knot k : knots) {
+
+            if (id == k.getId()) {
+
+                XY[0] = k.getX() + Knot.WIDTH / 2;
+                XY[1] = k.getY() + Knot.HEIGHT / 2;
+
+            }
+        }
+
+            return XY;
+
+    }
+
 
     public int getX1() {
         return x1;

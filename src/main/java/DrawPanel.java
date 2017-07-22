@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class DrawPanel extends JComponent {
@@ -27,6 +26,7 @@ public class DrawPanel extends JComponent {
             else
                 g2d.setColor(Color.BLUE);
             g2d.fill(k.getView(k.getX(), k.getY()));
+            g2d.drawString(Integer.toString(k.getId()), k.getX(), k.getY());
 
         }
 
