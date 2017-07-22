@@ -25,8 +25,9 @@ public class Knot{
         return view;
     }
 
+    public int getId() { return id;  }
     public int getX() { return x; }
     public int getY() { return y; }
-    public boolean isType() { return type; }
+    public boolean getType() { return type; }
 
 }
