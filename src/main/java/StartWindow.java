@@ -108,7 +108,7 @@ public class StartWindow extends JFrame {
                         }
                     }
                     drawPanel.repaint();
-                    
+
                 }//if type != null
 
             }
