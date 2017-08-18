@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,12 +15,12 @@ public class StartWindow extends JFrame {
     JRadioButton control_knot = new JRadioButton("Узел управления");
 
 
-    int startX;
-    int startY;
-    int endX;
-    int endY;
-    int id1;
-    int id2;
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
+    private int id1;
+    private int id2;
 
 
     public StartWindow(String s) {
@@ -36,14 +38,55 @@ public class StartWindow extends JFrame {
 
 
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
+        JScrollPane scrollPane = new JScrollPane(drawPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(50, 30, 300, 50);
 
         drawPanel.setBackground(Color.DARK_GRAY);                // НЕ РАБОТАЕТ!!
 
-        final Graphics g = drawPanel.getGraphics();
         drawPanel.setLayout(null);
         setLayout(new GridLayout(2, 1));
-        drawPanel.setBackground(Color.DARK_GRAY);
         add(drawPanel);
+
+
+        ActionListener popupListener = new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                       JOptionPane.showMessageDialog(null, "Fuck you asshole");
+               }
+           };
+
+        JMenuBar menuBar = new JMenuBar();
+
+        Font font = new Font("Verdana", Font.PLAIN, 11);
+
+        JMenu fileMenu = new JMenu("Файл");
+        fileMenu.setFont(font);
+        menuBar.add(fileMenu);
+
+        JMenuItem saveMenu = new JMenuItem("Cохранить модель");
+        saveMenu.setFont(font);
+        fileMenu.add(saveMenu);
+
+        JMenuItem saveMenuAs = new JMenuItem("Сохранить модель как");
+        saveMenuAs.setFont(font);
+        fileMenu.add(saveMenuAs);
+
+        JMenuItem uploadMenu = new JMenuItem("Загрузить модель");
+        uploadMenu.setFont(font);
+        fileMenu.add(uploadMenu);
+
+        JMenu about = new JMenu("О программе");
+        about.setFont(font);
+        fileMenu.add(about);
+
+
+        JMenu pravka = new JMenu("Правка");
+        pravka.setFont(font);
+        menuBar.add(pravka);
+
+        drawPanel.setJmenuBar();
+        setJMenuBar(menuBar);
 
 
 //        JScrollPane Scroll = new JScrollPane(drawPanel);
@@ -56,6 +99,7 @@ public class StartWindow extends JFrame {
         buttonsPanel.setLayout(null);
         add(buttonsPanel);
         pack();
+
         Border etched = BorderFactory.createEtchedBorder();
         Border titled = BorderFactory.createTitledBorder(etched, "Параметры");
         buttonsPanel.setBorder(titled);
@@ -77,6 +121,23 @@ public class StartWindow extends JFrame {
         control_knot.addActionListener(handler);
 
 
+        final JPopupMenu popupMenu = new JPopupMenu();
+
+        final JMenuItem setParam = new JMenuItem("Задать параметры");
+        setParam.setFont(font);
+        setParam.addActionListener(popupListener);
+        popupMenu.add(setParam);
+
+        JMenuItem changeParam = new JMenuItem("Изменить параметры");
+        changeParam.setFont(font);
+        changeParam.addActionListener(popupListener);
+        popupMenu.add(changeParam);
+
+        JMenuItem deleteElement = new JMenuItem("Удалить элемент");
+        deleteElement.setFont(font);
+        popupMenu.add(deleteElement);
+
+
         drawPanel.addMouseListener(new MouseListener() {
 
 
@@ -87,33 +148,40 @@ public class StartWindow extends JFrame {
 
                 String type = handler.getType(); //тип узла:
 
-                if (type != null) {
+                if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-                    int x = mouseEvent.getX();
-                    int y = mouseEvent.getY();
-                    clicks++;
+                    if (type != null) {
 
-                    knots.add(new Knot(type, clicks, x, y));
-                    int current = knots.size() - 1;
+                        int x = mouseEvent.getX();
+                        int y = mouseEvent.getY();
+                        clicks++;
+
+                        knots.add(new Knot(type, clicks, x, y));
+                        int current = knots.size() - 1;
 
 
-                    for (int i = 0; i < knots.size() - 1; i++) {
+                        for (int i = 0; i < knots.size() - 1; i++) {
 
-                        if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
-                                Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
+                            if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
+                                    Math.abs(knots.get(i).getY() - knots.get(current).getY()) < Knot.HEIGHT + 20) {
 
-                            knots.remove(current);
-                            break;
+                                knots.remove(current);
+                                break;
 
+                            }
                         }
-                    }
-                    drawPanel.repaint();
+                        drawPanel.repaint();
 
-                }//if type != null
+                    }
+                }
+
+
+                if(mouseEvent.getButton() == MouseEvent.BUTTON3){
+//                    JOptionPane.showMessageDialog(null, "Check This Out");
+                    popupMenu.show(drawPanel, mouseEvent.getX(), mouseEvent.getY() );
+                }
 
             }
-
-
 
 
             public void mousePressed(MouseEvent e) {
@@ -145,7 +213,6 @@ public class StartWindow extends JFrame {
                                       Math.abs(endY - k.getY()) < Knot.HEIGHT + 3){
 
                                    id2 = k.getId();
-                                    System.out.println(isCorrect(id1, id2, knots));
                                    if(isCorrect(id1, id2, knots) == true)
                                         relations.add(new Relation(id1, id2, knots));
                                    else
@@ -179,11 +246,10 @@ public class StartWindow extends JFrame {
     }//StartWindow
 
 
-
     /* cлушатель на узлы (их тип) */
     class eHandler implements ActionListener{
 
-        String type; // тип узла : состояние(true) или управление(false)
+        String type;
 
         public void actionPerformed(ActionEvent e) {
 
@@ -211,14 +277,13 @@ public class StartWindow extends JFrame {
     *                         2. State -> Control
     * */
 
-    public boolean isCorrect(int id1, int id2, ArrayList<Knot> knots){
+    private boolean isCorrect(int id1, int id2, ArrayList<Knot> knots){
 
-        boolean correct;
-
-       String type_id1 = null;
-       String type_id2 = null;
+        String type_id1 = null;
+        String type_id2 = null;
 
         for(Knot k : knots){
+
             if(id1 == k.getId())
                 type_id1 = k.getType();
 
@@ -233,9 +298,8 @@ public class StartWindow extends JFrame {
                     return false;
                 else
                     return true;
+
     }
-
-
 
 }//class
 
