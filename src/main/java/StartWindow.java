@@ -5,14 +5,20 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class StartWindow extends JFrame {
 
+    /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
+    private static final int OPTION_SIZE = 2;
 
     ButtonGroup type_knot = new ButtonGroup();
     JRadioButton state_knot = new JRadioButton("Узел состояния");
     JRadioButton control_knot = new JRadioButton("Узел управления");
+
+
+    private List<JTextField> textfields = new ArrayList<JTextField>();
+    private JPanel panel;
 
 
     private int startX;
@@ -38,23 +44,12 @@ public class StartWindow extends JFrame {
 
 
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
-        JScrollPane scrollPane = new JScrollPane(drawPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        scrollPane.setBounds(50, 30, 300, 50);
 
         drawPanel.setBackground(Color.DARK_GRAY);                // НЕ РАБОТАЕТ!!
 
         drawPanel.setLayout(null);
         setLayout(new GridLayout(2, 1));
         add(drawPanel);
-
-
-        ActionListener popupListener = new ActionListener() {
-               public void actionPerformed(ActionEvent e) {
-                       JOptionPane.showMessageDialog(null, "Fuck you asshole");
-               }
-           };
 
         JMenuBar menuBar = new JMenuBar();
 
@@ -94,7 +89,6 @@ public class StartWindow extends JFrame {
          low panel with buttons
          */
 
-
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
         add(buttonsPanel);
@@ -125,12 +119,49 @@ public class StartWindow extends JFrame {
 
         final JMenuItem setParam = new JMenuItem("Задать параметры");
         setParam.setFont(font);
-        setParam.addActionListener(popupListener);
         popupMenu.add(setParam);
+        setParam.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                int sizeParameteres[] = new int[OPTION_SIZE];
+                ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
+
+                JPanel sizepanel = new JPanel();
+
+                for (int i = 0; i < OPTION_SIZE; i++) {
+                    sizepanel.add(new JLabel("size" + String.valueOf(i + 1)));
+                    sizeFields.add(new JTextField(5));
+                    sizepanel.add(sizeFields.get(i));
+                }
+
+                sizepanel.setVisible(true);
+                int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
+                        "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+                if (resultsize == JOptionPane.OK_OPTION) {
+
+                    int cur = 0;
+                    for(JTextField ss : sizeFields){
+                        sizeParameteres[cur] = Integer.valueOf(ss.getText());
+                    cur++;
+                    }
+
+                    StartWindow example = new StartWindow(sizeParameteres);
+                    int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
+                            "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
+                    if (resultmatrix == JOptionPane.OK_OPTION) {
+                        for (JTextField textfield : example.textfields) {
+                            System.out.println(textfield.getText());
+                            /* РЕАЛИЗОВАТЬ ПЕРЕДАЧУ ПАРАМЕТРОВ В УЗЕЛ ОТСЮДА И ЩЕЛЧОК ПРИ НАЖАТИИ ТОЛЬКО НА УЗЕЛ*/
+                        }
+                    }
+                }
+            }
+        });
 
         JMenuItem changeParam = new JMenuItem("Изменить параметры");
         changeParam.setFont(font);
-        changeParam.addActionListener(popupListener);
+//        changeParam.addActionListener(popupListener);
         popupMenu.add(changeParam);
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
@@ -138,11 +169,13 @@ public class StartWindow extends JFrame {
         popupMenu.add(deleteElement);
 
 
+        /*
+            * DRAW PANEL      *
+         */
+
         drawPanel.addMouseListener(new MouseListener() {
 
-
                  int clicks = 0;
-
 
             public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -167,20 +200,16 @@ public class StartWindow extends JFrame {
 
                                 knots.remove(current);
                                 break;
-
                             }
                         }
                         drawPanel.repaint();
-
                     }
                 }
-
 
                 if(mouseEvent.getButton() == MouseEvent.BUTTON3){
 //                    JOptionPane.showMessageDialog(null, "Check This Out");
                     popupMenu.show(drawPanel, mouseEvent.getX(), mouseEvent.getY() );
                 }
-
             }
 
 
@@ -200,9 +229,7 @@ public class StartWindow extends JFrame {
                 }
             }
 
-
                public void mouseReleased(MouseEvent e) {
-
 
                 endX = e.getX();
                 endY = e.getY();
@@ -228,7 +255,6 @@ public class StartWindow extends JFrame {
                }
                public void mouseExited(MouseEvent mouseEvent) {
                }
-
            });
 
 
@@ -300,6 +326,22 @@ public class StartWindow extends JFrame {
                     return true;
 
     }
+
+
+    public StartWindow(int[] sizeParameteres) {
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(sizeParameteres[0], sizeParameteres[1]));
+
+        for (int i = 0; i < sizeParameteres[0]; i++) {
+            for (int j = 0; j < sizeParameteres[1]; j++) {
+                JTextField textfield = new JTextField(5);
+                textfields.add(textfield);
+                panel.add(new JLabel("X_{" + Integer.toString(j + 1) + ", " + Integer.toString(i + 1) + "}: "));
+                panel.add(textfield);
+            }
+        }
+    }
+
 
 }//class
 
