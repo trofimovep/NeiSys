@@ -17,11 +17,10 @@ public class DrawPanel extends JComponent {
     }
 
 
-
     @Override
     public void paintComponent(Graphics g) {
-
         Graphics2D g2d = (Graphics2D) g;
+
 
         for (Knot k: knots) {
 
@@ -46,7 +45,6 @@ public class DrawPanel extends JComponent {
 
 
     public void setJmenuBar() {
-
     }
 
 }

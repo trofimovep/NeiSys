@@ -33,11 +33,9 @@ public class StartWindow extends JFrame {
         super(s);
         final eHandler handler = new eHandler();
 
-
         /*
         //         draw knots Panel
         */
-
 
         final ArrayList<Knot> knots = new ArrayList<Knot>();
         final ArrayList<Relation> relations = new ArrayList<Relation>();
@@ -45,9 +43,9 @@ public class StartWindow extends JFrame {
 
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
 
-        drawPanel.setBackground(Color.DARK_GRAY);                // НЕ РАБОТАЕТ!!
 
         drawPanel.setLayout(null);
+//        drawPanel.setBackground(Color.DARK_GRAY);    DOESN'T WORK
         setLayout(new GridLayout(2, 1));
         add(drawPanel);
 
@@ -122,40 +120,41 @@ public class StartWindow extends JFrame {
         popupMenu.add(setParam);
         setParam.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed (ActionEvent e) {
 
-                int sizeParameteres[] = new int[OPTION_SIZE];
-                ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
+                        int sizeParameteres[] = new int[OPTION_SIZE];
+                        ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
 
-                JPanel sizepanel = new JPanel();
+                        JPanel sizepanel = new JPanel();
 
-                for (int i = 0; i < OPTION_SIZE; i++) {
-                    sizepanel.add(new JLabel("size" + String.valueOf(i + 1)));
-                    sizeFields.add(new JTextField(5));
-                    sizepanel.add(sizeFields.get(i));
-                }
-
-                sizepanel.setVisible(true);
-                int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
-                        "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
-                if (resultsize == JOptionPane.OK_OPTION) {
-
-                    int cur = 0;
-                    for(JTextField ss : sizeFields){
-                        sizeParameteres[cur] = Integer.valueOf(ss.getText());
-                    cur++;
-                    }
-
-                    StartWindow example = new StartWindow(sizeParameteres);
-                    int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
-                            "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
-                    if (resultmatrix == JOptionPane.OK_OPTION) {
-                        for (JTextField textfield : example.textfields) {
-                            System.out.println(textfield.getText());
-                            /* РЕАЛИЗОВАТЬ ПЕРЕДАЧУ ПАРАМЕТРОВ В УЗЕЛ ОТСЮДА И ЩЕЛЧОК ПРИ НАЖАТИИ ТОЛЬКО НА УЗЕЛ*/
+                        for (int k = 0; k < OPTION_SIZE; k++) {
+                            sizepanel.add(new JLabel("size" + String.valueOf(k + 1)));
+                            sizeFields.add(new JTextField(5));
+                            sizepanel.add(sizeFields.get(k));
                         }
-                    }
-                }
+
+                        sizepanel.setVisible(true);
+                        int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
+                                "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+                        if (resultsize == JOptionPane.OK_OPTION) {
+
+                            int cur = 0;
+                            for (JTextField ss : sizeFields) {
+                                sizeParameteres[cur] = Integer.valueOf(ss.getText());
+                                cur++;
+                            }
+
+                            StartWindow example = new StartWindow(sizeParameteres);
+                            int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
+                                    "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
+                            if (resultmatrix == JOptionPane.OK_OPTION) {
+                                for (JTextField textfield : example.textfields) {
+                                    System.out.println(textfield.getText());
+                            /* РЕАЛИЗОВАТЬ ПЕРЕДАЧУ ПАРАМЕТРОВ В УЗЕЛ ОТСЮДА И ЩЕЛЧОК ПРИ НАЖАТИИ ТОЛЬКО НА УЗЕЛ*/
+                                }
+                            }
+
+                        }
             }
         });
 
@@ -175,23 +174,21 @@ public class StartWindow extends JFrame {
 
         drawPanel.addMouseListener(new MouseListener() {
 
-                 int clicks = 0;
+                      int clicks = 0;
 
             public void mouseClicked(MouseEvent mouseEvent) {
 
+                int x = mouseEvent.getX();
+                int y = mouseEvent.getY();
                 String type = handler.getType(); //тип узла:
 
-                if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
-
+                if(mouseEvent.getButton() == mouseEvent.BUTTON1) {
                     if (type != null) {
 
-                        int x = mouseEvent.getX();
-                        int y = mouseEvent.getY();
                         clicks++;
 
                         knots.add(new Knot(type, clicks, x, y));
                         int current = knots.size() - 1;
-
 
                         for (int i = 0; i < knots.size() - 1; i++) {
 
@@ -206,12 +203,17 @@ public class StartWindow extends JFrame {
                     }
                 }
 
-                if(mouseEvent.getButton() == MouseEvent.BUTTON3){
-//                    JOptionPane.showMessageDialog(null, "Check This Out");
-                    popupMenu.show(drawPanel, mouseEvent.getX(), mouseEvent.getY() );
-                }
-            }
+                if(mouseEvent.getButton() == mouseEvent.BUTTON3) {
+                for (Knot k : knots) {
+                    if (Math.abs(k.getX() - x) < Knot.WIDTH + 3 && Math.abs(k.getY() - y) < Knot.HEIGHT + 3) {
 
+                              popupMenu.show(drawPanel, mouseEvent.getX(), mouseEvent.getY());
+
+                        }
+                    }
+                }
+
+            }
 
             public void mousePressed(MouseEvent e) {
 
@@ -229,30 +231,33 @@ public class StartWindow extends JFrame {
                 }
             }
 
-               public void mouseReleased(MouseEvent e) {
+               public void mouseReleased(MouseEvent mouseEvent) {
 
-                endX = e.getX();
-                endY = e.getY();
+                       endX = mouseEvent.getX();
+                       endY = mouseEvent.getY();
 
-                   for (Knot k: knots) {
+                       for (Knot k : knots) {
 
                            if (Math.abs(endX - k.getX()) < Knot.WIDTH + 3 &&
-                                      Math.abs(endY - k.getY()) < Knot.HEIGHT + 3){
+                                   Math.abs(endY - k.getY()) < Knot.HEIGHT + 3) {
 
-                                   id2 = k.getId();
-                                   if(isCorrect(id1, id2, knots) == true)
-                                        relations.add(new Relation(id1, id2, knots));
-                                   else
-                                       JOptionPane.showMessageDialog(null, "The operation is forbidden!");
-                              }
+                               id2 = k.getId();
+                               if (id1 == id2) {
+                               }
+                               else if (isCorrect(id1, id2, knots) == true)
+                                   relations.add(new Relation(id1, id2, knots));
+                               else
+                                   JOptionPane.showMessageDialog(null, "The operation is forbidden!");
+                           }
 
-                      }
-                             drawPanel.repaint();
+                       }
+                       drawPanel.repaint();
 
-               }
+                   }
 
                public void mouseEntered(MouseEvent mouseEvent) {
                }
+
                public void mouseExited(MouseEvent mouseEvent) {
                }
            });
@@ -303,27 +308,26 @@ public class StartWindow extends JFrame {
     *                         2. State -> Control
     * */
 
-    private boolean isCorrect(int id1, int id2, ArrayList<Knot> knots){
+    private boolean isCorrect(int id1, int id2, ArrayList<Knot> knots) {
 
         String type_id1 = null;
         String type_id2 = null;
 
-        for(Knot k : knots){
+        for (Knot k : knots) {
 
-            if(id1 == k.getId())
+            if (id1 == k.getId())
                 type_id1 = k.getType();
 
-                if(id2 == k.getId())
-                    type_id2 = k.getType();
-                }
+            if (id2 == k.getId())
+                type_id2 = k.getType();
+        }
+            if (type_id1 == "Control" && type_id2 == "Control")
+                return false;
 
-                if(type_id1 == "Control" && type_id2 == "Control")
-                    return false;
-
-                else if(type_id1 == "State" && type_id2 == "Control")
-                    return false;
-                else
-                    return true;
+            else if (type_id1 == "State" && type_id2 == "Control")
+                return false;
+            else
+                return true;
 
     }
 
@@ -336,7 +340,7 @@ public class StartWindow extends JFrame {
             for (int j = 0; j < sizeParameteres[1]; j++) {
                 JTextField textfield = new JTextField(5);
                 textfields.add(textfield);
-                panel.add(new JLabel("X_{" + Integer.toString(j + 1) + ", " + Integer.toString(i + 1) + "}: "));
+                panel.add(new JLabel("X_{" + Integer.toString(i + 1) + ", " + Integer.toString(j + 1) + "}: "));
                 panel.add(textfield);
             }
         }

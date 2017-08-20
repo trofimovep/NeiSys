@@ -21,8 +21,6 @@
     top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
 
 
-
-
 \begin{document}
 \pagestyle{empty}
 
@@ -34,6 +32,32 @@ It is needed to do:
 \subitem{..} Delete model
 
 \item{.}  Scroll Panel
+
+Параметр: $OPTION_SIZE$ -- задает размерность для параметров узлов(например, $OPTION_SIZE = 2$-- параметры для узлов - матрицы, для $OPTION_SIZE = 3$ какие-то трехмерные матрицы (но не тензоры!)).
+
+\paragraph{Knot}
+Всего два типа узлов: Состояние (State) и Управление (Control).
+
+
+\paragraph{Relations} 
+Для Отношений введены запреты на 
+\begin{enumerate}
+\item На связь Управление-Управление (функция isCorrect)
+\item Связь Управление-Состояние (нельзя состоянием повлиять на управление) (функция isCorrect)
+\item Самосвязь (узел не может воздействовать сам на себя) за это отвечает цикл класса StartWindow
+в MouseReleased (при {\it{if (id1 == id2)}} ничего не происходит):
+\begin{verbatim}
+ if (id1 == id2) {
+   }
+    else if (isCorrect(id1, id2, knots) == true)
+         relations.add(new Relation(id1, id2, knots));
+    else {
+         JOptionPane.showMessageDialog(null, "The operation is forbidden!");
+         }
+\end{verbatim}
+
+
+\end{enumerate}
 
 
 
