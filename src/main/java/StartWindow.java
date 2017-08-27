@@ -247,6 +247,7 @@ public class StartWindow extends JFrame {
 
                     for(int i = 0; i < relations.size(); i++){
                         if(RelationDistance(relations.get(i), x, y)) {
+                            currentRelationId = i;
                             relationPopup.show(drawPanel, x, y);
                         }
                     }
