@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class StartWindow extends JFrame {
 
     /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
@@ -20,6 +21,8 @@ public class StartWindow extends JFrame {
     private List<JTextField> textfields = new ArrayList<JTextField>();
     private JPanel panel;
 
+    private int currentKnotId;
+    private int currentRelationId;
 
     private int startX;
     private int startY;
@@ -32,6 +35,8 @@ public class StartWindow extends JFrame {
     public StartWindow(String s) {
         super(s);
         final eHandler handler = new eHandler();
+        final Deleter deleter = new Deleter();
+
 
         /*
         //         draw knots Panel
@@ -113,6 +118,9 @@ public class StartWindow extends JFrame {
         control_knot.addActionListener(handler);
 
 
+        /*
+        Popup Menu for Knots
+         */
         final JPopupMenu popupMenu = new JPopupMenu();
 
         final JMenuItem setParam = new JMenuItem("Задать параметры");
@@ -165,7 +173,32 @@ public class StartWindow extends JFrame {
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
+        deleteElement.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                knots.remove(currentKnotId);
+                repaint();
+            }
+        });
         popupMenu.add(deleteElement);
+
+
+
+        /*
+            Popup Menu for Relations
+        */
+
+        final JPopupMenu relationPopup = new JPopupMenu();
+
+        JMenuItem deleteRelation = new JMenuItem("Удалить связь");
+        deleteRelation.setFont(font);
+        deleteRelation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                relations.remove(currentRelationId);
+                repaint();
+            }
+        });
+        relationPopup.add(deleteRelation);
+
 
 
         /*
@@ -174,7 +207,7 @@ public class StartWindow extends JFrame {
 
         drawPanel.addMouseListener(new MouseListener() {
 
-                      int clicks = 0;
+            int clicks = 0;
 
             public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -204,11 +237,17 @@ public class StartWindow extends JFrame {
                 }
 
                 if(mouseEvent.getButton() == mouseEvent.BUTTON3) {
-                for (Knot k : knots) {
-                    if (Math.abs(k.getX() - x) < Knot.WIDTH + 3 && Math.abs(k.getY() - y) < Knot.HEIGHT + 3) {
 
-                              popupMenu.show(drawPanel, mouseEvent.getX(), mouseEvent.getY());
+                    for (int i = 0; i < knots.size(); i++) {
+                        if (Math.abs(knots.get(i).getX() - x) < Knot.WIDTH + 3 && Math.abs(knots.get(i).getY() - y) < Knot.HEIGHT + 3) {
+                        currentKnotId = i;
+                        popupMenu.show(drawPanel, x, y);
+                        }
+                    }
 
+                    for(int i = 0; i < relations.size(); i++){
+                        if(RelationDistance(relations.get(i), x, y)) {
+                            relationPopup.show(drawPanel, x, y);
                         }
                     }
                 }
@@ -281,7 +320,6 @@ public class StartWindow extends JFrame {
     class eHandler implements ActionListener{
 
         String type;
-
         public void actionPerformed(ActionEvent e) {
 
             try{
@@ -296,10 +334,19 @@ public class StartWindow extends JFrame {
                 }
             }
             catch (Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
 
             }
         }
         public String getType(){ return type; }
+    }
+
+    class Deleter implements ActionListener{
+    ArrayList<Object> list;
+    Object object;
+        public void actionPerformed(ActionEvent e) {
+            list.remove(object);
+        }
     }
 
 
@@ -331,8 +378,7 @@ public class StartWindow extends JFrame {
 
     }
 
-
-    public StartWindow(int[] sizeParameteres) {
+    private StartWindow(int[] sizeParameteres) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(sizeParameteres[0], sizeParameteres[1]));
 
@@ -345,6 +391,21 @@ public class StartWindow extends JFrame {
             }
         }
     }
+
+    private boolean RelationDistance(Relation r, int x, int y){
+        int x1 = r.getX1();
+        int y1 = r.getY1();
+        int x2 = r.getX2();
+        int y2 = r.getY2();
+
+        double dist = Math.abs((y2 - y1) * x - (x2 - x1) * y + x2 * y1 - y2 * x1) / Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
+        if(dist < 3.2)
+            return true;
+        else
+            return false;
+
+    }
+
 
 
 }//class
