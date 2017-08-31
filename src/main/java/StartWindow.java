@@ -35,7 +35,7 @@ public class StartWindow extends JFrame {
     public StartWindow(String s) {
         super(s);
         final eHandler handler = new eHandler();
-        final Deleter deleter = new Deleter();
+        final inputParam inparam = new inputParam();
 
 
         /*
@@ -126,45 +126,7 @@ public class StartWindow extends JFrame {
         final JMenuItem setParam = new JMenuItem("Задать параметры");
         setParam.setFont(font);
         popupMenu.add(setParam);
-        setParam.addActionListener(new ActionListener() {
-
-            public void actionPerformed (ActionEvent e) {
-
-                        int sizeParameteres[] = new int[OPTION_SIZE];
-                        ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
-
-                        JPanel sizepanel = new JPanel();
-
-                        for (int k = 0; k < OPTION_SIZE; k++) {
-                            sizepanel.add(new JLabel("size" + String.valueOf(k + 1)));
-                            sizeFields.add(new JTextField(5));
-                            sizepanel.add(sizeFields.get(k));
-                        }
-
-                        sizepanel.setVisible(true);
-                        int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
-                                "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
-                        if (resultsize == JOptionPane.OK_OPTION) {
-
-                            int cur = 0;
-                            for (JTextField ss : sizeFields) {
-                                sizeParameteres[cur] = Integer.valueOf(ss.getText());
-                                cur++;
-                            }
-
-                            StartWindow example = new StartWindow(sizeParameteres);
-                            int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
-                                    "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
-                            if (resultmatrix == JOptionPane.OK_OPTION) {
-                                for (JTextField textfield : example.textfields) {
-                                    System.out.println(textfield.getText());
-                            /* РЕАЛИЗОВАТЬ ПЕРЕДАЧУ ПАРАМЕТРОВ В УЗЕЛ ОТСЮДА И ЩЕЛЧОК ПРИ НАЖАТИИ ТОЛЬКО НА УЗЕЛ*/
-                                }
-                            }
-
-                        }
-            }
-        });
+        setParam.addActionListener(inparam);
 
         JMenuItem changeParam = new JMenuItem("Изменить параметры");
         changeParam.setFont(font);
@@ -188,6 +150,11 @@ public class StartWindow extends JFrame {
         */
 
         final JPopupMenu relationPopup = new JPopupMenu();
+
+        JMenuItem setRelation = new JMenuItem("Параметры связи");
+        setRelation.setFont(font);
+        setRelation.addActionListener(inparam);
+        relationPopup.add(setRelation);
 
         JMenuItem deleteRelation = new JMenuItem("Удалить связь");
         deleteRelation.setFont(font);
@@ -342,13 +309,57 @@ public class StartWindow extends JFrame {
         public String getType(){ return type; }
     }
 
-    class Deleter implements ActionListener{
-    ArrayList<Object> list;
-    Object object;
+
+    class inputParam implements ActionListener{
+
         public void actionPerformed(ActionEvent e) {
-            list.remove(object);
+
+            int sizeParameteres[] = new int[OPTION_SIZE];
+            ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
+
+            JPanel sizepanel = new JPanel();
+
+            for (int k = 0; k < OPTION_SIZE; k++) {
+                sizepanel.add(new JLabel("size" + String.valueOf(k + 1)));
+                sizeFields.add(new JTextField(5));
+                sizepanel.add(sizeFields.get(k));
+            }
+
+            sizepanel.setVisible(true);
+            int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
+                    "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+            if (resultsize == JOptionPane.OK_OPTION) {
+
+                int cur = 0;
+                for (JTextField ss : sizeFields) {
+                    sizeParameteres[cur] = Integer.valueOf(ss.getText());
+                    cur++;
+                }
+
+                StartWindow example = new StartWindow(sizeParameteres);
+                int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
+                        "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
+                if (resultmatrix == JOptionPane.OK_OPTION) {
+                    for (JTextField textfield : example.textfields) {
+                        System.out.println(textfield.getText());
+                            /* РЕАЛИЗОВАТЬ ПЕРЕДАЧУ ПАРАМЕТРОВ В УЗЕЛ ОТСЮДА И ЩЕЛЧОК ПРИ НАЖАТИИ ТОЛЬКО НА УЗЕЛ*/
+                    }
+                }
+
+            }
+
         }
     }
+
+
+//
+//    class Deleter implements ActionListener{
+//    ArrayList<Object> list;
+//        public void actionPerformed(ActionEvent e) {
+//            Object object;
+//           list.remove(object);
+//        }
+//    }
 
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
