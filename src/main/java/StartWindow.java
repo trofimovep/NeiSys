@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class StartWindow extends JFrame {
 
     /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
@@ -17,6 +16,7 @@ public class StartWindow extends JFrame {
     JRadioButton state_knot = new JRadioButton("Узел состояния");
     JRadioButton control_knot = new JRadioButton("Узел управления");
 
+    private boolean RepaiPanel = false;
 
     private List<JTextField> textfields = new ArrayList<JTextField>();
     private JPanel panel;
@@ -44,12 +44,10 @@ public class StartWindow extends JFrame {
         final ArrayList<Knot> knots = new ArrayList<Knot>();
         final ArrayList<Relation> relations = new ArrayList<Relation>();
 
-
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
-
+//        Timer timer = new Timer(50, drawPanel.repaint());
 
         drawPanel.setLayout(null);
-//        drawPanel.setBackground(Color.DARK_GRAY);    DOESN'T WORK
         setLayout(new GridLayout(2, 1));
         add(drawPanel);
 
@@ -172,6 +170,8 @@ public class StartWindow extends JFrame {
             * DRAW PANEL      *
          */
 
+
+
         drawPanel.addMouseListener(new MouseListener() {
 
             int clicks = 0;
@@ -201,8 +201,6 @@ public class StartWindow extends JFrame {
                         }
                         drawPanel.repaint();
                     }
-                    System.out.println("Privet 1 = " + knots.get(0).getPar1());
-                    System.out.println("Privet 2 = " + knots.get(1).getPar2());
                 }
 
                 if(mouseEvent.getButton() == mouseEvent.BUTTON3) {
@@ -246,14 +244,12 @@ public class StartWindow extends JFrame {
                        endY = mouseEvent.getY();
 
                        for (Knot k : knots) {
-
                            if (Math.abs(endX - k.getX()) < Knot.WIDTH + 3 &&
                                    Math.abs(endY - k.getY()) < Knot.HEIGHT + 3) {
-
                                id2 = k.getId();
+
                                if (id1 == id2) {
                                }
-
                                else if (isCorrect(id1, id2, knots)) {
                                    Relation r = new Relation(id1, id2, knots);
                                    for(Knot k2 : knots) {
@@ -265,14 +261,11 @@ public class StartWindow extends JFrame {
                                    k.addInnerRelations(r);
                                    relations.add(r);
                                }
-
                                else
                                    JOptionPane.showMessageDialog(null, "The operation is forbidden!");
                            }
-
                        }
                        drawPanel.repaint();
-
                    }
 
                public void mouseEntered(MouseEvent mouseEvent) {
@@ -286,17 +279,20 @@ public class StartWindow extends JFrame {
         drawPanel.addMouseMotionListener(new MouseMotionListener() {
 
             public void mouseMoved(MouseEvent e){
-
+                if(RepaiPanel == true){
+                    drawPanel.repaint();
+                    RepaiPanel = false;
+                }
             }
             public void mouseDragged(MouseEvent e) {
-
             }
 
         });
 
 
-
     }//StartWindow
+
+
 
 
     /* cлушатель на узлы (их тип) */
@@ -325,15 +321,11 @@ public class StartWindow extends JFrame {
     }
 
 
+
+
     class inputParam implements ActionListener{
 
-        public ArrayList<Knot> getKnots(ArrayList<Knot> k){
-            return k;
-        }
-
         public void actionPerformed(ActionEvent e) {
-
-
 
             int sizeParameteres[] = new int[OPTION_SIZE];
             ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
@@ -362,14 +354,12 @@ public class StartWindow extends JFrame {
                     StartWindow example = new StartWindow(sizeParameteres);
                     int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
                             "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
-                    if (resultmatrix == JOptionPane.OK_OPTION) {
 
+                    if (resultmatrix == JOptionPane.OK_OPTION) {
                         double[][] M = new double[sizeParameteres[0]][sizeParameteres[1]];
                     /*
-                    * Realize for any dimension (OPTION_SIZE)*
+                    * Realize for any dimension (OPTION_SIZE)*  ???
                     */
-
-
                         int t = 0;
                         for (int i = 0; i < sizeParameteres[0]; i++) {
                             for (int j = 0; j < sizeParameteres[1]; j++) {
@@ -377,7 +367,6 @@ public class StartWindow extends JFrame {
                                 t++;
                             }
                         }
-
                         if (current instanceof Knot) {
                             ((Knot) current).setSizeParameteres(sizeParameteres);
                             ((Knot) current).setM(M);
@@ -385,16 +374,20 @@ public class StartWindow extends JFrame {
                             ((Relation) current).setSizeParameteres(sizeParameteres);
                             ((Relation) current).setM(M);
                         }
-
                     }
-
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Ошибка размерностей");
                 }
+
+                RepaiPanel = true;
             }
         }
     }
+
+
+
+
 
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
@@ -439,6 +432,10 @@ public class StartWindow extends JFrame {
         }
     }
 
+
+
+
+
     private boolean RelationDistance(Relation r, int x, int y){
         int x1 = r.getX1();
         int y1 = r.getY1();
@@ -454,14 +451,11 @@ public class StartWindow extends JFrame {
 
 
     /**
-     * Realize WRONG WORKING!
-     * @param sizeParams
-     * @param object
-     * @return
+     *
      */
     private boolean isSizesCorrect(int[] sizeParams, Object object){
 
-        boolean decision = false;
+        boolean decision = true;
 
         if(object instanceof Relation) {
             Relation r = (Relation) object;
@@ -505,17 +499,11 @@ public class StartWindow extends JFrame {
             if(sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
                 decision = false;
             }
-            else decision = false;
 
         }
 
-        else
-            decision = false;
-
         return decision;
     }
-
-
 
 
 
