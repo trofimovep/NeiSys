@@ -84,4 +84,11 @@ public class Knot{
         return outputRealations.size();
     }
 
+    public int getPar1(){
+        return sizeParameteres[0];
+    }
+
+    public int getPar2(){
+        return sizeParameteres[1];
+    }
 }

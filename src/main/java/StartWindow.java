@@ -201,6 +201,8 @@ public class StartWindow extends JFrame {
                         }
                         drawPanel.repaint();
                     }
+                    System.out.println("Privet 1 = " + knots.get(0).getPar1());
+                    System.out.println("Privet 2 = " + knots.get(1).getPar2());
                 }
 
                 if(mouseEvent.getButton() == mouseEvent.BUTTON3) {
@@ -473,9 +475,8 @@ public class StartWindow extends JFrame {
             int sizeKnot1 = knot1.getSizeParameteres()[1];
             int sizeKnot2 = knot2.getSizeParameteres()[0];
 
-            if (sizeKnot1 == sizeRel1 & sizeKnot2 == sizeRel2 | sizeKnot1 == 0 & sizeKnot2 == sizeRel2
-                    | sizeKnot1 == sizeRel1 & sizeKnot2 == 0 |
-                    sizeKnot1 == 0 & sizeKnot2 == 0) {
+            if (sizeKnot1 == sizeRel1 & sizeKnot2 == sizeRel2 || sizeKnot1 == 0 & sizeKnot2 == sizeRel2
+                    || sizeKnot1 == sizeRel1 & sizeKnot2 == 0 ||sizeKnot1 == 0 & sizeKnot2 == 0) {
                 decision = true;
             } else {
                 decision = false;
@@ -483,20 +484,31 @@ public class StartWindow extends JFrame {
         }
 
 
-        if(object instanceof Knot){
+       else if(object instanceof Knot){
 
             Knot k = (Knot) object;
+
+            int sInnerRelation = 0;
             for(Relation r  : k.getInnerRealations()) {
-                for (Relation r0 : k.getOutputRealations()) {
-                    if (r.getSizeParameteres()[1] == sizeParams[0] &&
-                            r0.getSizeParameteres()[0] == sizeParams[1]) {
-                        decision = true;
-                    }
-                    else
-                        decision = false;
+                if (r.getSizeParameteres()[1] == 0 || r.getSizeParameteres()[1] == sizeParams[0]) {
+                    sInnerRelation++;
                 }
             }
+
+            int sOutRelations = 0;
+            for(Relation r : k.getOutputRealations()) {
+                if(r.getSizeParameteres()[0] == 0 || r.getSizeParameteres()[0] == sizeParams[1]) {
+                    sOutRelations++;
+                }
+            }
+
+            if(sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+                decision = false;
+            }
+            else decision = false;
+
         }
+
         else
             decision = false;
 

@@ -10,15 +10,14 @@ public class DrawPanel extends JComponent {
 
 
     public DrawPanel(ArrayList<Knot> knots, ArrayList<Relation> relations) {
-
         this.knots = knots;
         this.relations = relations;
-
     }
 
 
     @Override
     public void paintComponent(Graphics g) {
+        g.setColor(Color.DARK_GRAY);
         Graphics2D g2d = (Graphics2D) g;
 
 
@@ -32,6 +31,8 @@ public class DrawPanel extends JComponent {
 
             g2d.fill(k.getView(k.getX(), k.getY()));
             g2d.drawString((k.getType() + Integer.toString(k.getId())), k.getX(), k.getY());
+            g2d.setColor(Color.BLACK);
+            g2d.drawString(k.getSizeParameteres()[0] + "x" +k.getSizeParameteres()[1], k.getX()+Knot.WIDTH, k.getY()+Knot.HEIGHT );
 
         }
 
