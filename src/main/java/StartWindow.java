@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class StartWindow extends JFrame {
 
     /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
@@ -177,6 +178,8 @@ public class StartWindow extends JFrame {
             int clicks = 0;
 
             public void mouseClicked(MouseEvent mouseEvent) {
+
+//                RealMatrix
 
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
