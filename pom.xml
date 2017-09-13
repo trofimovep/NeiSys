@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd https://mvnrepository.com/artifact/org.apache.commons/commons-math3">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>NeiSys</groupId>
     <artifactId>art</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <dependencies>
+
+
         <dependency>
             <groupId>NeiSys</groupId>
             <artifactId>art</artifactId>
@@ -15,11 +18,22 @@
         </dependency>
 
     <!--https://mvnrepository.com/artifact/org.apache.commons/commons-math3-->
-    <dependency>
+    <!--good lib just in case-->
+        <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-math3</artifactId>
         <version>3.6.1</version>
     </dependency>
+
+
+        <!--http://javadox.com/com.googlecode.efficient-java-matrix-library/ejml/0.23/org/ejml/alg/dense/linsol/svd/SolvePseudoInverseSvd.html-->
+            <!--for pseudo inverse matrix-->
+        <dependency>
+            <groupId>com.googlecode.efficient-java-matrix-library</groupId>
+            <artifactId>ejml</artifactId>
+            <version>0.23</version>
+        </dependency>
+
     </dependencies>
 
 </project>

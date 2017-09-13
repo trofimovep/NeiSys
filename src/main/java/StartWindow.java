@@ -1,3 +1,5 @@
+import org.ejml.simple.SimpleMatrix;
+
 import javax.swing.*;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -6,7 +8,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class StartWindow extends JFrame {
 
@@ -373,10 +374,15 @@ public class StartWindow extends JFrame {
                         if (current instanceof Knot) {
                             ((Knot) current).setSizeParameteres(sizeParameteres);
                             ((Knot) current).setM(M);
+                            SimpleMatrix m = new SimpleMatrix(M);
+                            SimpleMatrix pinvM = m.pseudoInverse();
+                            pinvM.print();
+
                         } else if (current instanceof Relation) {
                             ((Relation) current).setSizeParameteres(sizeParameteres);
                             ((Relation) current).setM(M);
                         }
+
                     }
                 }
                 else {
