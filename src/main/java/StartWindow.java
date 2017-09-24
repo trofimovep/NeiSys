@@ -1,4 +1,4 @@
-import org.ejml.simple.SimpleMatrix;
+import javafx.scene.input.KeyCode;
 
 import javax.swing.*;
 import javax.swing.JMenuBar;
@@ -9,14 +9,14 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class StartWindow extends JFrame {
 
     /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
     public static final int OPTION_SIZE = 2;
 
-    ButtonGroup type_knot = new ButtonGroup();
-    JRadioButton state_knot = new JRadioButton("Узел состояния");
-    JRadioButton control_knot = new JRadioButton("Узел управления");
+    final ArrayList<Knot> knots = new ArrayList<Knot>();
+    final ArrayList<Relation> relations = new ArrayList<Relation>();
 
     private boolean RepaiPanel = false;
 
@@ -33,21 +33,30 @@ public class StartWindow extends JFrame {
     private int id2;
 
 
+    ButtonGroup typeKnot = new ButtonGroup();
+    JRadioButton stateKnot = new JRadioButton("Узел состояния");
+    JRadioButton controlKnot = new JRadioButton("Узел управления");
+
+    ButtonGroup typeRelation = new ButtonGroup();
+    JRadioButton RelationbyAdd = new JRadioButton("Аддитивная (R = C + S)");
+    JRadioButton RelationbyMult = new JRadioButton("Мультипликативная (R = C * S)");
+
+
+
     public StartWindow(String s) {
         super(s);
         final eHandler handler = new eHandler();
         final inputParam inparam = new inputParam();
+        final inputVector invector = new inputVector();
+        final ClearAll clearall = new ClearAll();
 
 
         /*
         //         draw knots Panel
         */
 
-        final ArrayList<Knot> knots = new ArrayList<Knot>();
-        final ArrayList<Relation> relations = new ArrayList<Relation>();
 
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
-//        Timer timer = new Timer(50, drawPanel.repaint());
 
         drawPanel.setLayout(null);
         setLayout(new GridLayout(2, 1));
@@ -82,6 +91,13 @@ public class StartWindow extends JFrame {
         pravka.setFont(font);
         menuBar.add(pravka);
 
+        JMenuItem clearAll = new JMenuItem("Очистить все");
+        clearAll.setFont(font);
+        clearAll.addActionListener(clearall);
+        pravka.add(clearAll);
+
+
+
         drawPanel.setJmenuBar();
         setJMenuBar(menuBar);
 
@@ -106,18 +122,31 @@ public class StartWindow extends JFrame {
         jj.setVisible(true);
         buttonsPanel.add(jj);
 
+        stateKnot.setBounds(20, 40, 200, 20);
+        controlKnot.setBounds(20, 60, 200, 20);
+        typeKnot.add(controlKnot);
+        typeKnot.add(stateKnot);
+        buttonsPanel.add(stateKnot);
+        buttonsPanel.add(controlKnot);
+        stateKnot.addActionListener(handler);
+        controlKnot.addActionListener(handler);
 
-        state_knot.setBounds(20, 40, 200, 20);
-        control_knot.setBounds(20, 60, 200, 20);
-        type_knot.add(control_knot);
-        type_knot.add(state_knot);
-        buttonsPanel.add(state_knot);
-        buttonsPanel.add(control_knot);
-        state_knot.addActionListener(handler);
-        control_knot.addActionListener(handler);
+//        ButtonGroup
 
-        JButton CountButton = new JButton("Расчитать");
-        CountButton.setBounds(20, 85, 200, 20);
+        JLabel DesignLine0 = new JLabel("Тип связи:");
+        DesignLine0.setBounds(20, 80, 200,20);
+        buttonsPanel.add(DesignLine0);
+
+        RelationbyAdd.setBounds(20,100,250,20);
+        RelationbyMult.setBounds(20,120,250,20);
+        typeRelation.add(RelationbyAdd);
+        typeRelation.add(RelationbyMult);
+        buttonsPanel.add(RelationbyAdd);
+        buttonsPanel.add(RelationbyMult);
+
+
+  JButton CountButton = new JButton("Расчитать");
+        CountButton.setBounds(20, 200, 200, 20);
         buttonsPanel.add(CountButton);
 
         /*
@@ -135,6 +164,17 @@ public class StartWindow extends JFrame {
 //        changeParam.addActionListener(popupListener);
         popupMenu.add(changeParam);
 
+
+
+//        popupMenu.add(setInputVector);
+        final JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
+        setInputVector.setFont(font);
+        setInputVector.addActionListener(invector);
+//        for(Knot k : knots) {
+//            if (k.getInnerRealations().size() == 0)
+//                popupMenu.add(setInputVector);
+//        }
+
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
         deleteElement.addActionListener(new ActionListener() {
@@ -144,6 +184,7 @@ public class StartWindow extends JFrame {
             }
         });
         popupMenu.add(deleteElement);
+
 
 
 
@@ -180,8 +221,6 @@ public class StartWindow extends JFrame {
 
             public void mouseClicked(MouseEvent mouseEvent) {
 
-//                RealMatrix
-
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
                 String type = handler.getType(); //тип узла:
@@ -193,6 +232,13 @@ public class StartWindow extends JFrame {
 
                         knots.add(new Knot(type, clicks, x, y));
                         int current = knots.size() - 1;
+                        for(Knot k : knots) {
+                           System.out.println(k.getId() + " + " + k.getInnerRealations().size());
+                            if (k.getInnerRealations().size() == 0) {
+                                popupMenu.add(setInputVector);
+                            }
+                        }
+
 
                         for (int i = 0; i < knots.size() - 1; i++) {
 
@@ -259,7 +305,6 @@ public class StartWindow extends JFrame {
                                    for(Knot k2 : knots) {
                                        if (k2.getId() == id1) {
                                            k2.addOutputRelations(r);
-                                           System.out.println(k2.getOutputSIzeRel());
                                        }
                                    }
                                    k.addInnerRelations(r);
@@ -309,10 +354,10 @@ public class StartWindow extends JFrame {
                 if(e.getSource() == null){
                     type = null;
                 }
-                if(e.getSource() ==  state_knot){
+                if(e.getSource() ==  stateKnot){
                 type = "State";
                 }
-                if(e.getSource() == control_knot){
+                if(e.getSource() == controlKnot){
                 type = "Control";
                 }
             }
@@ -361,7 +406,7 @@ public class StartWindow extends JFrame {
 
                     if (resultmatrix == JOptionPane.OK_OPTION) {
                         double[][] M = new double[sizeParameteres[0]][sizeParameteres[1]];
-                    /*
+                                            /*
                     * Realize for any dimension (OPTION_SIZE)*  ???
                     */
                         int t = 0;
@@ -371,18 +416,8 @@ public class StartWindow extends JFrame {
                                 t++;
                             }
                         }
-                        if (current instanceof Knot) {
-                            ((Knot) current).setSizeParameteres(sizeParameteres);
-                            ((Knot) current).setM(M);
-                            SimpleMatrix m = new SimpleMatrix(M);
-                            SimpleMatrix pinvM = m.pseudoInverse();
-                            pinvM.print();
 
-                        } else if (current instanceof Relation) {
-                            ((Relation) current).setSizeParameteres(sizeParameteres);
-                            ((Relation) current).setM(M);
-                        }
-
+                        SaverToParam(sizeParameteres, M, current);
                     }
                 }
                 else {
@@ -392,7 +427,49 @@ public class StartWindow extends JFrame {
                 RepaiPanel = true;
             }
         }
+
+        public void SaverToParam(int[] sizeParameteres, double[][] M, Object current){
+            if (current instanceof Knot) {
+                ((Knot) current).setSizeParameteres(sizeParameteres);
+                ((Knot) current).setM(M);
+
+//                            SimpleMatrix m = new SimpleMatrix(M);
+//                            SimpleMatrix pinvM = m.pseudoInverse();
+//                            pinvM.print();
+
+            } else if (current instanceof Relation) {
+                ((Relation) current).setSizeParameteres(sizeParameteres);
+                ((Relation) current).setM(M);
+            }
+
+
+        }
     }
+
+
+class inputVector extends inputParam{
+
+    @Override
+    public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
+
+            ((State) current).setSizeParameteres(sizeParameteres);
+            ((State) current).setInputVector(M);
+    }
+
+}
+
+
+/*
+* Clear All
+* */
+class ClearAll implements ActionListener{
+
+    public void actionPerformed(ActionEvent e) {
+        knots.removeAll(knots);
+        relations.removeAll(relations);
+        repaint();
+    }
+}
 
 
 
@@ -513,7 +590,6 @@ public class StartWindow extends JFrame {
 
         return decision;
     }
-
 
 
 

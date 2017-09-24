@@ -39,7 +39,7 @@ public class DrawPanel extends JComponent {
        for(Relation r : relations) {
 
             r.drawArrow(g2d, r.getX1(), r.getY1(), r.getX2(), r.getY2());
-
+            g2d.drawString(r.getSizeParameteres()[0] + "x" + r.getSizeParameteres()[1], (r.getX1()+r.getX2()) / 2, (r.getY1() + r.getY2()) / 2);
        }
 
     }

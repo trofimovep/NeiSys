@@ -1,5 +1,7 @@
 public class State extends Knot {
 
+    double[][] inputVector;
+    double[][] outputVector;
 
     public State(String type, int id, int x, int y){
 
@@ -7,5 +9,12 @@ public class State extends Knot {
 
         }
 
+    public double[][] getInputVector() {
+        return inputVector;
+    }
+
+    public void setInputVector(double[][] inputVector) {
+        this.inputVector = inputVector;
+    }
 }
 
