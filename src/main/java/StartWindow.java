@@ -479,6 +479,7 @@ class ClearAll implements ActionListener{
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
                               1. Control <--> Control
     *                         2. State -> Control
+    *                         3. Itself relation
     * */
 
     private boolean isCorrect(int id1, int id2, ArrayList<Knot> knots) {
@@ -518,10 +519,6 @@ class ClearAll implements ActionListener{
         }
     }
 
-
-
-
-
     private boolean RelationDistance(Relation r, int x, int y){
         int x1 = r.getX1();
         int y1 = r.getY1();
@@ -556,7 +553,8 @@ class ClearAll implements ActionListener{
             int sizeKnot2 = knot2.getSizeParameteres()[0];
 
             if (sizeKnot1 == sizeRel1 & sizeKnot2 == sizeRel2 || sizeKnot1 == 0 & sizeKnot2 == sizeRel2
-                    || sizeKnot1 == sizeRel1 & sizeKnot2 == 0 ||sizeKnot1 == 0 & sizeKnot2 == 0) {
+                    || sizeKnot1 == sizeRel1 & sizeKnot2 == 0 ||sizeKnot1 == 0 & sizeKnot2 == 0 || sizeKnot1 == 1 & knot1.getSizeParameteres()[0] == 1
+                    || sizeKnot2 == 1 & knot2.getSizeParameteres()[1] == 1) {
                 decision = true;
             } else {
                 decision = false;
@@ -568,22 +566,28 @@ class ClearAll implements ActionListener{
 
             Knot k = (Knot) object;
 
-            int sInnerRelation = 0;
-            for(Relation r  : k.getInnerRealations()) {
-                if (r.getSizeParameteres()[1] == 0 || r.getSizeParameteres()[1] == sizeParams[0]) {
-                    sInnerRelation++;
-                }
-            }
+            if(sizeParams[0] == 1 & sizeParams[1] == 1){
+                System.out.println(decision);
 
-            int sOutRelations = 0;
-            for(Relation r : k.getOutputRealations()) {
-                if(r.getSizeParameteres()[0] == 0 || r.getSizeParameteres()[0] == sizeParams[1]) {
-                    sOutRelations++;
-                }
             }
+            else {
+                int sInnerRelation = 0;
+                for (Relation r : k.getInnerRealations()) {
+                    if (r.getSizeParameteres()[1] == 0 || r.getSizeParameteres()[1] == sizeParams[0] || r.getSizeParameteres()[0] == 1 & r.getSizeParameteres()[1] == 1) {
+                        sInnerRelation++;
+                    }
+                }
 
-            if(sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
-                decision = false;
+                int sOutRelations = 0;
+                for (Relation r : k.getOutputRealations()) {
+                    if (r.getSizeParameteres()[0] == 0 || r.getSizeParameteres()[0] == sizeParams[1] || r.getSizeParameteres()[0] == 1 & r.getSizeParameteres()[1] == 1) {
+                        sOutRelations++;
+                    }
+                }
+
+                if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+                    decision = false;
+                }
             }
 
         }
