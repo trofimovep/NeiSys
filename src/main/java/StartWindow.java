@@ -57,6 +57,8 @@ public class StartWindow extends JFrame {
 
 
         final DrawPanel drawPanel = new DrawPanel(knots, relations);
+//        drawPanel.setBackground(Color.BLACK);
+
 
         drawPanel.setLayout(null);
         setLayout(new GridLayout(2, 1));
@@ -208,6 +210,8 @@ public class StartWindow extends JFrame {
             }
         });
         relationPopup.add(deleteRelation);
+
+
 
         /*
             * DRAW PANEL      *
@@ -447,22 +451,21 @@ public class StartWindow extends JFrame {
     }
 
 
-class inputVector extends inputParam{
+private class inputVector extends inputParam{
 
     @Override
     public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
-
-            ((State) current).setSizeParameteres(sizeParameteres);
-            ((State) current).setInputVector(M);
+            if(current instanceof  State) {
+                ((State) current).setSizeParameteres(sizeParameteres);
+                ((State) current).setInputVector(M);
+            }
     }
-
 }
-
 
 /*
 * Clear All
 * */
-class ClearAll implements ActionListener{
+private class ClearAll implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         knots.removeAll(knots);
@@ -470,11 +473,6 @@ class ClearAll implements ActionListener{
         repaint();
     }
 }
-
-
-
-
-
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
                               1. Control <--> Control
@@ -593,6 +591,21 @@ class ClearAll implements ActionListener{
         }
 
         return decision;
+    }
+
+
+
+    private class Counter implements ActionListener{
+
+
+        public void actionPerformed(ActionEvent e) {
+
+            /* Добавить условие на различные системы */
+
+
+
+        }
+
     }
 
 

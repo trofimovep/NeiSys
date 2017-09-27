@@ -16,5 +16,10 @@ public class State extends Knot {
     public void setInputVector(double[][] inputVector) {
         this.inputVector = inputVector;
     }
+
+    public void setOutputVector() {
+        this.outputVector = outputVector;
+    }
+
 }
 

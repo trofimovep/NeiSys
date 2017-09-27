@@ -17,8 +17,9 @@ public class DrawPanel extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
+//        g.setColor(Color.DARK_GRAY);
         Graphics2D g2d = (Graphics2D) g;
+//        g2d.setBackground(Color.DARK_GRAY);
 
 
         for (Knot k: knots) {
@@ -41,6 +42,8 @@ public class DrawPanel extends JComponent {
             r.drawArrow(g2d, r.getX1(), r.getY1(), r.getX2(), r.getY2());
             g2d.drawString(r.getSizeParameteres()[0] + "x" + r.getSizeParameteres()[1], (r.getX1()+r.getX2()) / 2, (r.getY1() + r.getY2()) / 2);
        }
+
+
 
     }
 
