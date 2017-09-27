@@ -42,6 +42,9 @@ public class StartWindow extends JFrame {
     JRadioButton RelationbyMult = new JRadioButton("Мультипликативная (R = C * S)");
 
 
+    final RelationTypeHandler relationTypeHandler = new RelationTypeHandler();
+
+
 
     public StartWindow(String s) {
         super(s);
@@ -49,7 +52,7 @@ public class StartWindow extends JFrame {
         final inputParam inparam = new inputParam();
         final inputVector invector = new inputVector();
         final ClearAll clearall = new ClearAll();
-
+        final Counter counter = new Counter();
 
         /*
         //         draw knots Panel
@@ -145,11 +148,14 @@ public class StartWindow extends JFrame {
         typeRelation.add(RelationbyMult);
         buttonsPanel.add(RelationbyAdd);
         buttonsPanel.add(RelationbyMult);
+        RelationbyAdd.addActionListener(relationTypeHandler);
+        RelationbyMult.addActionListener(relationTypeHandler);
 
 
   JButton CountButton = new JButton("Расчитать");
         CountButton.setBounds(20, 200, 200, 20);
         buttonsPanel.add(CountButton);
+        CountButton.addActionListener(counter);
 
         /*
         Popup Menu for Knots
@@ -216,6 +222,11 @@ public class StartWindow extends JFrame {
         /*
             * DRAW PANEL      *
          */
+
+
+
+        /*                       Listeners                          */
+
 
 
 
@@ -327,6 +338,8 @@ public class StartWindow extends JFrame {
                public void mouseExited(MouseEvent mouseEvent) {
                }
            });
+
+
 
 
         drawPanel.addMouseMotionListener(new MouseMotionListener() {
@@ -451,6 +464,9 @@ public class StartWindow extends JFrame {
     }
 
 
+
+
+
 private class inputVector extends inputParam{
 
     @Override
@@ -461,6 +477,9 @@ private class inputVector extends inputParam{
             }
     }
 }
+
+
+
 
 /*
 * Clear All
@@ -473,6 +492,34 @@ private class ClearAll implements ActionListener{
         repaint();
     }
 }
+
+
+
+private class RelationTypeHandler implements ActionListener{
+/*
+* Relation Type = 1, if Relation is Additive
+* Relation Type = 2, if Relation is Multiplicative
+* */
+    private int typerel;
+
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == RelationbyAdd){
+            typerel = 1;
+        }
+        else if(e.getSource() == RelationbyMult){
+            typerel = 2;
+        }
+    }
+
+    public int getTyperel() {
+        return typerel;
+    }
+}
+
+/*                                     secondary functions                          */
+
+
+
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
                               1. Control <--> Control
@@ -503,6 +550,7 @@ private class ClearAll implements ActionListener{
 
     }
 
+
     private StartWindow(int[] sizeParameteres) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(sizeParameteres[0], sizeParameteres[1]));
@@ -516,6 +564,7 @@ private class ClearAll implements ActionListener{
             }
         }
     }
+
 
     private boolean RelationDistance(Relation r, int x, int y){
         int x1 = r.getX1();
@@ -595,13 +644,27 @@ private class ClearAll implements ActionListener{
 
 
 
+    /*                      Counter Listener               */
+
+
+
+
     private class Counter implements ActionListener{
 
 
         public void actionPerformed(ActionEvent e) {
 
-            /* Добавить условие на различные системы */
+            int relType = relationTypeHandler.getTyperel();
 
+            /* Добавить условие на различные системы */
+            if(relType == 1){
+
+            }
+            else if(relType == 2){
+                Identificater countIdentifier = new Identificater();
+                countIdentifier.getOutMatrixesSize();
+                System.out.println("FUck upuy" + countIdentifier.getOutMatrixesSize());
+            }
 
 
         }

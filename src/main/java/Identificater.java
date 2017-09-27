@@ -2,7 +2,7 @@ import org.ejml.simple.SimpleMatrix;
 
 import java.util.ArrayList;
 
-public class Ideintificater {
+public class Identificater {
 
     ArrayList<SimpleMatrix>  inputSimpleMatrix = new ArrayList<SimpleMatrix>() ;
     ArrayList<SimpleMatrix>  outSimpleMatrix = new ArrayList<SimpleMatrix>() ;
@@ -50,7 +50,7 @@ public ArrayList<SimpleMatrix> MultCounter(ArrayList<Knot> knots, ArrayList<Rela
     return outSimpleMatrix;
 }
 
-public int outMatrixesSize(){
+public int getOutMatrixesSize(){
     return outSimpleMatrix.size();
 }
 
