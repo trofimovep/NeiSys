@@ -1,4 +1,5 @@
 import javafx.scene.input.KeyCode;
+import org.ejml.simple.SimpleMatrix;
 
 import javax.swing.*;
 import javax.swing.JMenuBar;
@@ -50,7 +51,7 @@ public class StartWindow extends JFrame {
         super(s);
         final eHandler handler = new eHandler();
         final inputParam inparam = new inputParam();
-        final inputVector invector = new inputVector();
+        final inputVectorHandler invector = new inputVectorHandler();
         final ClearAll clearall = new ClearAll();
         final Counter counter = new Counter();
 
@@ -467,7 +468,7 @@ public class StartWindow extends JFrame {
 
 
 
-private class inputVector extends inputParam{
+private class inputVectorHandler extends inputParam{
 
     @Override
     public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
@@ -661,9 +662,18 @@ private class RelationTypeHandler implements ActionListener{
 
             }
             else if(relType == 2){
+
+                Knot k = knots.get(0);
+                if(k instanceof State)
+                    System.out.println(((State) k).getInputVector());
+
                 Identificater countIdentifier = new Identificater();
-                countIdentifier.getOutMatrixesSize();
-                System.out.println("FUck upuy" + countIdentifier.getOutMatrixesSize());
+//                ArrayList<SimpleMatrix> simpleMatrices = countIdentifier.MultCounter(knots, relations);
+//                countIdentifier.getOutMatrixesSize();
+//                System.out.println(simpleMatrices.get(1));
+//                System.out.println("FUck upuy" + countIdentifier.getOutMatrixesSize());
+
+            System.out.println(countIdentifier.smm(knots));
             }
 
 
