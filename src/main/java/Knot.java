@@ -12,6 +12,9 @@ public class Knot{
     int x;
     int y;
 
+    double[][] inputVector;
+    double[][] outputVector;
+
     public static int WIDTH = 40;
     public static int HEIGHT = 40;
 
@@ -91,4 +94,14 @@ public class Knot{
     public int getPar2(){
         return sizeParameteres[1];
     }
+
+    public void setInputVector(double[][] inputVector) {
+        this.inputVector = inputVector;
+    }
+
+    public double[][] getInputVector() {
+        return inputVector;
+    }
+
+
 }

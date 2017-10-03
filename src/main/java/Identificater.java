@@ -10,70 +10,30 @@ public class Identificater {
 
 
     public SimpleMatrix smm (ArrayList<Knot> knots) {
-        SimpleMatrix M = null;
-
+        SimpleMatrix m = null;
         for (Knot k : knots) {
 
             if (k.getType() == "State") {
 
-                State g = (State) k;
-
-                SimpleMatrix m = new SimpleMatrix(g.getInputVector());
-                M = new SimpleMatrix(k.getM()).mult(m);
+                m = new SimpleMatrix((k).getInputVector());
             }
         }
-
-        return M;
+        return m;
     }
-
 
 
     /*
     * по умножению
     * */
-public ArrayList<SimpleMatrix> MultCounter(ArrayList<Knot> knots, ArrayList<Relation> relations){
-
-    for(Knot k : knots){
-
-        int amountVectors = k.getInnerRealations().size();
-
-        if(k.getType() == "State"){
-
-            for(int i = 0; i < amountVectors; i++){
-
-                inputSimpleMatrix.add(new SimpleMatrix(((State) k).getInputVector()));
-                st.add((State) k);
-
-            }
-
-        }
-
-    }
 
 
-    for(State s : st){
 
-        SimpleMatrix sMatrix = new SimpleMatrix(s.getM());
-        SimpleMatrix inputVectorMatrix = new SimpleMatrix(s.getInputVector());
 
-        for(int i = 0; i < inputSimpleMatrix.size(); i++){
 
-//            SimpleMatrix relationMatrix = new SimpleMatrix(s.getInnerRealations().get(i).getM());
-            SimpleMatrix out = sMatrix.mult(inputVectorMatrix);
-            outSimpleMatrix.add(out);
-
-        }
-
-    }
-
-    return outSimpleMatrix;
-}
 
 public int getOutMatrixesSize(){
     return outSimpleMatrix.size();
 }
-
-
 
 
 }//class

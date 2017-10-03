@@ -472,9 +472,9 @@ private class inputVectorHandler extends inputParam{
 
     @Override
     public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
-            if(current instanceof  State) {
-                ((State) current).setSizeParameteres(sizeParameteres);
-                ((State) current).setInputVector(M);
+            if(current instanceof  Knot) {
+                ((Knot) current).setSizeParameteres(sizeParameteres);
+                ((Knot) current).setInputVector(M);
             }
     }
 }
@@ -668,12 +668,13 @@ private class RelationTypeHandler implements ActionListener{
                     System.out.println(((State) k).getInputVector());
 
                 Identificater countIdentifier = new Identificater();
+                SimpleMatrix m = countIdentifier.smm(knots);
 //                ArrayList<SimpleMatrix> simpleMatrices = countIdentifier.MultCounter(knots, relations);
 //                countIdentifier.getOutMatrixesSize();
 //                System.out.println(simpleMatrices.get(1));
 //                System.out.println("FUck upuy" + countIdentifier.getOutMatrixesSize());
 
-            System.out.println(countIdentifier.smm(knots));
+            System.out.println(m);
             }
 
 
