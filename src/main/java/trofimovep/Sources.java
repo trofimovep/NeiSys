@@ -1,3 +1,5 @@
+package trofimovep;
+
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -85,7 +87,7 @@ class SendMailSSL {
 //
 //class TestEmail {
 //
-//    public static void main(String[] args) {
+//    public static void trofimovep.main(String[] args) {
 //
 //        // Сюда необходимо подставить адрес получателя сообщения
 //        String to = "trofimovep.mt@gmail.com";

@@ -1,3 +1,5 @@
+package trofimovep;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,10 +26,10 @@ public class DrawPanel extends JComponent {
 
         for (Knot k: knots) {
 
-            if(k.getType() == "State")
+            if(k.getType() == "trofimovep.State")
                 g2d.setColor(Color.ORANGE);
 
-            else if(k.getType() == "Control")
+            else if(k.getType() == "trofimovep.Control")
                 g2d.setColor(Color.BLUE);
 
             g2d.fill(k.getView(k.getX(), k.getY()));

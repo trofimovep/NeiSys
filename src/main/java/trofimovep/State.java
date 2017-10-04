@@ -1,3 +1,5 @@
+package trofimovep;
+
 public class State extends Knot {
 
     double[][] inputVector;

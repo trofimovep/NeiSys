@@ -1,4 +1,5 @@
-import javafx.scene.input.KeyCode;
+package trofimovep;
+
 import org.ejml.simple.SimpleMatrix;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class StartWindow extends JFrame {
 
-    /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
+    /* amount of parameteres which make influence on trofimovep.Knot (SIZE OF MULTIMATRIX OF KNOT)*/
     public static final int OPTION_SIZE = 2;
 
     final ArrayList<Knot> knots = new ArrayList<Knot>();
@@ -179,7 +180,7 @@ public class StartWindow extends JFrame {
         final JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
         setInputVector.setFont(font);
         setInputVector.addActionListener(invector);
-//        for(Knot k : knots) {
+//        for(trofimovep.Knot k : knots) {
 //            if (k.getInnerRealations().size() == 0)
 //                popupMenu.add(setInputVector);
 //        }
@@ -357,7 +358,7 @@ public class StartWindow extends JFrame {
         });
 
 
-    }//StartWindow
+    }//trofimovep.StartWindow
 
 
 
@@ -373,10 +374,10 @@ public class StartWindow extends JFrame {
                     type = null;
                 }
                 if(e.getSource() ==  stateKnot){
-                type = "State";
+                type = "trofimovep.State";
                 }
                 if(e.getSource() == controlKnot){
-                type = "Control";
+                type = "trofimovep.Control";
                 }
             }
             catch (Exception ex){
@@ -498,8 +499,8 @@ private class ClearAll implements ActionListener{
 
 private class RelationTypeHandler implements ActionListener{
 /*
-* Relation Type = 1, if Relation is Additive
-* Relation Type = 2, if Relation is Multiplicative
+* trofimovep.Relation Type = 1, if trofimovep.Relation is Additive
+* trofimovep.Relation Type = 2, if trofimovep.Relation is Multiplicative
 * */
     private int typerel;
 
@@ -523,8 +524,8 @@ private class RelationTypeHandler implements ActionListener{
 
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
-                              1. Control <--> Control
-    *                         2. State -> Control
+                              1. trofimovep.Control <--> trofimovep.Control
+    *                         2. trofimovep.State -> trofimovep.Control
     *                         3. Itself relation
     * */
 
@@ -541,10 +542,10 @@ private class RelationTypeHandler implements ActionListener{
             if (id2 == k.getId())
                 type_id2 = k.getType();
         }
-            if (type_id1 == "Control" && type_id2 == "Control")
+            if (type_id1 == "trofimovep.Control" && type_id2 == "trofimovep.Control")
                 return false;
 
-            else if (type_id1 == "State" && type_id2 == "Control")
+            else if (type_id1 == "trofimovep.State" && type_id2 == "trofimovep.Control")
                 return false;
             else
                 return true;

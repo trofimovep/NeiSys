@@ -1,3 +1,5 @@
+package trofimovep;
+
 import javax.swing.*;
 import java.awt.*;
 
