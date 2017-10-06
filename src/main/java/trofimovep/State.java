@@ -1,6 +1,6 @@
 package trofimovep;
 
-public class State extends Knot {
+public class State extends trofimovep.Knot {
 
     double[][] inputVector;
     double[][] outputVector;

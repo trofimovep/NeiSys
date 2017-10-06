@@ -247,7 +247,13 @@ public class StartWindow extends JFrame {
 
                         clicks++;
 
-                        knots.add(new Knot(type, clicks, x, y));
+                        if(type == "State"){
+                        knots.add(new State(type, clicks, x, y));
+                        }
+                        else if(type == "Control"){
+                            knots.add(new Control(type, clicks, x, y));
+                        }
+
                         int current = knots.size() - 1;
                         for(Knot k : knots) {
                            System.out.println(k.getId() + " + " + k.getInnerRealations().size());
@@ -374,10 +380,10 @@ public class StartWindow extends JFrame {
                     type = null;
                 }
                 if(e.getSource() ==  stateKnot){
-                type = "trofimovep.State";
+                type = "State";
                 }
                 if(e.getSource() == controlKnot){
-                type = "trofimovep.Control";
+                type = "Control";
                 }
             }
             catch (Exception ex){
@@ -524,8 +530,8 @@ private class RelationTypeHandler implements ActionListener{
 
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
-                              1. trofimovep.Control <--> trofimovep.Control
-    *                         2. trofimovep.State -> trofimovep.Control
+                              1. trofimovep.trofimovep.Control <--> trofimovep.trofimovep.Control
+    *                         2. trofimovep.trofimovep.State -> trofimovep.trofimovep.Control
     *                         3. Itself relation
     * */
 
@@ -542,10 +548,10 @@ private class RelationTypeHandler implements ActionListener{
             if (id2 == k.getId())
                 type_id2 = k.getType();
         }
-            if (type_id1 == "trofimovep.Control" && type_id2 == "trofimovep.Control")
+            if (type_id1 == "trofimovep.trofimovep.Control" && type_id2 == "trofimovep.trofimovep.Control")
                 return false;
 
-            else if (type_id1 == "trofimovep.State" && type_id2 == "trofimovep.Control")
+            else if (type_id1 == "trofimovep.trofimovep.State" && type_id2 == "trofimovep.trofimovep.Control")
                 return false;
             else
                 return true;

@@ -1,7 +1,6 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
-
 import java.util.ArrayList;
 
 public class Identificater {
@@ -15,7 +14,7 @@ public class Identificater {
         SimpleMatrix m = null;
         for (Knot k : knots) {
 
-            if (k.getType() == "trofimovep.State") {
+            if (k.getType() == "trofimovep.trofimovep.State") {
 
                 m = new SimpleMatrix((k).getInputVector());
             }

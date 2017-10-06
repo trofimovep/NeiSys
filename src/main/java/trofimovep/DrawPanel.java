@@ -26,10 +26,10 @@ public class DrawPanel extends JComponent {
 
         for (Knot k: knots) {
 
-            if(k.getType() == "trofimovep.State")
+            if(k.getType() == "State")
                 g2d.setColor(Color.ORANGE);
 
-            else if(k.getType() == "trofimovep.Control")
+            else if(k.getType() == "Control")
                 g2d.setColor(Color.BLUE);
 
             g2d.fill(k.getView(k.getX(), k.getY()));
