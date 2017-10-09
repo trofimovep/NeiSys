@@ -467,22 +467,69 @@ public class StartWindow extends JFrame {
     }
 
 
-private class inputVectorHandler extends inputParam{
+private class inputVectorHandler extends inputParam {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        int sizeParameteres[] = new int[OPTION_SIZE];
+        ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
 
+        JPanel sizepanel = new JPanel();
+
+        for (int k = 0; k < OPTION_SIZE; k++) {
+            sizepanel.add(new JLabel("size" + String.valueOf(k + 1)));
+            sizeFields.add(new JTextField(5));
+            sizepanel.add(sizeFields.get(k));
+        }
+
+        sizepanel.setVisible(true);
+        int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
+                "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+        if (resultsize == JOptionPane.OK_OPTION) {
+
+            int cur = 0;
+            for (JTextField jt : sizeFields) {
+                sizeParameteres[cur] = Integer.valueOf(jt.getText());
+                cur++;
+            }
+
+            if (isSizesCorrect(sizeParameteres, current)) {
+
+                StartWindow example = new StartWindow(sizeParameteres);
+                int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
+                        "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
+
+                if (resultmatrix == JOptionPane.OK_OPTION) {
+                    double[][] M = new double[sizeParameteres[0]][sizeParameteres[1]];
+                                            /*
+                    * Realize for any dimension (OPTION_SIZE)*  ???
+                    */
+                    int t = 0;
+                    for (int i = 0; i < sizeParameteres[0]; i++) {
+                        for (int j = 0; j < sizeParameteres[1]; j++) {
+                            M[i][j] = Double.parseDouble(example.textfields.get(t).getText());
+                            t++;
+                        }
+                    }
+
+                    SaverToParam(sizeParameteres, M, current);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ошибка размерностей");
+            }
+
+        }
 
 
     }
 
     @Override
     public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
-            if(current instanceof  State) {
-                ((State) current).setSizeParameteres(sizeParameteres);
-                ((State) current).setInputVector(M);
-            }
+        if (current instanceof State) {
+            ((State) current).setInputVector(M);
+        }
     }
+
 }
 
 
