@@ -256,7 +256,6 @@ public class StartWindow extends JFrame {
 
                         int current = knots.size() - 1;
                         for(Knot k : knots) {
-                           System.out.println(k.getId() + " + " + k.getInnerRealations().size());
                             if (k.getInnerRealations().size() == 0) {
                                 popupMenu.add(setInputVector);
                             }
@@ -458,10 +457,6 @@ public class StartWindow extends JFrame {
                 ((Knot) current).setSizeParameteres(sizeParameteres);
                 ((Knot) current).setM(M);
 
-//                            SimpleMatrix m = new SimpleMatrix(M);
-//                            SimpleMatrix pinvM = m.pseudoInverse();
-//                            pinvM.print();
-
             } else if (current instanceof Relation) {
                 ((Relation) current).setSizeParameteres(sizeParameteres);
                 ((Relation) current).setM(M);
@@ -534,6 +529,8 @@ private class RelationTypeHandler implements ActionListener{
     *                         2. State -> Control
     *                         3. Itself relation
     * */
+
+
 
     private boolean isCorrect(int id1, int id2, ArrayList<Knot> knots) {
 
@@ -622,8 +619,7 @@ private class RelationTypeHandler implements ActionListener{
             Knot k = (Knot) object;
 
             if(sizeParams[0] == 1 & sizeParams[1] == 1){
-                System.out.println(decision);
-
+               decision = true;
             }
             else {
                 int sInnerRelation = 0;
@@ -671,15 +667,9 @@ private class RelationTypeHandler implements ActionListener{
             else if(relType == 2){
 
                 Knot k = knots.get(0);
-                if(k instanceof State)
-                    System.out.println(((State) k).getInputVector());
-
-                Identificater countIdentifier = new Identificater();
-                SimpleMatrix m = countIdentifier.smm(knots);
-//                ArrayList<SimpleMatrix> simpleMatrices = countIdentifier.MultCounter(knots, relations);
-//                countIdentifier.getOutMatrixesSize();
-//                System.out.println(simpleMatrices.get(1));
-//                System.out.println("FUck upuy" + countIdentifier.getOutMatrixesSize());
+                if(k instanceof State) {
+                    Identificater countIdentifier = new Identificater();
+                    SimpleMatrix m = countIdentifier.smm(knots);
 
             System.out.println(m);
             }
