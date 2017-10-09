@@ -1,6 +1,8 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
+
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Identificater {
@@ -11,13 +13,18 @@ public class Identificater {
     ArrayList<Relation> relate = new ArrayList<>();
     ArrayList<Control> con = new ArrayList<>();
 
+    SimpleMatrix simpleM;
+    SimpleMatrix simpleInputVector;
+    SimpleMatrix simpleOut;
+
+
+
     double[][] out;
 
 
 
     public SimpleMatrix smm (ArrayList<Knot> knots) {
 
-        boolean isCorrect;
 
         SimpleMatrix m = null;
         for (Knot k : knots) {
@@ -26,34 +33,45 @@ public class Identificater {
             }
         }
 
-
         for(State s : st){
 
-            out = new double[s.getInputVector().length][s.getInputVector()[0].length];
-            double[][] input = s.getInputVector();
+            if(s.getSizeParameteres()[0] == 1 & s.getSizeParameteres()[1] == 1) {
 
-            System.out.println("0: "+s.getSizeParameteres()[0] +"\n"+"1: "+s.getSizeParameteres()[1]);
+                out = new double[s.getInputVector().length][s.getInputVector()[0].length];
 
-
-            if(s.getSizeParameteres()[0] == 1 & s.getSizeParameteres()[1] == 1){
-
-                for(int i = 0; i < s.getInputVector().length; i++){
-                    for(int j = 0; j < s.getInputVector()[0].length; j++){
-                        out[i][j] = input[i][j] * s.getM()[0][0];
-                        System.out.println("s.getM()[0][0] = " + s.getM()[0][0]);
-                        System.out.println("out = " + out[i][j]);
+                for (int i = 0; i < s.getInputVector().length; i++) {
+                    for (int j = 0; j < s.getInputVector()[0].length; j++) {
+                        out[i][j] = s.getInputVector()[i][j] * s.getM()[0][0];
                     }
+                }
+                simpleOut = new SimpleMatrix(out);
+            }
+            else if(s.getInputVector().length == 1 & s.getInputVector()[0].length == 1){
 
-                    System.out.println("\n");
+                out = new double[s.getM().length][s.getM()[0].length];
 
+                    for(int i = 0; i < s.getM().length; i++){
+                        for(int j = 0; j < s.getM()[0].length; j++){
+                            out[i][j] = s.getM()[i][j] * s.getInputVector()[0][0];
+                        }
+                    }
+                simpleOut = new SimpleMatrix(out);
+                }
+            else{
+                try{
+                    simpleM = new SimpleMatrix(s.getM());
+                    simpleInputVector = new SimpleMatrix(s.getInputVector());
+                    simpleOut = simpleM.mult(simpleInputVector);
+
+                }
+                catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, ex);
                 }
             }
 
-
         }
-        SimpleMatrix out2 = new SimpleMatrix(out);
 
-        return out2;
+        return simpleOut;
     }
 
 
