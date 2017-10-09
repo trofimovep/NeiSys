@@ -530,8 +530,8 @@ private class RelationTypeHandler implements ActionListener{
 
 
     /*Checking for type: RELATIONS FORBIDDEN IN THIS CASES:
-                              1. trofimovep.trofimovep.Control <--> trofimovep.trofimovep.Control
-    *                         2. trofimovep.trofimovep.State -> trofimovep.trofimovep.Control
+                              1. Control <--> Control
+    *                         2. State -> Control
     *                         3. Itself relation
     * */
 
