@@ -97,13 +97,7 @@ public class Knot{
         return sizeParameteres[1];
     }
 
-    public void setInputVector(double[][] inputVector) {
-        this.inputVector = inputVector;
-    }
 
-    public double[][] getInputVector() {
-        return inputVector;
-    }
 
 
 }

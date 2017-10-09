@@ -467,16 +467,20 @@ public class StartWindow extends JFrame {
     }
 
 
-
-
-
 private class inputVectorHandler extends inputParam{
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+
+
+
+    }
 
     @Override
     public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
-            if(current instanceof  Knot) {
-                ((Knot) current).setSizeParameteres(sizeParameteres);
-                ((Knot) current).setInputVector(M);
+            if(current instanceof  State) {
+                ((State) current).setSizeParameteres(sizeParameteres);
+                ((State) current).setInputVector(M);
             }
     }
 }
@@ -545,10 +549,10 @@ private class RelationTypeHandler implements ActionListener{
             if (id2 == k.getId())
                 type_id2 = k.getType();
         }
-            if (type_id1 == "trofimovep.trofimovep.Control" && type_id2 == "trofimovep.trofimovep.Control")
+            if (type_id1 == "Control" && type_id2 == "Control")
                 return false;
 
-            else if (type_id1 == "trofimovep.trofimovep.State" && type_id2 == "trofimovep.trofimovep.Control")
+            else if (type_id1 == "State" && type_id2 == "Control")
                 return false;
             else
                 return true;
@@ -664,19 +668,15 @@ private class RelationTypeHandler implements ActionListener{
             if(relType == 1){
 
             }
-            else if(relType == 2){
-
+            else if(relType == 2) {
                 Knot k = knots.get(0);
-                if(k instanceof State) {
+                if (k instanceof State) {
                     Identificater countIdentifier = new Identificater();
                     SimpleMatrix m = countIdentifier.smm(knots);
-
-            System.out.println(m);
+                    System.out.println(m);
+                }
             }
-
-
         }
-
     }
 
 

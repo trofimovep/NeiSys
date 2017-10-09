@@ -23,6 +23,5 @@ public class State extends trofimovep.Knot {
         this.outputVector = outputVector;
     }
 
-
 }
 
