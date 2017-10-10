@@ -177,19 +177,31 @@ public class StartWindow extends JFrame {
 
 
 //        popupMenu.add(setInputVector);
-        final JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
-        setInputVector.setFont(font);
-        setInputVector.addActionListener(invector);
-//        for(trofimovep.Knot k : knots) {
-//            if (k.getInnerRealations().size() == 0)
-//                popupMenu.add(setInputVector);
-//        }
+        for(Knot k : knots) {
+            if (k instanceof State & k.getInnerRealations().size() == 0) {
+                JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
+                setInputVector.setFont(font);
+                setInputVector.addActionListener(invector);
+                popupMenu.add(setInputVector);
+            }
+            else{}
+        }
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
         deleteElement.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                knots.remove(current);
+
+                if(current instanceof Control){
+                    relations.removeAll(((Control) current).outputRealations);
+                    knots.remove(current);
+
+                }
+                else if(current instanceof State){
+                    relations.removeAll(((State) current).innerRealations);
+                    knots.remove(current);
+
+                }
                 repaint();
             }
         });
@@ -255,11 +267,11 @@ public class StartWindow extends JFrame {
                         }
 
                         int current = knots.size() - 1;
-                        for(Knot k : knots) {
-                            if (k.getInnerRealations().size() == 0) {
-                                popupMenu.add(setInputVector);
-                            }
-                        }
+//                        for(Knot k : knots) {
+//                            if (k.getInnerRealations().size() == 0) {
+//                                popupMenu.add(setInputVector);
+//                            }
+//                        }
 
 
                         for (int i = 0; i < knots.size() - 1; i++) {

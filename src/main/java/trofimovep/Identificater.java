@@ -33,44 +33,44 @@ public class Identificater {
             }
         }
 
-        for(State s : st){
 
-            if(s.getSizeParameteres()[0] == 1 & s.getSizeParameteres()[1] == 1) {
+        // StateParameteres * Vectors
+        for(State s : st) {
 
-                out = new double[s.getInputVector().length][s.getInputVector()[0].length];
+            if (s.getInputVector() != null) {
+                if (s.getSizeParameteres()[0] == 1 & s.getSizeParameteres()[1] == 1) {
 
-                for (int i = 0; i < s.getInputVector().length; i++) {
-                    for (int j = 0; j < s.getInputVector()[0].length; j++) {
-                        out[i][j] = s.getInputVector()[i][j] * s.getM()[0][0];
+                    out = new double[s.getInputVector().length][s.getInputVector()[0].length];
+
+                    for (int i = 0; i < s.getInputVector().length; i++) {
+                        for (int j = 0; j < s.getInputVector()[0].length; j++) {
+                            out[i][j] = s.getInputVector()[i][j] * s.getM()[0][0];
+                        }
                     }
-                }
-                simpleOut = new SimpleMatrix(out);
-            }
-            else if(s.getInputVector().length == 1 & s.getInputVector()[0].length == 1){
+                    simpleOut = new SimpleMatrix(out);
+                } else if (s.getInputVector().length == 1 & s.getInputVector()[0].length == 1) {
 
-                out = new double[s.getM().length][s.getM()[0].length];
+                    out = new double[s.getM().length][s.getM()[0].length];
 
-                    for(int i = 0; i < s.getM().length; i++){
-                        for(int j = 0; j < s.getM()[0].length; j++){
+                    for (int i = 0; i < s.getM().length; i++) {
+                        for (int j = 0; j < s.getM()[0].length; j++) {
                             out[i][j] = s.getM()[i][j] * s.getInputVector()[0][0];
                         }
                     }
-                simpleOut = new SimpleMatrix(out);
-                }
-            else{
-                try{
-                    simpleM = new SimpleMatrix(s.getM());
-                    simpleInputVector = new SimpleMatrix(s.getInputVector());
-                    simpleOut = simpleM.mult(simpleInputVector);
+                    simpleOut = new SimpleMatrix(out);
+                } else {
+                    try {
+                        simpleM = new SimpleMatrix(s.getM());
+                        simpleInputVector = new SimpleMatrix(s.getInputVector());
+                        simpleOut = simpleM.mult(simpleInputVector);
 
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
                 }
-                catch (Exception ex){
-                    JOptionPane.showMessageDialog(null, ex);
-                }
-            }
 
+            }//inputVector != 0
         }
-
         return simpleOut;
     }
 
