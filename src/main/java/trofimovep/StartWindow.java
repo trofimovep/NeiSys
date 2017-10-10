@@ -199,6 +199,7 @@ public class StartWindow extends JFrame {
                 }
                 else if(current instanceof State){
                     relations.removeAll(((State) current).innerRealations);
+                    relations.removeAll(((State) current).outputRealations);
                     knots.remove(current);
 
                 }
