@@ -679,7 +679,12 @@ private class RelationTypeHandler implements ActionListener{
                     || sizeKnot1 == sizeRel1 & sizeKnot2 == 0 ||sizeKnot1 == 0 & sizeKnot2 == 0 || sizeKnot1 == 1 & knot1.getSizeParameteres()[0] == 1
                     || sizeKnot2 == 1 & knot2.getSizeParameteres()[1] == 1) {
                 decision = true;
-            } else {
+            }
+            else if(sizeRel1 == 1 & sizeRel2 == 1){
+                decision = true;
+            }
+
+            else {
                 decision = false;
             }
         }
@@ -736,18 +741,20 @@ private class RelationTypeHandler implements ActionListener{
 
             }
             else if(relType == 2) {
-                Knot k = knots.get(0);
-                if (k instanceof State) {
-                    Identificater countIdentifier = new Identificater();
+                for(Knot k : knots) {
+                    if (k instanceof State) {
+                        Identificater countIdentifier = new Identificater();
 //                    try{
-                    SimpleMatrix m = countIdentifier.ProductMotion(knots);
-                    ((State) k).setOutputVector(m);
-                    System.out.println("m output: " + ((State) k).getOutputVector());
+                        SimpleMatrix m = countIdentifier.ProductMotion(knots);
+                        ((State) k).setOutputVector(m);
+                        System.out.println(k.getId() + " output: " + ((State) k).getOutputVector());
 //                    System.out.println(m);
 //                }
 //                    catch (Exception ex){
 //                        JOptionPane.showMessageDialog(null, ex);
 //                    }
+                    }
+
                 }
             }
         }
