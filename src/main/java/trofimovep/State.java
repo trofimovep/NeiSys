@@ -1,9 +1,11 @@
 package trofimovep;
 
+import org.ejml.simple.SimpleMatrix;
+
 public class State extends trofimovep.Knot {
 
     double[][] inputVector;
-    double[][] outputVector;
+    SimpleMatrix outputVector;
 
     public State(String type, int id, int x, int y){
 
@@ -19,9 +21,12 @@ public class State extends trofimovep.Knot {
         this.inputVector = inputVector;
     }
 
-    public void setOutputVector() {
+    public void setOutputVector(SimpleMatrix M) {
         this.outputVector = outputVector;
     }
 
+    public SimpleMatrix getOutputVector() {
+        return outputVector;
+    }
 }
 

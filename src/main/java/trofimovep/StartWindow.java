@@ -175,17 +175,22 @@ public class StartWindow extends JFrame {
         popupMenu.add(changeParam);
 
 
+        JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
+        setInputVector.setFont(font);
+        setInputVector.addActionListener(invector);
+        popupMenu.add(setInputVector);
 
-//        popupMenu.add(setInputVector);
-        for(Knot k : knots) {
-            if (k instanceof State & k.getInnerRealations().size() == 0) {
-                JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
-                setInputVector.setFont(font);
-                setInputVector.addActionListener(invector);
-                popupMenu.add(setInputVector);
-            }
-            else{}
-        }
+
+////        popupMenu.add(setInputVector);
+//        for(Knot k : knots) {
+//            if (k instanceof State & k.getInnerRealations().size() == 0) {
+//                    JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
+//                    setInputVector.setFont(font);
+//                    setInputVector.addActionListener(invector);
+//                    popupMenu.add(setInputVector);
+//            }
+//            else{}
+//        }
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
@@ -262,9 +267,11 @@ public class StartWindow extends JFrame {
 
                         if(type == "State"){
                         knots.add(new State(type, clicks, x, y));
+                        System.out.println("KNotees : " + knots.size());
                         }
                         else if(type == "Control"){
                             knots.add(new Control(type, clicks, x, y));
+                            System.out.println("KNotees : " + knots.size());
                         }
 
                         int current = knots.size() - 1;
@@ -732,8 +739,15 @@ private class RelationTypeHandler implements ActionListener{
                 Knot k = knots.get(0);
                 if (k instanceof State) {
                     Identificater countIdentifier = new Identificater();
-                    SimpleMatrix m = countIdentifier.smm(knots);
-                    System.out.println(m);
+//                    try{
+                    SimpleMatrix m = countIdentifier.ProductMotion(knots);
+                    ((State) k).setOutputVector(m);
+                    System.out.println("m output: " + ((State) k).getOutputVector());
+//                    System.out.println(m);
+//                }
+//                    catch (Exception ex){
+//                        JOptionPane.showMessageDialog(null, ex);
+//                    }
                 }
             }
         }

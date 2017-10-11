@@ -20,11 +20,11 @@ public class Knot{
     public static int WIDTH = 40;
     public static int HEIGHT = 40;
 
-    int[] sizeParameteres = new int[StartWindow.OPTION_SIZE];
-    double[][] M = new double[sizeParameteres[0]][sizeParameteres[0]];
+    protected int[] sizeParameteres = new int[StartWindow.OPTION_SIZE];
+    protected double[][] M = new double[sizeParameteres[0]][sizeParameteres[0]];
 
-    ArrayList<Relation> innerRealations = new ArrayList<Relation>();
-    ArrayList<Relation> outputRealations = new ArrayList<Relation>();
+    protected ArrayList<Relation> innerRealations = new ArrayList<Relation>();
+    protected ArrayList<Relation> outputRealations = new ArrayList<Relation>();
 
 
     public Knot(String type, int id, int x, int y){
@@ -45,47 +45,47 @@ public class Knot{
 
 
 
-    public int getId() { return id;  }
+    protected int getId() { return id;  }
 
-    public int getX() { return x; }
+    protected int getX() { return x; }
 
-    public int getY() { return y; }
+    protected int getY() { return y; }
 
-    public String getType() { return type; }
+    protected String getType() { return type; }
 
-    public int[] getSizeParameteres() {
+    protected int[] getSizeParameteres() {
         return sizeParameteres;
     }
 
-    public void setSizeParameteres(int[] sizeParameteres) {
+    protected void setSizeParameteres(int[] sizeParameteres) {
         this.sizeParameteres = sizeParameteres;
     }
 
-    public void setM(double[][] m) {
+    protected void setM(double[][] m) {
         M = m;
     }
 
-    public double[][] getM() {
+    protected double[][] getM() {
         return M;
     }
 
-    public void addInnerRelations(Relation r){
+    protected void addInnerRelations(Relation r){
         innerRealations.add(r);
     }
 
-    public void addOutputRelations(Relation r){
+    protected void addOutputRelations(Relation r){
         outputRealations.add(r);
     }
 
-    public ArrayList<Relation> getInnerRealations() {
+    protected ArrayList<Relation> getInnerRealations() {
         return innerRealations;
     }
 
-    public ArrayList<Relation> getOutputRealations() {
+    protected ArrayList<Relation> getOutputRealations() {
         return outputRealations;
     }
 
-    public int getOutputSIzeRel(){
+    protected int getOutputSIzeRel(){
         return outputRealations.size();
     }
 
