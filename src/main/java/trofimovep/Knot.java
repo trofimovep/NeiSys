@@ -17,8 +17,8 @@ public class Knot{
     double[][] inputVector;
     double[][] outputVector;
 
-    public static int WIDTH = 40;
-    public static int HEIGHT = 40;
+    static int WIDTH = 40;
+    static int HEIGHT = 40;
 
     protected int[] sizeParameteres = new int[StartWindow.OPTION_SIZE];
     protected double[][] M = new double[sizeParameteres[0]][sizeParameteres[0]];

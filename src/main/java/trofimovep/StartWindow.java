@@ -14,8 +14,8 @@ import java.util.List;
 
 public class StartWindow extends JFrame {
 
-    /* amount of parameteres which make influence on trofimovep.Knot (SIZE OF MULTIMATRIX OF KNOT)*/
-    public static final int OPTION_SIZE = 2;
+    /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
+    static final int OPTION_SIZE = 2;
 
     final ArrayList<Knot> knots = new ArrayList<Knot>();
     final ArrayList<Relation> relations = new ArrayList<Relation>();
@@ -181,17 +181,6 @@ public class StartWindow extends JFrame {
         popupMenu.add(setInputVector);
 
 
-////        popupMenu.add(setInputVector);
-//        for(Knot k : knots) {
-//            if (k instanceof State & k.getInnerRealations().size() == 0) {
-//                    JMenuItem setInputVector = new JMenuItem("Задать входящий вектор");
-//                    setInputVector.setFont(font);
-//                    setInputVector.addActionListener(invector);
-//                    popupMenu.add(setInputVector);
-//            }
-//            else{}
-//        }
-
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
         deleteElement.addActionListener(new ActionListener() {
@@ -206,7 +195,6 @@ public class StartWindow extends JFrame {
                     relations.removeAll(((State) current).innerRealations);
                     relations.removeAll(((State) current).outputRealations);
                     knots.remove(current);
-
                 }
                 repaint();
             }
@@ -275,13 +263,6 @@ public class StartWindow extends JFrame {
                         }
 
                         int current = knots.size() - 1;
-//                        for(Knot k : knots) {
-//                            if (k.getInnerRealations().size() == 0) {
-//                                popupMenu.add(setInputVector);
-//                            }
-//                        }
-
-
                         for (int i = 0; i < knots.size() - 1; i++) {
 
                             if (Math.abs(knots.get(i).getX() - knots.get(current).getX()) < Knot.WIDTH + 20 &&
@@ -383,7 +364,7 @@ public class StartWindow extends JFrame {
         });
 
 
-    }//trofimovep.StartWindow
+    }//StartWindow
 
 
 
@@ -748,6 +729,7 @@ private class RelationTypeHandler implements ActionListener{
                         SimpleMatrix m = countIdentifier.ProductMotion(knots);
                         ((State) k).setOutputVector(m);
                         System.out.println(k.getId() + " output: " + ((State) k).getOutputVector());
+                        System.out.println("relaation: \n" +new SimpleMatrix(k.getInnerRealations().get(0).getKnot1().getM()));
 //                    System.out.println(m);
 //                }
 //                    catch (Exception ex){

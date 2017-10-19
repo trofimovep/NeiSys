@@ -8,12 +8,9 @@ import java.util.ArrayList;
 
 public class Identificater {
 
-    ArrayList<SimpleMatrix>  inputSimpleMatrix = new ArrayList<SimpleMatrix>() ;
     ArrayList<SimpleMatrix>  outSimpleMatrix = new ArrayList<SimpleMatrix>() ;
     ArrayList<State> st = new ArrayList<>();
     ArrayList<Relation> relate = new ArrayList<>();
-    ArrayList<Control> con = new ArrayList<>();
-
 
     /*
     * по умножению
@@ -115,14 +112,6 @@ public class Identificater {
 
                  } else {
                      simpleOut = new SimpleMatrix(s.getM());
-//
-//                     if (s.getM().length == 1 & s.getM()[0].length == 1) {
-//                         simpleOut = inter.scale(s.getM()[0][0]);
-//                     } else if (inter.isInBounds(1, 1)) {
-//                         simpleOut = (new SimpleMatrix(s.getM())).scale(inter.get(0, 0));
-//                     } else {
-//                         simpleOut = (new SimpleMatrix()).mult(new SimpleMatrix(s.getM()));
-//                     }
 
                  }
              }
@@ -130,11 +119,6 @@ public class Identificater {
 
          return simpleOut;
      }
-
-
-
-
-
 
 
 
