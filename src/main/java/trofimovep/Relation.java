@@ -7,16 +7,18 @@ import java.util.ArrayList;
 public class Relation{
 
 
-    ArrayList<Knot> knots;
+    private ArrayList<Knot> knots;
 
-    Knot knot1;
-    Knot knot2;
+    private Knot knot1;
+    private Knot knot2;
 
-    int x1, y1, x2, y2;
-    int id1, id2;
+    private int x1, y1, x2, y2;
+    private int id1, id2;
 
-    int[] sizeParameteres = new int[StartWindow.OPTION_SIZE];
-    double[][] M = new double[sizeParameteres[0]][sizeParameteres[0]];
+    private String type;
+
+    private int[] sizeParameteres = new int[StartWindow.OPTION_SIZE];
+    private double[][] M = new double[sizeParameteres[0]][sizeParameteres[0]];
 
     public Relation(int id1, int id2, ArrayList<Knot> knots) {
 
@@ -133,5 +135,13 @@ static void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
 
     public Knot getKnot2() {
         return knot2;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

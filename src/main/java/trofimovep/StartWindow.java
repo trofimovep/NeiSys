@@ -45,6 +45,7 @@ public class StartWindow extends JFrame {
 
 
     final RelationTypeHandler relationTypeHandler = new RelationTypeHandler();
+    final RelationSetTypeHandler relationsetTypeHandler = new RelationSetTypeHandler();
 
 
 
@@ -204,11 +205,19 @@ public class StartWindow extends JFrame {
 
 
 
-        /*
-            Popup Menu for Relations
-        */
+                                                                 /*
+                                                        Popup Menu for Relations
+                                                                   */
+
+
 
         final JPopupMenu relationPopup = new JPopupMenu();
+
+        JMenuItem setRelationType = new JMenuItem("Тип связи");
+        setRelationType.setFont(font);
+        setRelationType.addActionListener(relationsetTypeHandler);
+        relationPopup.add(setRelationType);
+
 
         JMenuItem setRelation = new JMenuItem("Параметры связи");
         setRelation.setFont(font);
@@ -233,7 +242,9 @@ public class StartWindow extends JFrame {
 
 
 
-        /*                       Listeners                          */
+
+                                       /*                       LISTENERS                       */
+
 
 
 
@@ -255,11 +266,9 @@ public class StartWindow extends JFrame {
 
                         if(type == "State"){
                         knots.add(new State(type, clicks, x, y));
-                        System.out.println("KNotees : " + knots.size());
                         }
                         else if(type == "Control"){
                             knots.add(new Control(type, clicks, x, y));
-                            System.out.println("KNotees : " + knots.size());
                         }
 
                         int current = knots.size() - 1;
@@ -368,12 +377,12 @@ public class StartWindow extends JFrame {
 
 
 
-
     /* cлушатель на узлы (их тип) */
     class eHandler implements ActionListener{
 
         String type;
         public void actionPerformed(ActionEvent e) {
+
 
             try{
                 if(e.getSource() == null){
@@ -396,6 +405,10 @@ public class StartWindow extends JFrame {
 
 
 
+/*
+* ActionListener for Knot Input Parameteres
+*
+*/
 
     class inputParam implements ActionListener{
 
@@ -467,6 +480,10 @@ public class StartWindow extends JFrame {
         }
     }
 
+
+    /*
+    * ActionListener for Knots InputVector
+    * */
 
 private class inputVectorHandler extends inputParam {
     @Override
@@ -571,7 +588,60 @@ private class RelationTypeHandler implements ActionListener{
     }
 }
 
-/*                                     secondary functions                          */
+
+    ButtonGroup btg = new ButtonGroup();
+    JRadioButton add = new JRadioButton("Аддивная");
+    JRadioButton multi = new JRadioButton("Мультипликативная");
+
+
+
+
+private class RelationSetTypeHandler implements ActionListener{
+
+    String tip;
+
+    public void actionPerformed(ActionEvent e) {
+
+        JPanel panelnew = new JPanel();
+
+        btg.add(add);
+        btg.add(multi);
+        panelnew.add(add);
+        panelnew.add(multi);
+
+        add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+             tip = "a";
+            }
+        });
+
+        multi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tip = "m";
+            }
+        });
+
+            if (current instanceof Relation) {
+                int rex = JOptionPane.showConfirmDialog(null, panelnew, "", JOptionPane.OK_CANCEL_OPTION);
+
+                if (rex == JOptionPane.OK_OPTION) {
+                    ((Relation) current).setType(tip);
+                    RepaiPanel = true;
+                }
+            }
+        }
+}
+
+
+
+
+
+
+
+
+                /*                                    SECONDARY FUNCTIONS                         */
 
 
 
@@ -705,13 +775,15 @@ private class RelationTypeHandler implements ActionListener{
 
 
 
+
+
+
     /*                      Counter Listener               */
 
 
 
 
     private class Counter implements ActionListener{
-
 
         public void actionPerformed(ActionEvent e) {
 
