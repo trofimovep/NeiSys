@@ -789,83 +789,94 @@ private class RelationSetTypeHandler implements ActionListener{
             if(((Relation) object).getType() == "m"){
                 decision = isSizesCorrect(sizeParams, object);
             }
+            if(((Relation) object).getType() == "a") {
 
+                Relation r = (Relation) object;
 
-            /*
-            * Это же не относится к УЗЛАМ !!! ТОЛЬКО КОГДА МЫ ТЫКАЕМ НА ОТНОШЕНИЕ!!
-            * */
-            else if(((Relation) object).getType() == "a") {
+                if (Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams) &
+                        Arrays.equals(r.getKnot2().getSizeParameteres(), zero)   ||
 
+                        Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams)  &
+                                Arrays.equals(r.getKnot2().getSizeParameteres(), eye) ||
 
+                        Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
+                                Arrays.equals(r.getKnot1().getSizeParameteres(),zero) ||
 
-                if (object instanceof Relation) {
-                    Relation r = (Relation) object;
+                        Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
+                                Arrays.equals(r.getKnot1().getSizeParameteres(), eye) ||
 
-                    if (Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams) &
-                            Arrays.equals(r.getKnot2().getSizeParameteres(), zero)   ||
+                        Arrays.equals(r.getKnot1().getSizeParameteres(),zero) &
+                                Arrays.equals(r.getKnot2().getSizeParameteres(), zero)) {
 
-                            Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams)  &
-                                    Arrays.equals(r.getKnot2().getSizeParameteres(), eye) ||
+                    System.out.println("fuck you");
+                    decision = true;
 
-                            Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
-                                    Arrays.equals(r.getKnot1().getSizeParameteres(),zero) ||
-
-                            Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
-                                    Arrays.equals(r.getKnot1().getSizeParameteres(), eye) ||
-
-                            Arrays.equals(r.getKnot1().getSizeParameteres(),zero) &
-                                    Arrays.equals(r.getKnot2().getSizeParameteres(), zero)) {
-
-                        System.out.println("fuck you");
-                        decision = true;
-
-                    } else if (Arrays.equals(sizeParams, eye)) {
-                        System.out.println("fuck you 2 ");
-                        decision = true;
-                    } else {
-                        decision = false;
-                    }
+                } else if (Arrays.equals(sizeParams, eye)) {
+                    System.out.println("fuck you 2 ");
+                    decision = true;
+                } else {
+                    decision = false;
                 }
             }
-                else if(object instanceof Knot){
+        }
+        else if(object instanceof Knot) {
 
-                System.out.println("Knot is ...");
-                    Knot k = (Knot) object;
+                for(Relation r : ((Knot) object).outputRealations){
 
-                    if(Arrays.equals(sizeParams, eye)){
-                        decision = true;
+                    if(r.getType() == "m") {
+
+                        decision = isSizesCorrect(sizeParams, object);
+
                     }
+                    else if(r.getType() == "a") {
 
-                    else{
-                        int sInnerRelation = 0;
-                        for (Relation r : k.getInnerRealations()) {
-                            if (Arrays.equals(r.getSizeParameteres(), sizeParams)  ||
-                                    Arrays.equals(r.getSizeParameteres(), zero) ||
-                                    Arrays.equals(r.getSizeParameteres(), eye)) {
-                                sInnerRelation++;
+                        Knot k = (Knot) object;
+
+                        if(Arrays.equals(sizeParams, eye)){
+                            decision = true;
+                        }
+
+                        else{
+
+                            int sInnerRelation = 0;
+                            for (Relation r1 : k.getInnerRealations()) {
+                                if (Arrays.equals(r.getSizeParameteres(), sizeParams)  ||
+                                        Arrays.equals(r1.getSizeParameteres(), zero) ||
+                                        Arrays.equals(r1.getSizeParameteres(), eye)) {
+                                    sInnerRelation++;
+                                }
+                            }
+
+                            int sOutRelations = 0;
+                            for (Relation r1 : k.getOutputRealations()) {
+                                if ( Arrays.equals(r.getSizeParameteres(), sizeParams) ||
+                                        Arrays.equals(r1.getSizeParameteres(), zero) ||
+                                        Arrays.equals(r1.getSizeParameteres(), eye)) {
+                                    sOutRelations++;
+                                }
+                            }
+
+                            if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+                                decision = false;
                             }
                         }
 
-                        int sOutRelations = 0;
-                        for (Relation r : k.getOutputRealations()) {
-                            if ( Arrays.equals(r.getSizeParameteres(), sizeParams) ||
-                                    Arrays.equals(r.getSizeParameteres(), zero) ||
-                                    Arrays.equals(r.getSizeParameteres(), eye)) {
-                                sOutRelations++;
-                            }
-                        }
-
-                        if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
-                            decision = false;
-                        }
                     }
 
-                }
+
+                    }
+
+
 
             }
+
 
         return decision;
+
+
     }
+
+
 
 
 
