@@ -9,6 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -290,6 +291,7 @@ public class StartWindow extends JFrame {
                     for (Knot k : knots) {
                         if (Math.abs(k.getX() - x) < Knot.WIDTH + 3 && Math.abs(k.getY() - y) < Knot.HEIGHT + 3) {
                         current = k;
+                        System.out.println("size = " + k.getOutputRealations().size());
                         popupMenu.show(drawPanel, x, y);
                         }
                     }
@@ -436,7 +438,7 @@ public class StartWindow extends JFrame {
                     cur++;
                 }
 
-                if(isSizesCorrect(sizeParameteres, current)) {
+                if(isCommonSizesCorrect(sizeParameteres, current)) {
 
                     StartWindow example = new StartWindow(sizeParameteres);
                     int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
@@ -487,6 +489,7 @@ public class StartWindow extends JFrame {
 
 private class inputVectorHandler extends inputParam {
     @Override
+    //?
     public void actionPerformed(ActionEvent e) {
 
         int sizeParameteres[] = new int[OPTION_SIZE];
@@ -511,7 +514,7 @@ private class inputVectorHandler extends inputParam {
                 cur++;
             }
 
-            if (isSizesCorrect(sizeParameteres, current)) {
+            if (isCommonSizesCorrect(sizeParameteres, current)) {
 
                 StartWindow example = new StartWindow(sizeParameteres);
                 int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
@@ -774,7 +777,95 @@ private class RelationSetTypeHandler implements ActionListener{
     }
 
 
+    private boolean isCommonSizesCorrect(int[] sizeParams, Object object){
 
+        int[] eye = {1, 1};
+        int[] zero = {0, 0};
+
+        boolean decision = true;
+
+            if(object instanceof Relation){
+
+            if(((Relation) object).getType() == "m"){
+                decision = isSizesCorrect(sizeParams, object);
+            }
+
+
+            /*
+            * Это же не относится к УЗЛАМ !!! ТОЛЬКО КОГДА МЫ ТЫКАЕМ НА ОТНОШЕНИЕ!!
+            * */
+            else if(((Relation) object).getType() == "a") {
+
+
+
+                if (object instanceof Relation) {
+                    Relation r = (Relation) object;
+
+                    if (Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams) &
+                            Arrays.equals(r.getKnot2().getSizeParameteres(), zero)   ||
+
+                            Arrays.equals(r.getKnot1().getSizeParameteres(), sizeParams)  &
+                                    Arrays.equals(r.getKnot2().getSizeParameteres(), eye) ||
+
+                            Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
+                                    Arrays.equals(r.getKnot1().getSizeParameteres(),zero) ||
+
+                            Arrays.equals(r.getKnot2().getSizeParameteres(), sizeParams) &
+                                    Arrays.equals(r.getKnot1().getSizeParameteres(), eye) ||
+
+                            Arrays.equals(r.getKnot1().getSizeParameteres(),zero) &
+                                    Arrays.equals(r.getKnot2().getSizeParameteres(), zero)) {
+
+                        System.out.println("fuck you");
+                        decision = true;
+
+                    } else if (Arrays.equals(sizeParams, eye)) {
+                        System.out.println("fuck you 2 ");
+                        decision = true;
+                    } else {
+                        decision = false;
+                    }
+                }
+            }
+                else if(object instanceof Knot){
+
+                System.out.println("Knot is ...");
+                    Knot k = (Knot) object;
+
+                    if(Arrays.equals(sizeParams, eye)){
+                        decision = true;
+                    }
+
+                    else{
+                        int sInnerRelation = 0;
+                        for (Relation r : k.getInnerRealations()) {
+                            if (Arrays.equals(r.getSizeParameteres(), sizeParams)  ||
+                                    Arrays.equals(r.getSizeParameteres(), zero) ||
+                                    Arrays.equals(r.getSizeParameteres(), eye)) {
+                                sInnerRelation++;
+                            }
+                        }
+
+                        int sOutRelations = 0;
+                        for (Relation r : k.getOutputRealations()) {
+                            if ( Arrays.equals(r.getSizeParameteres(), sizeParams) ||
+                                    Arrays.equals(r.getSizeParameteres(), zero) ||
+                                    Arrays.equals(r.getSizeParameteres(), eye)) {
+                                sOutRelations++;
+                            }
+                        }
+
+                        if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+                            decision = false;
+                        }
+                    }
+
+                }
+
+            }
+
+        return decision;
+    }
 
 
 
