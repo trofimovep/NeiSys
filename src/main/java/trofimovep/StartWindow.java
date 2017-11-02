@@ -808,11 +808,9 @@ private class RelationSetTypeHandler implements ActionListener{
                         Arrays.equals(r.getKnot1().getSizeParameteres(),zero) &
                                 Arrays.equals(r.getKnot2().getSizeParameteres(), zero)) {
 
-                    System.out.println("fuck you");
                     decision = true;
 
                 } else if (Arrays.equals(sizeParams, eye)) {
-                    System.out.println("fuck you 2 ");
                     decision = true;
                 } else {
                     decision = false;
@@ -821,59 +819,59 @@ private class RelationSetTypeHandler implements ActionListener{
         }
         else if(object instanceof Knot) {
 
-                for(Relation r : ((Knot) object).outputRealations){
+                Knot k = (Knot) object;
 
-                    if(r.getType() == "m") {
-
-                        decision = isSizesCorrect(sizeParams, object);
-
-                    }
-                    else if(r.getType() == "a") {
-
-                        Knot k = (Knot) object;
-
-                        if(Arrays.equals(sizeParams, eye)){
-                            decision = true;
-                        }
-
-                        else{
-
-                            int sInnerRelation = 0;
-                            for (Relation r1 : k.getInnerRealations()) {
-                                if (Arrays.equals(r.getSizeParameteres(), sizeParams)  ||
-                                        Arrays.equals(r1.getSizeParameteres(), zero) ||
-                                        Arrays.equals(r1.getSizeParameteres(), eye)) {
-                                    sInnerRelation++;
-                                }
-                            }
-
-                            int sOutRelations = 0;
-                            for (Relation r1 : k.getOutputRealations()) {
-                                if ( Arrays.equals(r.getSizeParameteres(), sizeParams) ||
-                                        Arrays.equals(r1.getSizeParameteres(), zero) ||
-                                        Arrays.equals(r1.getSizeParameteres(), eye)) {
-                                    sOutRelations++;
-                                }
-                            }
-
-                            if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
-                                decision = false;
-                            }
-                        }
-
-                    }
-
-
-                    }
-
-
-
+                int sInnerRelation = 0;
+                int sOutRelations = 0;
+            if(Arrays.equals(sizeParams, eye) == true){
+                    decision = true;
             }
+                else {
+                    for (Relation r : k.getInnerRealations()) {
 
+                        if (r.getType() == "m") {
+                            if (isSizesCorrect(sizeParams, object) == true) {
+                                sInnerRelation++;
+                            }
+                        }
+                        else if (r.getType() == "a") {
+
+                            if (Arrays.equals(r.getSizeParameteres(), sizeParams) ||
+                                    Arrays.equals(r.getSizeParameteres(), zero) ||
+                                    Arrays.equals(r.getSizeParameteres(), eye)) {
+                                sInnerRelation++;
+                            }
+                        }
+
+                    }
+
+                    for (Relation r : k.getOutputRealations()) {
+
+                        if (r.getType() == "m") {
+                            if (isSizesCorrect(sizeParams, object) == true) {
+                                sOutRelations++;
+                            }
+
+                        } else if (r.getType() == "a") {
+
+                            if (Arrays.equals(r.getSizeParameteres(), sizeParams) ||
+                                    Arrays.equals(r.getSizeParameteres(), zero) ||
+                                    Arrays.equals(r.getSizeParameteres(), eye)) {
+                                sOutRelations++;
+                            }
+                        }
+
+                    }
+
+                if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+
+                    decision = false;
+
+                }
+            }
+        }
 
         return decision;
-
-
     }
 
 
@@ -899,16 +897,11 @@ private class RelationSetTypeHandler implements ActionListener{
                 for(Knot k : knots) {
                     if (k instanceof State) {
                         Identificater countIdentifier = new Identificater();
-//                    try{
                         SimpleMatrix m = countIdentifier.ProductMotion(knots);
                         ((State) k).setOutputVector(m);
                         System.out.println(k.getId() + " output: " + ((State) k).getOutputVector());
                         System.out.println("relaation: \n" +new SimpleMatrix(k.getInnerRealations().get(0).getKnot1().getM()));
-//                    System.out.println(m);
-//                }
-//                    catch (Exception ex){
-//                        JOptionPane.showMessageDialog(null, ex);
-//                    }
+
                     }
 
                 }
