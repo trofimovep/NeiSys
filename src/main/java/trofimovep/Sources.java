@@ -14,7 +14,7 @@ class SendMailSSL {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", "smtp.mail.ru");
         props.put("mail.smtp.port", "587");
 //        props.put("mail.smtp.host", "smtp.gmail.com");
 //        props.put("mail.smtp.socketFactory.port", "465");
@@ -26,18 +26,18 @@ class SendMailSSL {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("trofimovep.mt@gmail.ru","60letcccp");
+                        return new PasswordAuthentication("trofimovep@list.ru","psss");
                     }
                 });
 
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("trofimovep.mt@gmail.com"));
+            message.setFrom(new InternetAddress("trofimovep@list.ru"));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("eptrofimov@yandex.ru"));
+                    InternetAddress.parse("trofimovep.mt@gmail.com"));
             message.setSubject("Testing Subject");
-            message.setText("г к");
+            message.setText("fuck uyo");
 
             Transport.send(message);
 
@@ -48,4 +48,7 @@ class SendMailSSL {
         }
     }
 }
+
+
+
 
