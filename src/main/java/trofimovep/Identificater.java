@@ -1,8 +1,6 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
-
-import javax.swing.*;
 import java.util.ArrayList;
 
 
@@ -66,9 +64,6 @@ public class Identificater {
                      }
                  }
 
-
-
-
                  if (s.getInputVector() != null) {
 
                      if (s.getInputVector().length == 1 & s.getInputVector()[0].length == 1) {
@@ -119,7 +114,6 @@ public class Identificater {
 
          return simpleOut;
      }
-
 
 
  ArrayList<State> getStates(ArrayList<Knot> knots){
