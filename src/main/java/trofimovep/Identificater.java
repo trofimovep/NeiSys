@@ -1,20 +1,22 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
 public class Identificater {
 
     ArrayList<SimpleMatrix>  outSimpleMatrix = new ArrayList<SimpleMatrix>() ;
-    ArrayList<State> st = new ArrayList<>();
-    ArrayList<Relation> relate = new ArrayList<>();
+    static ArrayList<State> st = new ArrayList<>();
+    static ArrayList<Relation> relate = new ArrayList<>();
 
     /*
     * по умножению
     * */
 
- SimpleMatrix ProductMotion(ArrayList<Knot> knots) {
+  static  SimpleMatrix ProductMotion(ArrayList<Knot> knots) {
 
      SimpleMatrix out;
      SimpleMatrix simpleOut = null;
@@ -116,7 +118,7 @@ public class Identificater {
      }
 
 
- ArrayList<State> getStates(ArrayList<Knot> knots){
+ static ArrayList<State> getStates(ArrayList<Knot> knots){
      System.out.println("knot.size: " + knots.size());
 
      for(Knot k : knots){

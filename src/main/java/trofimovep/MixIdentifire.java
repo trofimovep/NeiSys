@@ -16,12 +16,11 @@ public class MixIdentifire {
     ArrayList<SimpleMatrix> multRelation = new ArrayList<>();
     ArrayList<SimpleMatrix> addRelation = new ArrayList<>();
 
-    Identificater identificater = new Identificater();
 
 
     protected SimpleMatrix MixCounter(ArrayList<Knot> knots){
 
-        st = identificater.getStates(knots);
+        st = Identificater.getStates(knots);
 
         for(State s : st){
 
@@ -123,7 +122,7 @@ public class MixIdentifire {
 
     private SimpleMatrix CplusRplusR(Relation r){
         SimpleMatrix sum = null;
-
+            //ADDITIONAL
         return sum;
     }
 

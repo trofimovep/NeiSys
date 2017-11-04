@@ -185,21 +185,19 @@ public class StartWindow extends JFrame {
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
-        deleteElement.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        deleteElement.addActionListener(e -> {
 
-                if(current instanceof Control){
-                    relations.removeAll(((Control) current).outputRealations);
-                    knots.remove(current);
+            if(current instanceof Control){
+                relations.removeAll(((Control) current).outputRealations);
+                knots.remove(current);
 
-                }
-                else if(current instanceof State){
-                    relations.removeAll(((State) current).innerRealations);
-                    relations.removeAll(((State) current).outputRealations);
-                    knots.remove(current);
-                }
-                repaint();
             }
+            else if(current instanceof State){
+                relations.removeAll(((State) current).innerRealations);
+                relations.removeAll(((State) current).outputRealations);
+                knots.remove(current);
+            }
+            repaint();
         });
         popupMenu.add(deleteElement);
 
@@ -227,11 +225,9 @@ public class StartWindow extends JFrame {
 
         JMenuItem deleteRelation = new JMenuItem("Удалить связь");
         deleteRelation.setFont(font);
-        deleteRelation.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                relations.remove(current);
-                repaint();
-            }
+        deleteRelation.addActionListener(e -> {
+            relations.remove(current);
+            repaint();
         });
         relationPopup.add(deleteRelation);
 
@@ -894,11 +890,21 @@ private class RelationSetTypeHandler implements ActionListener{
 
             }
             else if(relType == 2) {
+
+                knots.forEach((Knot knot) ->{
+                    if (knot instanceof State) {
+                        ((State) knot).setOutputVector(new Identificater().ProductMotion(knots));
+                    }
+                });
+
+// или вместо лямбды ::
+
+
                 for(Knot k : knots) {
                     if (k instanceof State) {
-                        Identificater countIdentifier = new Identificater();
-                        SimpleMatrix m = countIdentifier.ProductMotion(knots);
-                        ((State) k).setOutputVector(m);
+
+                        ((State) k).setOutputVector(new Identificater().ProductMotion(knots));
+
                         System.out.println(k.getId() + " output: " + ((State) k).getOutputVector());
                         System.out.println("relaation: \n" +new SimpleMatrix(k.getInnerRealations().get(0).getKnot1().getM()));
 
