@@ -1,8 +1,6 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MixIdentifire {
@@ -121,12 +119,67 @@ public class MixIdentifire {
 
 
     private SimpleMatrix CplusRplusR(Relation r){
+
+        SimpleMatrix inter;
         SimpleMatrix sum = null;
-            //ADDITIONAL
+        SimpleMatrix input;
+
+        if(((State) r.getKnot2()).getInputVector() != null) {
+
+            if (r.getSizeParameteres()[0] == 1 && r.getSizeParameteres()[1] == 1) {
+
+                inter = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
+                input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
+                sum = inter.plus(input);
+            }
+            if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+
+                inter = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
+                input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
+                sum = inter.plus(input);
+
+            }
+            if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+
+                inter = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM()).scale(r.getKnot2().getM()[0][0]));
+                input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
+                sum = inter.plus(input);
+            }
+            if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
+                inter = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).plus(new SimpleMatrix(r.getKnot2().getM()));
+                sum = inter.scale(((State) r.getKnot2()).getInputVector()[0][0]);
+            }
+        }
+        else{
+
+            if (r.getSizeParameteres()[0] == 1 && r.getSizeParameteres()[1] == 1) {
+
+                sum = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
+
+            }
+            if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+
+                sum = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
+
+            }
+            if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+
+                sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM()).scale(r.getKnot2().getM()[0][0]));
+
+                /* remember for case when some matrix is scalar:
+                * C + (R * Scalar) != (C+R) * scalar
+                * if smth is scalar it influences on nearest matrix!
+                * */
+
+            }
+            if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
+                sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).plus(new SimpleMatrix(r.getKnot2().getM()));
+            }
+
+        }
+
         return sum;
     }
 
 
-
-
-}
+}//class
