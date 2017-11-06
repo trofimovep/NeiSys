@@ -16,9 +16,8 @@ class SendMailSSL {
 
     public static void main(String[] args) {
 
-
-//        GridPanel gp = new GridPanel();
         JFrame jf = new JFrame();
+        jf.setLayout(null);
 
         final JTextField fromtext = new JTextField("Ваш e-mail...");
         fromtext.setBounds(25, 10, 400, 20);
@@ -36,67 +35,27 @@ class SendMailSSL {
 //        themetext.setBackground(Color.LIGHT_GRAY);
         jf.add(themetext);
 
-        final JTextField themetext2 = new JTextField("Тема сообщения...");
-        themetext2.setBounds(25, 90, 400, 20);
-        themetext2.setBackground(Color.LIGHT_GRAY);
-        jf.add(themetext2);
+        final JTextArea messText = new JTextArea("Ваше сообщение...");
+        messText.setBounds(25, 90, 400, 200);
+        messText.setLineWrap(true);
+        messText.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(messText);
+        scrollPane.setBounds(25, 90, 400, 200);
+        scrollPane.setVisible(true);
+        jf.add(scrollPane);
 
-//        final JTextField messtext = new JTextField("Ваше сообщение...");
-//        messtext.setBounds(25, 200, 400, 20);
-//        messtext.setBackground(Color.LIGHT_GRAY);
-//        jf.add(messtext);
-
-
-
-
+        jf.setSize(450, 310);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        jf.setSize(600, 310);
-//        jf.pack();
         jf.setVisible(true);
 
 
     }
 
-    public static class GridPanel extends JPanel {
-
-    public GridPanel()
-        {
-            setLayout(new GridLayout(2, 1));
-//            setLayout(null);
-//            this.setPreferredSize(new Dimension(450, 600));
-//            this.setSize(450, 600);
-
-            JPanel onePanel = new JPanel();
-
-            final JTextField sender = new JTextField("e-mail...");
-            sender.setBounds(25, 10,400, 20);
-            sender.setVisible(true);
-            onePanel.add(sender);
-
-            final JTextField pass = new JTextField("pass...");
-            pass.setBounds(25, 30,400, 20);
-            pass.setVisible(true);
-            onePanel.add(pass);
-
-            final JTextField theme = new JTextField("theme..");
-            sender.setBounds(25, 50,400, 20);
-            theme.setVisible(true);
-            onePanel.add(theme);
-            onePanel.setVisible(true);
-            add(onePanel);
 
 
-            final JTextField mess = new JTextField("message...");
-//            mess.setSize(new Dimension(400, 200));
-            sender.setBounds(25, 70,400, 200);
-            mess.setVisible(true);
-            add(mess);
-        }
 
-    }
 
-}
+}//class
 
 
 
