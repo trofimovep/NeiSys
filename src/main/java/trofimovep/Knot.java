@@ -14,7 +14,6 @@ public class Knot{
     int x;
     int y;
 
-
     static int WIDTH = 40;
     static int HEIGHT = 40;
 

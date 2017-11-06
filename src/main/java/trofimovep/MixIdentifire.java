@@ -1,7 +1,7 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
-import java.util.ArrayList;
+    import java.util.ArrayList;
 
 public class MixIdentifire {
 
