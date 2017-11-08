@@ -20,16 +20,17 @@ public class MixIdentifire {
 
         st = Identificater.getStates(knots);
 
+
+        SimpleMatrix sum1 = null;
+        SimpleMatrix sum2 = null;
+
         for(State s : st){
 
             relate = s.getInnerRealations();
 
             if(relate.size() == 0){
 
-                // IF INPUT VECTOR == NULL ????
-
                 out = (new SimpleMatrix(s.getM())).plus(new SimpleMatrix(s.getInputVector()));
-
             }
 
             /*
@@ -45,13 +46,48 @@ public class MixIdentifire {
                     }
 
                     if(r.getType() == "a"){
-                        //
+                        addRelation.add(CplusRplusR(r));
                     }
-
 
                 }
 
+                double[][] doubleMultSum = new double[s.getM().length][s.getM()[0].length];
+
+                for(int i = 0; i < multRelation.size(); i++){
+
+                        for(int j = 0; j < s.getM().length; j++){
+                            for(int h = 0; h < s.getM()[0].length; h++){
+
+                                doubleMultSum[j][h] += multRelation.get(i).get(j, h);
+
+                            }
+                        }
+
+                }
+
+                sum1 = new SimpleMatrix(doubleMultSum);
+
+
+
+            double[][] doubleAddSum = new double[s.getM().length][s.getM()[0].length];
+
+            for(int i = 0; i < addRelation.size(); i++){
+
+                for(int j = 0; j < s.getM().length; j++){
+                    for(int h = 0; h < s.getM()[0].length; h++){
+
+                        doubleAddSum[j][h] += addRelation.get(i).get(j, h);
+
+                    }
+                }
+
             }
+
+            sum2 = new SimpleMatrix(doubleAddSum);
+
+        }
+
+        out = sum1.plus(sum2);
 
         }
 
