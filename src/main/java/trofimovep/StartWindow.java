@@ -8,6 +8,9 @@ import javax.swing.JMenu;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,10 +94,6 @@ public class StartWindow extends JFrame {
         uploadMenu.setFont(font);
         fileMenu.add(uploadMenu);
 
-        JMenu about = new JMenu("О программе");
-        about.setFont(font);
-        fileMenu.add(about);
-
 
         JMenu pravka = new JMenu("Правка");
         pravka.setFont(font);
@@ -104,6 +103,31 @@ public class StartWindow extends JFrame {
         clearAll.setFont(font);
         clearAll.addActionListener(clearall);
         pravka.add(clearAll);
+
+        JMenu about = new JMenu("О программе");
+        about.setFont(font);
+        menuBar.add(about);
+
+        JMenuItem ofSite = new JMenuItem("Официальный сайт...");
+        ofSite.setFont(font);
+        about.add(ofSite);
+        ofSite.addActionListener(e->{
+            try {
+                final URI uri = new URI("http://legacy.stu.lipetsk.ru/education/chair/kaf-vm/");
+                Desktop.getDesktop().browse(uri);
+            } catch (URISyntaxException e1) {
+                JOptionPane.showMessageDialog(null, e1);
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, e1);
+            }
+
+        });
+
+
+        JMenuItem sendToDeveloper = new JMenuItem("Написать разработчику");
+        sendToDeveloper.setFont(font);
+        about.add(sendToDeveloper);
+        sendToDeveloper.addActionListener(e ->  SendMailSSL.send());
 
 
 

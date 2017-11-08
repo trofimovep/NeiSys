@@ -17,8 +17,7 @@ import javax.swing.event.DocumentListener;
 class SendMailSSL {
 
 
-    public static void main(String[] args) {
-
+    protected static void send() {
 
         String domens = "<html>\n" +
                 "<head>\n"+
@@ -208,7 +207,6 @@ class SendMailSSL {
                         return new PasswordAuthentication(email,password);
                     }
                 });
-
 
         try {
 
