@@ -27,8 +27,9 @@ public class State extends trofimovep.Knot {
         this.outputVector = outputVector;
     }
 
-    public Optional<SimpleMatrix> getOutputVector() {
-        return outputVector;
+    public SimpleMatrix getOutputVector() {
+        return outputVector.get();
     }
+
 }
 

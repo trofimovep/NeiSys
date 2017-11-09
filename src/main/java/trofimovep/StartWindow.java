@@ -1,5 +1,7 @@
 package trofimovep;
 
+import org.ejml.data.DenseMatrix64F;
+import org.ejml.ops.MatrixVisualization;
 import org.ejml.simple.SimpleMatrix;
 
 import javax.swing.*;
@@ -905,7 +907,10 @@ private class RelationSetTypeHandler implements ActionListener{
                     if (knot instanceof State) {
                         ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
                         System.out.println(((State) knot).getOutputVector());
+
                     }
+                    MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
+                            "out");
                 });
         }
                 catch (Exception ex){

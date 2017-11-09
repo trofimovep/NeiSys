@@ -93,7 +93,7 @@ public class MixIdentifire {
      private SimpleMatrix CSI(Relation r) {
 
          SimpleMatrix inter;
-         SimpleMatrix product = null;
+         SimpleMatrix product;
          SimpleMatrix input;
 
          if(((State) r.getKnot2()).getInputVector() != null) {
@@ -238,7 +238,7 @@ public class MixIdentifire {
         return sum;
     }
 
-    private double[][] SimpleToDouble(SimpleMatrix M){
+     static double[][] SimpleToDouble(SimpleMatrix M){
 
         double[][] A = new double[M.getMatrix().getNumCols()][M.getMatrix().getNumRows()];
 
