@@ -1,22 +1,23 @@
 package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
+
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class MixIdentifire {
 
     SimpleMatrix out;
 
-
-    ArrayList<SimpleMatrix> outSimpleMatrix = new ArrayList<SimpleMatrix>() ;
     ArrayList<State> st = new ArrayList<>();
     ArrayList<Relation> relate = new ArrayList<>();
-    ArrayList<SimpleMatrix> multRelation = new ArrayList<>();
-    ArrayList<SimpleMatrix> addRelation = new ArrayList<>();
+    ArrayList<double[][]> multRelation = new ArrayList<>();
+    ArrayList<double[][]> addRelation = new ArrayList<>();
 
 
 
-    protected SimpleMatrix MixCounter(ArrayList<Knot> knots){
+
+    protected Optional<SimpleMatrix> MixCounter(ArrayList<Knot> knots){
 
         st = Identificater.getStates(knots);
 
@@ -29,8 +30,13 @@ public class MixIdentifire {
             relate = s.getInnerRealations();
 
             if(relate.size() == 0){
+                if(s.getInputVector() != null) {
+                    out = (new SimpleMatrix(s.getM())).plus(new SimpleMatrix(s.getInputVector()));
+                }
+                else{
+                    out = new SimpleMatrix(s.getM());
+                }
 
-                out = (new SimpleMatrix(s.getM())).plus(new SimpleMatrix(s.getInputVector()));
             }
 
             /*
@@ -42,48 +48,37 @@ public class MixIdentifire {
                 for(Relation r : relate){
 
                     if(r.getType() == "m"){
-                        multRelation.add(CSI(r));
+                        multRelation.add(SimpleToDouble(CSI(r)));
                     }
 
                     if(r.getType() == "a"){
-                        addRelation.add(CplusRplusR(r));
+                        addRelation.add(SimpleToDouble(CplusRplusR(r)));
                     }
 
                 }
 
                 double[][] doubleMultSum = new double[s.getM().length][s.getM()[0].length];
+                double[][] doubleAddSum = new double[s.getM().length][s.getM()[0].length];
 
-                for(int i = 0; i < multRelation.size(); i++){
 
-                        for(int j = 0; j < s.getM().length; j++){
-                            for(int h = 0; h < s.getM()[0].length; h++){
-
-                                doubleMultSum[j][h] += multRelation.get(i).get(j, h);
-
-                            }
+                for (double[][] d : multRelation) {
+                    for(int i =0; i < s.getM().length; i++){
+                        for(int j = 0; j < s.getM()[0].length; j++){
+                            doubleMultSum[i][j] += d[i][j];
                         }
-
-                }
-
-                sum1 = new SimpleMatrix(doubleMultSum);
-
-
-
-            double[][] doubleAddSum = new double[s.getM().length][s.getM()[0].length];
-
-            for(int i = 0; i < addRelation.size(); i++){
-
-                for(int j = 0; j < s.getM().length; j++){
-                    for(int h = 0; h < s.getM()[0].length; h++){
-
-                        doubleAddSum[j][h] += addRelation.get(i).get(j, h);
-
                     }
                 }
 
-            }
+                for (double[][] d : addRelation) {
+                    for(int i =0; i < s.getM().length; i++){
+                        for(int j = 0; j < s.getM()[0].length; j++){
+                            doubleAddSum[i][j] += d[i][j];
+                        }
+                    }
+                }
 
-            sum2 = new SimpleMatrix(doubleAddSum);
+                sum1 = new SimpleMatrix(doubleMultSum);
+                sum2 = new SimpleMatrix(doubleAddSum);
 
         }
 
@@ -91,7 +86,7 @@ public class MixIdentifire {
 
         }
 
-        return out;
+        return Optional.ofNullable(out);
     }
 
 
@@ -109,23 +104,31 @@ public class MixIdentifire {
                  input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                  product = inter.mult(input);
              }
-             if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+             else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
 
                  inter = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).mult(new SimpleMatrix(r.getKnot2().getM()));
                  input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                  product = inter.mult(input);
 
              }
-             if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+             else if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
 
                  inter = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).scale(r.getKnot2().getM()[0][0]);
                  input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                  product = inter.mult(input);
              }
-             if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
+             else if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
                  inter = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
                  product = inter.scale(((State) r.getKnot2()).getInputVector()[0][0]);
              }
+
+             else{
+
+                 inter = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
+                 product = inter.mult(new SimpleMatrix(((State) r.getKnot2()).getInputVector()));
+
+             }
+
          }
          else{
 
@@ -134,21 +137,25 @@ public class MixIdentifire {
                  product = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).mult(new SimpleMatrix(r.getKnot2().getM()));
 
              }
-             if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+             else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
 
                  product = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).mult(new SimpleMatrix(r.getKnot2().getM()));
 
              }
-             if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+             else if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
 
                  product = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).scale(r.getKnot2().getM()[0][0]);
 
              }
-             if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
+             else{
+
                  product = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
+
              }
 
          }
+
+         System.out.println("product" + product);
 
          return product;
      }
@@ -168,23 +175,31 @@ public class MixIdentifire {
                 input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                 sum = inter.plus(input);
             }
-            if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+            else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
 
                 inter = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
                 input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                 sum = inter.plus(input);
 
             }
-            if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+            else if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
 
                 inter = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM()).scale(r.getKnot2().getM()[0][0]));
                 input = new SimpleMatrix(((State) r.getKnot2()).getInputVector());
                 sum = inter.plus(input);
             }
-            if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
+            else if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
                 inter = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).plus(new SimpleMatrix(r.getKnot2().getM()));
                 sum = inter.scale(((State) r.getKnot2()).getInputVector()[0][0]);
             }
+
+            else{
+
+                inter = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).plus(new SimpleMatrix(r.getKnot2().getM()));
+                sum = inter.plus(new SimpleMatrix(((State) r.getKnot2()).getInputVector()));
+
+            }
+
         }
         else{
 
@@ -193,14 +208,16 @@ public class MixIdentifire {
                 sum = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
 
             }
-            if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
+            else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
 
                 sum = (new SimpleMatrix(r.getM())).scale(r.getKnot1().getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
 
             }
-            if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
+            else if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1) {
 
                 sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM()).scale(r.getKnot2().getM()[0][0]));
+
+
 
                 /* remember for case when some matrix is scalar:
                 * C + (R * Scalar) != (C+R) * scalar
@@ -208,13 +225,37 @@ public class MixIdentifire {
                 * */
 
             }
-            if (((State) r.getKnot2()).getInputVector().length == 1 && ((State) r.getKnot2()).getInputVector()[0].length == 1) {
-                sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).plus(new SimpleMatrix(r.getKnot2().getM()));
+            else{
+
+                sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
+
+            }
+
+
+
+        }
+        System.out.println("sum" + sum);
+        return sum;
+    }
+
+    private double[][] SimpleToDouble(SimpleMatrix M){
+
+        double[][] A = new double[M.getMatrix().getNumCols()][M.getMatrix().getNumRows()];
+
+        System.out.println("M.getMatrix().getNumRows()" + M.getMatrix().getNumRows());
+        System.out.println("M.getMatrix().getNumCols()" + M.getMatrix().getNumCols());
+
+
+        for(int i = 0; i < M.getMatrix().getNumRows(); i++){
+            for(int j = 0; j < M.getMatrix().getNumCols(); j++){
+
+                A[i][j] = M.getMatrix().get(i, j);
+
             }
 
         }
 
-        return sum;
+        return A;
     }
 
 

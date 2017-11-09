@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 public class StartWindow extends JFrame {
@@ -592,8 +593,8 @@ private class ClearAll implements ActionListener{
 
 private class RelationTypeHandler implements ActionListener{
 /*
-* trofimovep.Relation Type = 1, if trofimovep.Relation is Additive
-* trofimovep.Relation Type = 2, if trofimovep.Relation is Multiplicative
+* Relation Type = 1, if Relation is Additive
+* Relation Type = 2, if Relation is Multiplicative
 * */
     private int typerel;
 
@@ -632,19 +633,9 @@ private class RelationSetTypeHandler implements ActionListener{
         panelnew.add(add);
         panelnew.add(multi);
 
-        add.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-             tip = "a";
-            }
-        });
+        add.addActionListener(e1 -> tip = "a");
 
-        multi.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tip = "m";
-            }
-        });
+        multi.addActionListener(e12 -> tip = "m");
 
             if (current instanceof Relation) {
                 int rex = JOptionPane.showConfirmDialog(null, panelnew, "", JOptionPane.OK_CANCEL_OPTION);
@@ -907,35 +898,20 @@ private class RelationSetTypeHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent e) {
 
-            int relType = relationTypeHandler.getTyperel();
 
-            /* Добавить условие на различные системы */
-            if(relType == 1){
 
-            }
-            else if(relType == 2) {
-
+            try{
                 knots.forEach((Knot knot) ->{
                     if (knot instanceof State) {
-                        ((State) knot).setOutputVector(new Identificater().ProductMotion(knots));
+                        ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
+                        System.out.println(((State) knot).getOutputVector());
                     }
                 });
-
-// или вместо лямбды ::
-
-
-                for(Knot k : knots) {
-                    if (k instanceof State) {
-
-                        ((State) k).setOutputVector(new Identificater().ProductMotion(knots));
-
-                        System.out.println(k.getId() + " output: " + ((State) k).getOutputVector());
-                        System.out.println("relaation: \n" +new SimpleMatrix(k.getInnerRealations().get(0).getKnot1().getM()));
-
-                    }
-
+        }
+                catch (Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
                 }
-            }
+
         }
     }
 
