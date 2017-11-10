@@ -88,6 +88,7 @@ public class StartWindow extends JFrame {
         JMenuItem saveMenu = new JMenuItem("Cохранить модель");
         saveMenu.setFont(font);
         fileMenu.add(saveMenu);
+        saveMenu.addActionListener(e -> Saver.Save(knots, relations));
 
         JMenuItem saveMenuAs = new JMenuItem("Сохранить модель как");
         saveMenuAs.setFont(font);

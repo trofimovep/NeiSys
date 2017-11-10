@@ -14,7 +14,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-class SendMailSSL {
+class Send MailSSL {
 
 
     protected static void send() {
