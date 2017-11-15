@@ -14,26 +14,25 @@ public class MixIdentifire {
     ArrayList<double[][]> multRelation = new ArrayList<>();
     ArrayList<double[][]> addRelation = new ArrayList<>();
 
+    SimpleMatrix sum1;
+    SimpleMatrix sum2;
 
 
+    protected Optional<SimpleMatrix> MixCounter(ArrayList<Knot> knots) {
+        long startTime = System.nanoTime();
 
-    protected Optional<SimpleMatrix> MixCounter(ArrayList<Knot> knots){
 
         st = Identificater.getStates(knots);
 
 
-        SimpleMatrix sum1 = null;
-        SimpleMatrix sum2 = null;
-
-        for(State s : st){
+        for (State s : st) {
 
             relate = s.getInnerRealations();
 
-            if(relate.size() == 0){
-                if(s.getInputVector() != null) {
+            if (relate.size() == 0) {
+                if (s.getInputVector() != null) {
                     out = (new SimpleMatrix(s.getM())).plus(new SimpleMatrix(s.getInputVector()));
-                }
-                else{
+                } else {
                     out = new SimpleMatrix(s.getM());
                 }
 
@@ -41,56 +40,119 @@ public class MixIdentifire {
 
             /*
             * *
+            * Создать класс
+            * public class WalkRunnable implements Runnable {
+      @Override
+      public void run() {
+            for (int i = 0; i < 10; i++) {
+                  System.out.println("Walking");
+                  try {
+                       Thread.sleep(7);
+                  } catch (InterruptedException e) {
+                       System.err.println(e);
+                  }
+           }
+     }
+}
+            *public class WalkTalk {
+       public static void main(String[ ] args) {
+              // новые объекты потоков
+              TalkThread talk = new TalkThread();
+              Thread walk = new Thread(new WalkRunnable());
+              // запуск потоков
+              talk.start();
+              walk.start();
+              // WalkRunnable w = new WalkRunnable(); // просто объект, не поток
+              // w.run(); или talk.run(); // выполнится метод, но поток не запустится!
+       }
+}
+            *
+            *
+            *
+            *
+            *
             * */
 
-            else{
+            else {
 
-                for(Relation r : relate){
+                for (Relation r : relate) {
 
-                    if(r.getType() == "m"){
+
+                    Thread addThread = null;
+                    Thread multThread = null;
+
+
+                    if (r.getType() == "m") {
+
                         multRelation.add(SimpleToDouble(CSI(r)));
-                    }
 
-                    if(r.getType() == "a"){
+                    } else if (r.getType() == "a") {
+
                         addRelation.add(SimpleToDouble(CplusRplusR(r)));
+
                     }
 
-                }
-
-                double[][] doubleMultSum = new double[s.getM().length][s.getM()[0].length];
-                double[][] doubleAddSum = new double[s.getM().length][s.getM()[0].length];
 
 
-                for (double[][] d : multRelation) {
-                    for(int i =0; i < s.getM().length; i++){
-                        for(int j = 0; j < s.getM()[0].length; j++){
-                            doubleMultSum[i][j] += d[i][j];
+                    multThread = new Thread(() -> {
+
+                        double[][] doubleMultSum = new double[s.getM().length][s.getM()[0].length];
+                        for (double[][] d : multRelation) {
+                            for (int i = 0; i < s.getM().length; i++) {
+                                for (int j = 0; j < s.getM()[0].length; j++) {
+                                    doubleMultSum[i][j] += d[i][j];
+                                }
+                            }
                         }
-                    }
-                }
 
-                for (double[][] d : addRelation) {
-                    for(int i =0; i < s.getM().length; i++){
-                        for(int j = 0; j < s.getM()[0].length; j++){
-                            doubleAddSum[i][j] += d[i][j];
+                        sum1 = new SimpleMatrix(doubleMultSum);
+                    });
+                    multThread.start();
+
+                    addThread = new Thread(() -> {
+                        double[][] doubleAddSum = new double[s.getM().length][s.getM()[0].length];
+
+                        for (double[][] d : addRelation) {
+                            for (int i = 0; i < s.getM().length; i++) {
+                                for (int j = 0; j < s.getM()[0].length; j++) {
+                                    doubleAddSum[i][j] += d[i][j];
+                                }
+                            }
                         }
+
+                        sum2 = new SimpleMatrix(doubleAddSum);
+                    });
+                    addThread.start();
+
+
+                    try {
+                        addThread.join();
+                        multThread.join();
+                        if (addThread.isAlive() == false) {
+                            System.out.println("add is dead..");
+                        }
+                        if (multThread.isAlive() == false) {
+                            System.out.println("mult is dead..");
+                        }
+
+                        out = sum1.plus(sum2);
+
+                        long endTime = System.nanoTime();
+                        long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+                        System.out.println("duration... " + duration);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
-
-                sum1 = new SimpleMatrix(doubleMultSum);
-                sum2 = new SimpleMatrix(doubleAddSum);
-
+            }
         }
-
-        out = sum1.plus(sum2);
-
-        }
-
         return Optional.ofNullable(out);
     }
 
 
-     private SimpleMatrix CSI(Relation r) {
+
+     private SimpleMatrix CSI(Relation r){
 
          SimpleMatrix inter;
          SimpleMatrix product;

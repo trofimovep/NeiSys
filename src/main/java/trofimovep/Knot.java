@@ -24,6 +24,7 @@ public class Knot{
     protected ArrayList<Relation> outputRealations = new ArrayList<Relation>();
 
 
+
     public Knot(String type, int id, int x, int y){
         this.x = x - WIDTH / 2;
         this.y = y - HEIGHT / 2;
@@ -39,7 +40,6 @@ public class Knot{
         Ellipse2D view = new Ellipse2D.Double(x ,y, WIDTH, HEIGHT);
         return view;
     }
-
 
 
     protected int getId() { return id;  }
@@ -74,8 +74,7 @@ public class Knot{
         outputRealations.add(r);
     }
 
-    protected ArrayList<Relation> getInnerRealations() {
-        return innerRealations;
+    protected ArrayList<Relation> getInnerRealations() { return innerRealations;
     }
 
     protected ArrayList<Relation> getOutputRealations() {
@@ -85,10 +84,4 @@ public class Knot{
     protected int getOutputSIzeRel(){
         return outputRealations.size();
     }
-
-
-
-
-
-
 }

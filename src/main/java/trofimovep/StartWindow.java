@@ -131,7 +131,7 @@ public class StartWindow extends JFrame {
         JMenuItem sendToDeveloper = new JMenuItem("Написать разработчику");
         sendToDeveloper.setFont(font);
         about.add(sendToDeveloper);
-        sendToDeveloper.addActionListener(e ->  SendMailSSL.send());
+        sendToDeveloper.addActionListener(e ->  Send.send());
 
 
 
@@ -903,7 +903,7 @@ private class RelationSetTypeHandler implements ActionListener{
 
 
 
-            try{
+//            try{
                 knots.forEach((Knot knot) ->{
                     if (knot instanceof State) {
                         ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
@@ -913,10 +913,10 @@ private class RelationSetTypeHandler implements ActionListener{
                     MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
                             "out");
                 });
-        }
-                catch (Exception ex){
-                JOptionPane.showMessageDialog(null, ex);
-                }
+//        }
+//                catch (Exception ex){
+//                JOptionPane.showMessageDialog(null, ex);
+//                }
 
         }
     }

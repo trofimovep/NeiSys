@@ -4,7 +4,7 @@ import org.ejml.simple.SimpleMatrix;
 
 import java.util.Optional;
 
-public class State extends trofimovep.Knot {
+public class State extends Knot {
 
     double[][] inputVector;
     Optional<SimpleMatrix> outputVector;

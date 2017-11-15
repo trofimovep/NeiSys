@@ -1,7 +1,6 @@
 package trofimovep;
 
-import java.awt.*;
-import java.awt.event.*;
+
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -14,7 +13,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-class Send MailSSL {
+class Send {
 
 
     protected static void send() {
