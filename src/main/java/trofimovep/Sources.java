@@ -1,6 +1,5 @@
 package trofimovep;
 
-
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,7 +12,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-class Send {
+class Sender {
 
 
     protected static void send() {
@@ -90,7 +89,7 @@ class Send {
         /*add a label for password*/
 
             final JTextField fromtext = new JTextField();
-            fromtext.setToolTipText("Ваш e-mail...");
+            fromtext.setText("Ваш e-mail...");
             fromtext.setBounds(25, 10, 400, 20);
             fromtext.setVisible(true);
             jf.add(fromtext);
@@ -104,6 +103,7 @@ class Send {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (String.valueOf(passtext.getPassword()).equals("Пароль...") == false) {
+//                        passtext.setText("");
                         passtext.setEchoChar('*');
                     } else {
 

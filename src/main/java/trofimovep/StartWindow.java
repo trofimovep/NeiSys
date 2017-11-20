@@ -131,7 +131,7 @@ public class StartWindow extends JFrame {
         JMenuItem sendToDeveloper = new JMenuItem("Написать разработчику");
         sendToDeveloper.setFont(font);
         about.add(sendToDeveloper);
-        sendToDeveloper.addActionListener(e ->  Send.send());
+        sendToDeveloper.addActionListener(e ->  Sender.send());
 
 
 
