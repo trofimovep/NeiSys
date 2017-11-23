@@ -38,48 +38,14 @@ public class MixIdentifire {
 
             }
 
-            /*
-            * *
-            * Создать класс
-            * public class WalkRunnable implements Runnable {
-      @Override
-      public void run() {
-            for (int i = 0; i < 10; i++) {
-                  System.out.println("Walking");
-                  try {
-                       Thread.sleep(7);
-                  } catch (InterruptedException e) {
-                       System.err.println(e);
-                  }
-           }
-     }
-}
-            *public class WalkTalk {
-       public static void main(String[ ] args) {
-              // новые объекты потоков
-              TalkThread talk = new TalkThread();
-              Thread walk = new Thread(new WalkRunnable());
-              // запуск потоков
-              talk.start();
-              walk.start();
-              // WalkRunnable w = new WalkRunnable(); // просто объект, не поток
-              // w.run(); или talk.run(); // выполнится метод, но поток не запустится!
-       }
-}
-            *
-            *
-            *
-            *
-            *
-            * */
 
             else {
 
                 for (Relation r : relate) {
 
 
-                    Thread addThread = null;
-                    Thread multThread = null;
+                    Thread addThread;
+                    Thread multThread;
 
 
                     if (r.getType() == "m") {
@@ -155,7 +121,7 @@ public class MixIdentifire {
      private SimpleMatrix CSI(Relation r){
 
          SimpleMatrix inter;
-         SimpleMatrix product;
+         SimpleMatrix product = null;
          SimpleMatrix input;
 
          if(((State) r.getKnot2()).getInputVector() != null) {
@@ -183,7 +149,6 @@ public class MixIdentifire {
                  inter = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
                  product = inter.scale(((State) r.getKnot2()).getInputVector()[0][0]);
              }
-
              else{
 
                  inter = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
@@ -208,6 +173,12 @@ public class MixIdentifire {
 
                  product = (new SimpleMatrix(r.getKnot1().getM())).mult(new SimpleMatrix(r.getM())).scale(r.getKnot2().getM()[0][0]);
 
+             }
+             else if (r.getKnot2().getSizeParameteres()[0] == 1 && r.getKnot2().getSizeParameteres()[1] == 1 &&
+                     r.getKnot1().getM().length == 1 && r.getKnot1().getM()[0].length == 1 &&
+                     r.getM().length == 1 && r.getM()[0].length == 1) {
+                 double in = r.getKnot1().getM()[0][0] * r.getM()[0][0] * r.getKnot2().getM()[0][0];
+                 product.set(in);
              }
              else{
 

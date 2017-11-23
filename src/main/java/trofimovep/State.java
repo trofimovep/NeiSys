@@ -8,6 +8,7 @@ public class State extends Knot {
 
     double[][] inputVector;
     Optional<SimpleMatrix> outputVector;
+    double[][] outY;
 
     public State(String type, int id, int x, int y){
 
@@ -23,6 +24,7 @@ public class State extends Knot {
         this.inputVector = inputVector;
     }
 
+
     public void setOutputVector(Optional<SimpleMatrix> outputVector) {
         this.outputVector = outputVector;
     }
@@ -31,5 +33,8 @@ public class State extends Knot {
         return outputVector.get();
     }
 
+    public double[][] getOutY() {
+        return outY;
+    }
 }
 
