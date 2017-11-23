@@ -1,10 +1,7 @@
 package trofimovep;
 
-import jdk.internal.org.objectweb.asm.tree.analysis.Interpreter;
 import org.ejml.simple.SimpleMatrix;
-
 import java.util.ArrayList;
-import java.util.Optional;
 
 
 public class FindOperator {
