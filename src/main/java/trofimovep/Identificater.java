@@ -5,8 +5,9 @@ import org.ejml.simple.SimpleMatrix;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/*КЛАСС ПРЕДНАЗНАЧЕННЫЙ ДЛЯ РАСЧЕТА КОГДВА ВСЕ СВЯЗИ АДДИТИВНЫЕ, СЕЙЧАС, ВОЗМОЖНО, УЖЕ НЕ НУЖЕН*/
 
-public class Identificater {
+public abstract class Identificater {
 
     ArrayList<SimpleMatrix>  outSimpleMatrix = new ArrayList<SimpleMatrix>() ;
     static ArrayList<State> st = new ArrayList<>();
@@ -20,7 +21,7 @@ public class Identificater {
 
      SimpleMatrix out;
      SimpleMatrix simpleOut = null;
-     SimpleMatrix inter = null;
+     SimpleMatrix inter;
 
      st = getStates(knots);
 

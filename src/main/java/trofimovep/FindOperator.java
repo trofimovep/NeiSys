@@ -4,17 +4,13 @@ import org.ejml.simple.SimpleMatrix;
 import java.util.ArrayList;
 
 
-public class FindOperator {
+public abstract class FindOperator {
 
-    ArrayList<State> states = new ArrayList<State>();
+    static ArrayList<State> states = new ArrayList<>();
 
-    protected void FoundedOperator(ArrayList<Knot> knots){
+    static void FoundedOperator(ArrayList<Knot> knots){
 
-        for (Knot k: knots) {
-            if(k instanceof State)
-                states.add((State) k);
-        }
-
+       states = Identificater.getStates(knots);
 
         for (State st: states) {
             if(st.getInputVector() != null && st.getOutY() != null){
@@ -39,15 +35,9 @@ public class FindOperator {
                 double[][] M;
                 SimpleMatrix out = (new SimpleMatrix(st.getOutputVector())).mult((new SimpleMatrix(st.getInputVector())).pseudoInverse());
                 M = MixIdentifire.SimpleToDouble(out);
-                st.setM(M);
+                st.setOutY(M);
             }
 
         }
     }
-
-
-
-
-
-
 }

@@ -46,13 +46,17 @@ public class StartWindow extends JFrame {
     JRadioButton stateKnot = new JRadioButton("Узел состояния");
     JRadioButton controlKnot = new JRadioButton("Узел управления");
 
-    ButtonGroup typeRelation = new ButtonGroup();
-    JRadioButton RelationbyAdd = new JRadioButton("Аддитивная (R = C + S)");
-    JRadioButton RelationbyMult = new JRadioButton("Мультипликативная (R = C * S)");
+    ButtonGroup typeCount = new ButtonGroup();
+    JRadioButton neur = new JRadioButton("Нейросетевая модель");
+    JRadioButton ident = new JRadioButton("Идентификация");
 
 
-    final RelationTypeHandler relationTypeHandler = new RelationTypeHandler();
+
+    final countTypeHandler cntTypeHandler = new countTypeHandler();
     final RelationSetTypeHandler relationsetTypeHandler = new RelationSetTypeHandler();
+    final outVectorHandler outVectorhandler = new outVectorHandler();
+
+    String CountType;
 
 
 
@@ -168,20 +172,24 @@ public class StartWindow extends JFrame {
         stateKnot.addActionListener(handler);
         controlKnot.addActionListener(handler);
 
+        JLabel ans = new JLabel();
+        buttonsPanel.add(ans);
+
+
 //        ButtonGroup
 
-        JLabel DesignLine0 = new JLabel("Тип связи:");
+        JLabel DesignLine0 = new JLabel("Тип расчета:");
         DesignLine0.setBounds(20, 80, 200,20);
         buttonsPanel.add(DesignLine0);
 
-        RelationbyAdd.setBounds(20,100,250,20);
-        RelationbyMult.setBounds(20,120,250,20);
-        typeRelation.add(RelationbyAdd);
-        typeRelation.add(RelationbyMult);
-        buttonsPanel.add(RelationbyAdd);
-        buttonsPanel.add(RelationbyMult);
-        RelationbyAdd.addActionListener(relationTypeHandler);
-        RelationbyMult.addActionListener(relationTypeHandler);
+        neur.setBounds(20,100,250,20);
+        ident.setBounds(20,120,250,20);
+        typeCount.add(neur);
+        typeCount.add(ident);
+        buttonsPanel.add(neur);
+        buttonsPanel.add(ident);
+        neur.addActionListener(cntTypeHandler);
+        ident.addActionListener(cntTypeHandler);
 
 
   JButton CountButton = new JButton("Расчитать");
@@ -209,6 +217,13 @@ public class StartWindow extends JFrame {
         setInputVector.setFont(font);
         setInputVector.addActionListener(invector);
         popupMenu.add(setInputVector);
+
+        JMenuItem setOutVector = new JMenuItem("Задать исходящий вектор");
+        setOutVector.setFont(font);
+        setOutVector.addActionListener(outVectorhandler);
+        popupMenu.add(setOutVector);
+
+
 
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
@@ -441,7 +456,7 @@ public class StartWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
 
             int sizeParameteres[] = new int[OPTION_SIZE];
-            ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
+            ArrayList<JTextField> sizeFields = new ArrayList<>(OPTION_SIZE);
 
             JPanel sizepanel = new JPanel();
 
@@ -517,7 +532,7 @@ private class inputVectorHandler extends inputParam {
     public void actionPerformed(ActionEvent e) {
 
         int sizeParameteres[] = new int[OPTION_SIZE];
-        ArrayList<JTextField> sizeFields = new ArrayList<JTextField>(OPTION_SIZE);
+        ArrayList<JTextField> sizeFields = new ArrayList<>(OPTION_SIZE);
 
         JPanel sizepanel = new JPanel();
 
@@ -558,6 +573,7 @@ private class inputVectorHandler extends inputParam {
                     }
 
                     SaverToParam(sizeParameteres, M, current);
+                    RepaiPanel = true;
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Ошибка размерностей");
@@ -578,6 +594,76 @@ private class inputVectorHandler extends inputParam {
 }
 
 
+    private class outVectorHandler extends inputParam {
+        @Override
+        //?
+        public void actionPerformed(ActionEvent e) {
+
+            int sizeParameteres[] = new int[OPTION_SIZE];
+            ArrayList<JTextField> sizeFields = new ArrayList<>(OPTION_SIZE);
+
+            JPanel sizepanel = new JPanel();
+
+            for (int k = 0; k < OPTION_SIZE; k++) {
+                sizepanel.add(new JLabel("size" + String.valueOf(k + 1)));
+                sizeFields.add(new JTextField(5));
+                sizepanel.add(sizeFields.get(k));
+            }
+
+            sizepanel.setVisible(true);
+            int resultsize = JOptionPane.showConfirmDialog(null, sizepanel,
+                    "Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+            if (resultsize == JOptionPane.OK_OPTION) {
+
+                int cur = 0;
+                for (JTextField jt : sizeFields) {
+                    sizeParameteres[cur] = Integer.valueOf(jt.getText());
+                    cur++;
+                }
+
+                try {
+
+                    StartWindow example = new StartWindow(sizeParameteres);
+                    int resultmatrix = JOptionPane.showConfirmDialog(null, example.panel,
+                            "Please Enter Values", JOptionPane.OK_CANCEL_OPTION);
+
+                    if (resultmatrix == JOptionPane.OK_OPTION) {
+                        double[][] M = new double[sizeParameteres[0]][sizeParameteres[1]];
+                                            /*
+                    * Realize for any dimension (OPTION_SIZE)*  ???
+                    */
+                        int t = 0;
+                        for (int i = 0; i < sizeParameteres[0]; i++) {
+                            for (int j = 0; j < sizeParameteres[1]; j++) {
+                                M[i][j] = Double.parseDouble(example.textfields.get(t).getText());
+                                t++;
+                            }
+                        }
+
+                        SaverToParam(sizeParameteres, M, current);
+                        RepaiPanel = true;
+                    }
+                } catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+
+            }
+
+
+        }
+
+        @Override
+        public void SaverToParam(int[] sizeParameteres, double[][] M, Object current) {
+            if (current instanceof State) {
+                ((State) current).setOutY(M);
+            }
+        }
+
+
+    }
+
+
+
 
 
 /*
@@ -594,32 +680,28 @@ private class ClearAll implements ActionListener{
 
 
 
-private class RelationTypeHandler implements ActionListener{
+private class countTypeHandler implements ActionListener{
 /*
 * Relation Type = 1, if Relation is Additive
 * Relation Type = 2, if Relation is Multiplicative
 * */
-    private int typerel;
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == RelationbyAdd){
-            typerel = 1;
+        if(e.getSource() == neur){
+            CountType = "neuro";
         }
-        else if(e.getSource() == RelationbyMult){
-            typerel = 2;
+        else if(e.getSource() == ident){
+            CountType = "ident";
+
         }
     }
 
-    public int getTyperel() {
-        return typerel;
-    }
 }
 
 
     ButtonGroup btg = new ButtonGroup();
-    JRadioButton add = new JRadioButton("Аддивная");
-    JRadioButton multi = new JRadioButton("Мультипликативная");
-
+    JRadioButton add = new JRadioButton("Aддитивная");
+    JRadioButton mult = new JRadioButton("Мультипликативная");
 
 
 
@@ -632,13 +714,12 @@ private class RelationSetTypeHandler implements ActionListener{
         JPanel panelnew = new JPanel();
 
         btg.add(add);
-        btg.add(multi);
+        btg.add(mult);
         panelnew.add(add);
-        panelnew.add(multi);
+        panelnew.add(mult);
 
         add.addActionListener(e1 -> tip = "a");
-
-        multi.addActionListener(e12 -> tip = "m");
+        mult.addActionListener(e12 -> tip = "m");
 
             if (current instanceof Relation) {
                 int rex = JOptionPane.showConfirmDialog(null, panelnew, "", JOptionPane.OK_CANCEL_OPTION);
@@ -650,11 +731,6 @@ private class RelationSetTypeHandler implements ActionListener{
             }
         }
 }
-
-
-
-
-
 
 
 
@@ -901,25 +977,43 @@ private class RelationSetTypeHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent e) {
 
+        ArrayList<State> states = Identificater.getStates(knots);
 
-
-//            try{
-                knots.forEach((Knot knot) ->{
-                    if (knot instanceof State) {
-                        ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
-                        System.out.println(((State) knot).getOutputVector());
-
-                    }
+            if (CountType == "neuro") {
+                try {
+                    knots.forEach((Knot knot) -> {
+                        if (knot instanceof State) {
+                            ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
+                            System.out.println(((State) knot).getOutputVector());
+                        }
                     MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
-                            "out");
-                });
-//        }
+                                "out");
+                    });
+                    JOptionPane.showMessageDialog(null, states.get(states.size()).getOutputVector());
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+
+            }
+            else if(CountType == "ident"){
+//                try{
+
+                FindOperator.FoundedOperator(knots);
+                System.out.println(states.get(states.size()).getOutputVector());
+//                JOptionPane.showMessageDialog(null, states.get(states.size()).getOutputVector());
+//                }
 //                catch (Exception ex){
-//                JOptionPane.showMessageDialog(null, ex);
+//                    JOptionPane.showMessageDialog(null, ex);
 //                }
 
+
+            }
         }
+
+
     }
+
 
 
 

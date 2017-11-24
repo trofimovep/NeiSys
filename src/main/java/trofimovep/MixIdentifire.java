@@ -261,11 +261,7 @@ public class MixIdentifire {
             else{
 
                 sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
-
             }
-
-
-
         }
         System.out.println("sum" + sum);
         return sum;

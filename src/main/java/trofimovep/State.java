@@ -36,5 +36,9 @@ public class State extends Knot {
     public double[][] getOutY() {
         return outY;
     }
+
+    public void setOutY(double[][] outY) {
+        this.outY = outY;
+    }
 }
 
