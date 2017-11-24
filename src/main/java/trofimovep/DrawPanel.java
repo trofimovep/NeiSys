@@ -28,20 +28,32 @@ public class DrawPanel extends JComponent {
 
             if(k instanceof State) {
                 g2d.setColor(Color.ORANGE);
+                g2d.fill(k.getView(k.getX(), k.getY()));
+
+
+                g2d.setColor(Color.BLACK);
+                if(((State) k).getInputVector() != null) {
+                    g2d.drawString("I:" + ((State) k).getInputVector().length + "x" + ((State) k).getInputVector()[0].length,
+                            k.getX() - 10, k.getY() + Knot.HEIGHT / 2);
+                }
+
+                if(((State) k).getOutY() != null) {
+                    g2d.drawString("O:" + ((State) k).getOutY().length + "x" + ((State) k).getOutY()[0].length,
+                            k.getX() - 10, k.getY() + Knot.HEIGHT);
+                }
+
             }
 
             else if(k instanceof Control) {
                 g2d.setColor(Color.BLUE);
+                g2d.fill(k.getView(k.getX(), k.getY()));
+
             }
 
-            g2d.fill(k.getView(k.getX(), k.getY()));
             g2d.drawString((k.getType() + Integer.toString(k.getId())), k.getX(), k.getY());
             g2d.setColor(Color.BLACK);
             g2d.drawString(k.getSizeParameteres()[0] + "x" +k.getSizeParameteres()[1], k.getX()+Knot.WIDTH, k.getY()+Knot.HEIGHT );
-            if(((State) k).getInputVector() != null)
-            g2d.drawString("I:" + ((State) k).getInputVector().length + "x" + ((State) k).getInputVector()[0].length, k.getX() - 10, k.getY() + Knot.HEIGHT/2);
-            if(((State) k).getOutY() != null)
-            g2d.drawString("O:" + ((State) k).getOutY().length + "x" + ((State) k).getOutY()[0].length, k.getX()- 10, k.getY() + Knot.HEIGHT);
+
         }
 
        for(Relation r : relations) {
