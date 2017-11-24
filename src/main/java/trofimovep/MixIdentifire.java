@@ -271,9 +271,6 @@ public class MixIdentifire {
 
         double[][] A = new double[M.getMatrix().getNumCols()][M.getMatrix().getNumRows()];
 
-        System.out.println("M.getMatrix().getNumRows()" + M.getMatrix().getNumRows());
-        System.out.println("M.getMatrix().getNumCols()" + M.getMatrix().getNumCols());
-
 
         for(int i = 0; i < M.getMatrix().getNumRows(); i++){
             for(int j = 0; j < M.getMatrix().getNumCols(); j++){

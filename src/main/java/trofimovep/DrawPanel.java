@@ -28,15 +28,13 @@ public class DrawPanel extends JComponent {
 
             if(k instanceof State) {
                 g2d.setColor(Color.ORANGE);
-                g2d.fill(k.getView(k.getX(), k.getY()));
-
             }
 
             else if(k instanceof Control) {
                 g2d.setColor(Color.BLUE);
-                g2d.fill(k.getView(k.getX(), k.getY()));
             }
 
+            g2d.fill(k.getView(k.getX(), k.getY()));
             g2d.drawString((k.getType() + Integer.toString(k.getId())), k.getX(), k.getY());
             g2d.setColor(Color.BLACK);
             g2d.drawString(k.getSizeParameteres()[0] + "x" +k.getSizeParameteres()[1], k.getX()+Knot.WIDTH, k.getY()+Knot.HEIGHT );

@@ -8,36 +8,40 @@ public abstract class FindOperator {
 
     static ArrayList<State> states = new ArrayList<>();
 
-    static void FoundedOperator(ArrayList<Knot> knots){
+    static void FoundedOperator(ArrayList<Knot> knots) {
 
-       states = Identificater.getStates(knots);
+        states = Identificater.getStates(knots);
 
-        for (State st: states) {
-            if(st.getInputVector() != null && st.getOutY() != null){
-                double[][] M = new double[st.getInputVector().length][st.getOutY().length];
+        for (State st : states) {
+            if (st.getInputVector() != null && st.getOutY() != null) {
+                double[][] M = new double[st.getOutY().length][st.getInputVector().length];
+                System.out.println("st.getOutY().length " + st.getOutY()[0].length);
+                System.out.println("st.getInputVector().length" + st.getInputVector()[0].length);
 
-                if(st.getInputVector()[0].length == 1 && st.getInputVector().length == 1)
-                for(int i = 0; i < st.getInputVector().length; i++){
-                    for(int j = 0; j < st.getOutY().length; j++){
+                if (st.getInputVector()[0].length == 1 && st.getInputVector()[0].length == 1) {
 
-                        if(i != j) {
-                            M[i][j] = 0;
+                    for (int i = 0; i < st.getOutY().length; i++) {
+                        for (int j = 0; j < st.getInputVector().length; j++) {
 
-                        }
-                        else {
-                            M[i][j] = st.getOutY()[0][j] / st.getInputVector()[0][j];
+                            if (i != j) {
+                                M[i][j] = 0;
+
+                            } else if(i == j) {
+                                M[i][j] = st.getOutY()[i][0] / st.getInputVector()[j][0];
+                            }
                         }
                     }
-                }
-                st.setM(M);
-            }
-            else{
-                double[][] M;
-                SimpleMatrix out = (new SimpleMatrix(st.getOutputVector())).mult((new SimpleMatrix(st.getInputVector())).pseudoInverse());
-                M = MixIdentifire.SimpleToDouble(out);
-                st.setOutY(M);
-            }
+                    st.setM(M);
+                } else {
 
+                    SimpleMatrix pinvInput = (new SimpleMatrix(st.getInputVector()).pseudoInverse());
+                    SimpleMatrix out = new SimpleMatrix(st.getOutY()).mult(pinvInput);
+                    M = new MixIdentifire().SimpleToDouble(out);
+                    st.setM(M);
+
+                }
+
+            }
         }
     }
 }

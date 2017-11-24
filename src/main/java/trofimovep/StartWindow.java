@@ -996,22 +996,15 @@ private class RelationSetTypeHandler implements ActionListener{
                 }
 
             }
-            else if(CountType == "ident"){
-//                try{
-
+            else if(CountType == "ident") try {
                 FindOperator.FoundedOperator(knots);
-                System.out.println(states.get(states.size()).getOutputVector());
-//                JOptionPane.showMessageDialog(null, states.get(states.size()).getOutputVector());
-//                }
-//                catch (Exception ex){
-//                    JOptionPane.showMessageDialog(null, ex);
-//                }
-
-
+                MatrixVisualization.show(new DenseMatrix64F(states.get(states.size() - 1).getM()), "out");
+                JOptionPane.showMessageDialog(null, new SimpleMatrix(states.get(states.size() - 1).getM()),
+                        states.get(states.size() - 1).getType() + states.get(states.size() - 1).getId(), JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex);
             }
         }
-
-
     }
 
 
