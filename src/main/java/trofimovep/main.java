@@ -16,6 +16,7 @@ public class main {
         int ysize = (int) tk.getScreenSize().getHeight();
         window.setSize(xsize , ysize);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.getContentPane().setBackground(Color.GRAY);
         window.setVisible(true);
     }
 

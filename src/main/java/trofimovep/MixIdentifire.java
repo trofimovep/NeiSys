@@ -64,8 +64,12 @@ public class MixIdentifire {
 
                         double[][] doubleMultSum = new double[s.getM().length][s.getM()[0].length];
                         for (double[][] d : multRelation) {
-                            for (int i = 0; i < s.getM().length; i++) {
-                                for (int j = 0; j < s.getM()[0].length; j++) {
+//                            for (int i = 0; i < s.getM().length; i++) {
+                            /*
+                            * для соблюдения размерностей*/
+
+                             for (int i = 0; i < multRelation.get(0).length; i++) {
+                                for (int j = 0; j < multRelation.get(0)[0].length; j++) {
                                     doubleMultSum[i][j] += d[i][j];
                                 }
                             }
@@ -197,7 +201,7 @@ public class MixIdentifire {
     private SimpleMatrix CplusRplusR(Relation r){
 
         SimpleMatrix inter;
-        SimpleMatrix sum = null;
+        SimpleMatrix sum;
         SimpleMatrix input;
 
         if(((State) r.getKnot2()).getInputVector() != null) {
