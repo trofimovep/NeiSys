@@ -99,10 +99,8 @@ public class MixIdentifire {
                         addThread.join();
                         multThread.join();
                         if (addThread.isAlive() == false) {
-                            System.out.println("add is dead..");
                         }
                         if (multThread.isAlive() == false) {
-                            System.out.println("mult is dead..");
                         }
 
                         out = sum1.plus(sum2);
@@ -119,8 +117,6 @@ public class MixIdentifire {
         }
         return Optional.ofNullable(out);
     }
-
-
 
      private SimpleMatrix CSI(Relation r){
 

@@ -224,8 +224,6 @@ public class StartWindow extends JFrame {
         popupMenu.add(setOutVector);
 
 
-
-
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
         deleteElement.setFont(font);
         deleteElement.addActionListener(e -> {
@@ -243,7 +241,6 @@ public class StartWindow extends JFrame {
             repaint();
         });
         popupMenu.add(deleteElement);
-
 
 
 
@@ -987,12 +984,13 @@ private class RelationSetTypeHandler implements ActionListener{
                             System.out.println(((State) knot).getOutputVector());
                         }
                     MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
-                                "out");
+                            "State" + String.valueOf((knots.get(0)).getId()));
                     });
                     JOptionPane.showMessageDialog(null, states.get(states.size()).getOutputVector());
                 }
                 catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex);
+//                    JOptionPane.showMessageDialog(null, ex);
+                    ex.printStackTrace();
                 }
 
             }
