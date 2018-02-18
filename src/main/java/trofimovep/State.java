@@ -2,12 +2,10 @@ package trofimovep;
 
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.Optional;
-
 public class State extends Knot {
 
     double[][] inputVector;
-    Optional<SimpleMatrix> outputVector;
+    SimpleMatrix outputVector;
     double[][] outY;
 
     public State(String type, int id, int x, int y){
@@ -25,12 +23,12 @@ public class State extends Knot {
     }
 
 
-    public void setOutputVector(Optional<SimpleMatrix> outputVector) {
+    public void setOutputVector(SimpleMatrix outputVector) {
         this.outputVector = outputVector;
     }
 
     public SimpleMatrix getOutputVector() {
-        return outputVector.get();
+        return outputVector;
     }
 
     public double[][] getOutY() {

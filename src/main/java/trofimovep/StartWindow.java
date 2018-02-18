@@ -980,14 +980,15 @@ private class RelationSetTypeHandler implements ActionListener{
                     knots.forEach((Knot knot) -> {
 
                         if (knot instanceof State & knot.getOutputRealations().size() == 0) {
-                            ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
-//                            k[0] = (State) knot;
+                            new MixIdentifire().MixCounter(knots, (State) knot);
+
+                            k[0] = (State) knot;
                             System.out.println("psisos \n" + ((State) knot).getOutputVector());
                         }
 //                    MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
 //                            "State" + String.valueOf((knots.get(0)).getId()));
                     });
-//                    JOptionPane.showMessageDialog(null, k[0].getOutputVector());
+                    JOptionPane.showMessageDialog(null, k[0].getOutputVector());
                 }
                 catch (Exception ex) {
 //                    JOptionPane.showMessageDialog(null, ex);

@@ -9,7 +9,6 @@ public class MixIdentifire {
 
     SimpleMatrix out;
 
-    ArrayList<State> st = new ArrayList<>();
     ArrayList<Relation> relate = new ArrayList<>();
     ArrayList<double[][]> multRelation = new ArrayList<>();
     ArrayList<double[][]> addRelation = new ArrayList<>();
@@ -18,12 +17,9 @@ public class MixIdentifire {
     SimpleMatrix sum2;
 
 
-    protected Optional<SimpleMatrix> MixCounter(ArrayList<Knot> knots) {
+    protected void MixCounter(ArrayList<Knot> knots, State s) {
         long startTime = System.nanoTime();
 
-        st = Identificater.getStates(knots);
-
-        for (State s : st) {
 
             relate = s.getInnerRealations();
 
@@ -107,8 +103,8 @@ public class MixIdentifire {
                     }
                 }
             }
-        }
-        return Optional.ofNullable(out);
+
+        s.setOutputVector(out);
     }
 
      private SimpleMatrix CSI(Relation r){
