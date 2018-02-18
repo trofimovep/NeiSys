@@ -228,7 +228,6 @@ public class MixIdentifire {
             if (r.getSizeParameteres()[0] == 1 && r.getSizeParameteres()[1] == 1) {
 
                 sum = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
-                System.out.println("fuck off");
 
             }
             else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {
@@ -253,7 +252,6 @@ public class MixIdentifire {
                 sum = (new SimpleMatrix(r.getKnot1().getM())).plus(new SimpleMatrix(r.getM())).mult(new SimpleMatrix(r.getKnot2().getM()));
             }
         }
-        System.out.println("sum" + sum);
         return sum;
     }
 
@@ -273,6 +271,5 @@ public class MixIdentifire {
 
         return A;
     }
-
 
 }//class

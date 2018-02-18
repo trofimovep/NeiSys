@@ -327,7 +327,6 @@ public class    StartWindow extends JFrame {
                     for (Knot k : knots) {
                         if (Math.abs(k.getX() - x) < Knot.WIDTH + 3 && Math.abs(k.getY() - y) < Knot.HEIGHT + 3) {
                         current = k;
-                        System.out.println("size = " + k.getOutputRealations().size());
                         popupMenu.show(drawPanel, x, y);
                         }
                     }
@@ -983,7 +982,6 @@ private class RelationSetTypeHandler implements ActionListener{
                             new MixIdentifire().MixCounter(knots, (State) knot);
 
                             k[0] = (State) knot;
-                            System.out.println("psisos \n" + ((State) knot).getOutputVector());
                         }
 //                    MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
 //                            "State" + String.valueOf((knots.get(0)).getId()));

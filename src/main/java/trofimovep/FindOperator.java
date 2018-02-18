@@ -30,6 +30,7 @@ public abstract class FindOperator {
                         }
                     }
                     st.setM(M);
+
                 } else {
 
                     SimpleMatrix pinvInput = (new SimpleMatrix(st.getInputVector()).pseudoInverse());

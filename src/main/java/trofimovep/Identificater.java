@@ -120,7 +120,6 @@ public abstract class Identificater {
 
 
     static ArrayList<State> getStates(ArrayList<Knot> knots){
-     System.out.println("knot.size: " + knots.size());
 
      for(Knot k : knots){
          if(k instanceof State){
