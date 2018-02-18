@@ -69,17 +69,11 @@ public abstract class Identificater {
 
                  if (s.getInputVector() != null) {
 
-                     if (s.getInputVector().length == 1 & s.getInputVector()[0].length == 1) {
-                         out = (new SimpleMatrix(s.getM())).scale(s.getInputVector()[0][0]);
-                     } else if (s.getM().length == 1 & s.getM()[0].length == 1) {
-                         out = (new SimpleMatrix(s.getInputVector())).scale(s.getM()[0][0]);
-                     } else {
-                         out = (new SimpleMatrix(s.getM())).mult(new SimpleMatrix(s.getInputVector()));
-                     }
+                     SimpleMatrix out2 = getSimpleMatrix(s);
 
-                 /*Здесь предполагаем, что ни inter ни out не скаляры*/
+                     /*Здесь предполагаем, что ни inter ни out не скаляры*/
 
-                     simpleOut = inter.mult(out);
+                     simpleOut = inter.mult(out2);
 
                  /* Задать вектор для State.setOutputVector */
                  } else {
@@ -99,13 +93,7 @@ public abstract class Identificater {
 
                  if (s.getInputVector() != null) {
 
-                     if (s.getInputVector().length == 1 & s.getInputVector()[0].length == 1) {
-                         out = (new SimpleMatrix(s.getM())).scale(s.getInputVector()[0][0]);
-                     } else if (s.getM().length == 1 & s.getM()[0].length == 1) {
-                         out = (new SimpleMatrix(s.getInputVector())).scale(s.getM()[0][0]);
-                     } else {
-                         out = (new SimpleMatrix(s.getM())).mult(new SimpleMatrix(s.getInputVector()));
-                     }
+                     out = getSimpleMatrix(s);
                      simpleOut = out;
 
                  } else {
@@ -118,8 +106,20 @@ public abstract class Identificater {
          return simpleOut;
      }
 
+    private static SimpleMatrix getSimpleMatrix(State s) {
+        SimpleMatrix out;
+        if (s.getInputVector().length == 1 & s.getInputVector()[0].length == 1) {
+            out = (new SimpleMatrix(s.getM())).scale(s.getInputVector()[0][0]);
+        } else if (s.getM().length == 1 & s.getM()[0].length == 1) {
+            out = (new SimpleMatrix(s.getInputVector())).scale(s.getM()[0][0]);
+        } else {
+            out = (new SimpleMatrix(s.getM())).mult(new SimpleMatrix(s.getInputVector()));
+        }
+        return out;
+    }
 
- static ArrayList<State> getStates(ArrayList<Knot> knots){
+
+    static ArrayList<State> getStates(ArrayList<Knot> knots){
      System.out.println("knot.size: " + knots.size());
 
      for(Knot k : knots){

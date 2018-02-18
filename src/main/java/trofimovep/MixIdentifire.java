@@ -21,9 +21,7 @@ public class MixIdentifire {
     protected Optional<SimpleMatrix> MixCounter(ArrayList<Knot> knots) {
         long startTime = System.nanoTime();
 
-
         st = Identificater.getStates(knots);
-
 
         for (State s : st) {
 
@@ -38,15 +36,12 @@ public class MixIdentifire {
 
             }
 
-
             else {
 
                 for (Relation r : relate) {
 
-
                     Thread addThread;
                     Thread multThread;
-
 
                     if (r.getType() == "m") {
 
@@ -57,8 +52,6 @@ public class MixIdentifire {
                         addRelation.add(SimpleToDouble(CplusRplusR(r)));
 
                     }
-
-
 
                     multThread = new Thread(() -> {
 
@@ -98,9 +91,9 @@ public class MixIdentifire {
                     try {
                         addThread.join();
                         multThread.join();
-                        if (addThread.isAlive() == false) {
+                        if (!addThread.isAlive()) {
                         }
-                        if (multThread.isAlive() == false) {
+                        if (!multThread.isAlive()) {
                         }
 
                         out = sum1.plus(sum2);
@@ -239,6 +232,7 @@ public class MixIdentifire {
             if (r.getSizeParameteres()[0] == 1 && r.getSizeParameteres()[1] == 1) {
 
                 sum = (new SimpleMatrix(r.getKnot1().getM())).scale(r.getM()[0][0]).plus(new SimpleMatrix(r.getKnot2().getM()));
+                System.out.println("fuck off");
 
             }
             else if (r.getKnot1().getSizeParameteres()[0] == 1 && r.getKnot1().getSizeParameteres()[1] == 1) {

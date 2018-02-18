@@ -15,8 +15,6 @@ public abstract class FindOperator {
         for (State st : states) {
             if (st.getInputVector() != null && st.getOutY() != null) {
                 double[][] M = new double[st.getOutY().length][st.getInputVector().length];
-                System.out.println("st.getOutY().length " + st.getOutY()[0].length);
-                System.out.println("st.getInputVector().length" + st.getInputVector()[0].length);
 
                 if (st.getInputVector()[0].length == 1 && st.getInputVector()[0].length == 1) {
 

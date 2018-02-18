@@ -19,17 +19,17 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class StartWindow extends JFrame {
+public class    StartWindow extends JFrame {
 
     /* amount of parameteres which make influence on Knot (SIZE OF MULTIMATRIX OF KNOT)*/
     static final int OPTION_SIZE = 2;
 
-    final ArrayList<Knot> knots = new ArrayList<Knot>();
-    final ArrayList<Relation> relations = new ArrayList<Relation>();
+    final ArrayList<Knot> knots = new ArrayList<>();
+    final ArrayList<Relation> relations = new ArrayList<>();
 
     private boolean RepaiPanel = false;
 
-    private List<JTextField> textfields = new ArrayList<JTextField>();
+    private List<JTextField> textfields = new ArrayList<>();
     private JPanel panel;
 
     private Object current;
@@ -916,49 +916,46 @@ private class RelationSetTypeHandler implements ActionListener{
                 else {
                     for (Relation r : k.getInnerRealations()) {
 
-                        if (r.getType() == "m") {
-                            if (isSizesCorrect(sizeParams, object) == true) {
-                                sInnerRelation++;
-                            }
-                        }
-                        else if (r.getType() == "a") {
-
-                            if (Arrays.equals(r.getSizeParameteres(), sizeParams) ||
-                                    Arrays.equals(r.getSizeParameteres(), zero) ||
-                                    Arrays.equals(r.getSizeParameteres(), eye)) {
-                                sInnerRelation++;
-                            }
-                        }
+                        sInnerRelation = getsOutRelations(sizeParams, object, eye, zero, sInnerRelation, r);
 
                     }
 
                     for (Relation r : k.getOutputRealations()) {
 
-                        if (r.getType() == "m") {
-                            if (isSizesCorrect(sizeParams, object) == true) {
-                                sOutRelations++;
-                            }
-
-                        } else if (r.getType() == "a") {
-
-                            if (Arrays.equals(r.getSizeParameteres(), sizeParams) ||
-                                    Arrays.equals(r.getSizeParameteres(), zero) ||
-                                    Arrays.equals(r.getSizeParameteres(), eye)) {
-                                sOutRelations++;
-                            }
-                        }
+                        sOutRelations = getsOutRelations(sizeParams, object, eye, zero, sOutRelations, r);
 
                     }
+                if(sInnerRelation == 0 || sOutRelations == 0){
+                        decision = true;
+                }
 
-                if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
+                else if (sInnerRelation < k.getInnerRealations().size() | sOutRelations < k.getOutputRealations().size()) {
 
                     decision = false;
 
                 }
+
             }
         }
 
         return decision;
+    }
+
+    private int getsOutRelations(int[] sizeParams, Object object, int[] eye, int[] zero, int sOutRelations, Relation r) {
+        if (r.getType() == "m") {
+            if (isSizesCorrect(sizeParams, object) == true) {
+                sOutRelations++;
+            }
+
+        } else if (r.getType() == "a") {
+
+            if (Arrays.equals(r.getSizeParameteres(), sizeParams) ||
+                    Arrays.equals(r.getSizeParameteres(), zero) ||
+                    Arrays.equals(r.getSizeParameteres(), eye)) {
+                sOutRelations++;
+            }
+        }
+        return sOutRelations;
     }
 
 
@@ -975,18 +972,22 @@ private class RelationSetTypeHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
 
         ArrayList<State> states = Identificater.getStates(knots);
+        ArrayList<State> knots1;
 
             if (CountType == "neuro") {
+                final State[] k = new State[1];
                 try {
                     knots.forEach((Knot knot) -> {
-                        if (knot instanceof State) {
+
+                        if (knot instanceof State & knot.getOutputRealations().size() == 0) {
                             ((State) knot).setOutputVector(new MixIdentifire().MixCounter(knots));
-                            System.out.println(((State) knot).getOutputVector());
+//                            k[0] = (State) knot;
+                            System.out.println("psisos \n" + ((State) knot).getOutputVector());
                         }
-                    MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
-                            "State" + String.valueOf((knots.get(0)).getId()));
+//                    MatrixVisualization.show(new DenseMatrix64F(MixIdentifire.SimpleToDouble(((State) knots.get(0)).getOutputVector())),
+//                            "State" + String.valueOf((knots.get(0)).getId()));
                     });
-                    JOptionPane.showMessageDialog(null, states.get(states.size()).getOutputVector());
+//                    JOptionPane.showMessageDialog(null, k[0].getOutputVector());
                 }
                 catch (Exception ex) {
 //                    JOptionPane.showMessageDialog(null, ex);
@@ -1004,8 +1005,6 @@ private class RelationSetTypeHandler implements ActionListener{
             }
         }
     }
-
-
 
 
 }//class
