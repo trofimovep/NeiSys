@@ -147,11 +147,17 @@ public class    StartWindow extends JFrame {
         /*
          low panel with buttons
          */
+//        JLabel iconLabel = new JLabel();
+//        iconLabel.setSize(100, 100);
+//        iconLabel.setIcon(new ImageIcon("logo.png"));
+//        iconLabel.setBounds(400, 500, 100, 100);
+
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
         add(buttonsPanel);
         pack();
+//        buttonsPanel.add(iconLabel);
 
         Border etched = BorderFactory.createEtchedBorder();
         Border titled = BorderFactory.createTitledBorder(etched, "Параметры");
@@ -202,14 +208,19 @@ public class    StartWindow extends JFrame {
          */
         final JPopupMenu popupMenu = new JPopupMenu();
 
-        final JMenuItem setParam = new JMenuItem("Задать параметры");
+        JMenuItem showMatrix = new JMenuItem("Посмотреть параметр");
+        showMatrix.setFont(font);
+        popupMenu.add(showMatrix);
+        showMatrix.addActionListener(e ->JOptionPane.showMessageDialog(null, ((Knot) current).getM()));
+
+        JMenuItem setParam = new JMenuItem("Задать параметры");
         setParam.setFont(font);
         popupMenu.add(setParam);
         setParam.addActionListener(inparam);
 
         JMenuItem changeParam = new JMenuItem("Изменить параметры");
         changeParam.setFont(font);
-//        changeParam.addActionListener(popupListener);
+        changeParam.addActionListener(inparam);
         popupMenu.add(changeParam);
 
 
@@ -222,6 +233,23 @@ public class    StartWindow extends JFrame {
         setOutVector.setFont(font);
         setOutVector.addActionListener(outVectorhandler);
         popupMenu.add(setOutVector);
+
+        JMenuItem showOutMatrix = new JMenuItem("Показать исходящий вектор");
+        showOutMatrix.setFont(font);
+        popupMenu.add(showOutMatrix);
+        showOutMatrix.addActionListener(e -> {
+            if(current instanceof State)
+            JOptionPane.showMessageDialog(null, ((State) current).getOutputVector());
+                });
+
+        JMenuItem showInputMatrix = new JMenuItem("Показать входящий вектор");
+        showInputMatrix.setFont(font);
+        popupMenu.add(showInputMatrix);
+        showInputMatrix.addActionListener(e -> {
+            if(current instanceof State)
+                JOptionPane.showMessageDialog(null, ((State) current).getInputVector());
+        });
+
 
 
         JMenuItem deleteElement = new JMenuItem("Удалить элемент");
@@ -278,12 +306,11 @@ public class    StartWindow extends JFrame {
          */
 
 
-
+/**
+ * Listeners
+ * */
 
                                        /*                       LISTENERS                       */
-
-
-
 
 
         drawPanel.addMouseListener(new MouseListener() {
@@ -971,7 +998,7 @@ private class RelationSetTypeHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
 
         ArrayList<State> states = Identificater.getStates(knots);
-        ArrayList<State> knots1;
+//        ArrayList<State> knots1;
 
             if (CountType == "neuro") {
                 final State[] k = new State[1];
@@ -989,8 +1016,8 @@ private class RelationSetTypeHandler implements ActionListener{
                     JOptionPane.showMessageDialog(null, k[0].getOutputVector());
                 }
                 catch (Exception ex) {
-//                    JOptionPane.showMessageDialog(null, ex);
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex);
+//                    ex.printStackTrace();
                 }
 
             }

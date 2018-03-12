@@ -9,6 +9,7 @@ public class main {
     public static void main(String[] Args){
 //        JFrame.setDefaultLookAndFeelDecorated(true);
         StartWindow window = new StartWindow("Neighborhood Systems");
+//        window.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("logo.png")));
 
 
         Toolkit tk = Toolkit.getDefaultToolkit();

@@ -18,9 +18,9 @@ public class MixIdentifire {
 
 
     protected void MixCounter(ArrayList<Knot> knots, State s) {
+        FindOperator.FoundedOperator(knots);
+
         long startTime = System.nanoTime();
-
-
             relate = s.getInnerRealations();
 
             if (relate.size() == 0) {
@@ -108,6 +108,7 @@ public class MixIdentifire {
     }
 
      private SimpleMatrix CSI(Relation r){
+
 
          SimpleMatrix inter;
          SimpleMatrix product = null;
