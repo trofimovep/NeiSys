@@ -12,7 +12,7 @@ The program should automatically solve the identification problem for this node.
 The program allows you to perform simple arithmetic operations on scalars
 and matrices.
 
-![alt text](//src/spec/Description/pic/main.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/main.png)
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ multiply by the communication parameters and affect the second node depending on
 addition or multiplication.
 Consider an example. Suppose there are two connected nodes:
 
-![alt text](//src/spec/Description/pic/plus.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus.png)
 
 The parameters of all parts of the system are scalars and are equal to 2. Then, if the type of bond is additive
 "we get:
@@ -29,7 +29,7 @@ The parameters of all parts of the system are scalars and are equal to 2. Then, 
 ```
 Out = P (Control2) * P (R) + P (State1) = 2 * 2 + 2 = 6
 ```
-![alt text](//src/spec/Description/pic/plus6.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus6.png)
 
 If the type of connection is "m" (multiplicative), then
 
@@ -37,7 +37,7 @@ If the type of connection is "m" (multiplicative), then
 Out = P (Control2) * P (R) * P (State1) = 2 * 2 * 2 = 8
 ```
 
-![alt text](//src/spec/Description/pic/plus8.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus8.png)
 
 
 At the same time, if the node has several incoming connections, then the outgoing vector gets
@@ -45,7 +45,7 @@ by summing all input parameters. For example, add to the previous
 occasion is another node.
 
 
-![alt text](//src/spec/Description/pic/state7.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state7.png)
 
 Here the parameter of the State7 node is 3, and the parameter of its outgoing connection is 1. Then,
 the output vector for State1 is:
@@ -55,7 +55,7 @@ the output vector for State1 is:
 Out = [P (Control2) * P (R Control2 ) * P (State1)] + [P (State7) * P (R State7 ) + P (State1)] =
 = [2 * 2 * 2] + [3 * 1 + 2] = 8 + 5 = 13
 ```
-![alt text](//src/spec/Description/pic/state72.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state72.png)
 
 
 ## Operations with numbers
@@ -68,7 +68,7 @@ effects on numbers: addition, multiplication and division.
 In order to add two numbers you need to add two nodes to the panel, the type of connection
 choose an additive and communication parameter set to 1. Example:
 
-![alt text](//src/spec/Description/pic/state8.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state8.png)
 
 There:
 ```
@@ -80,7 +80,7 @@ P (State9) * P (R) + P (State8) = 2 * 1 + 3 = 5.
 ```
 
 
-![alt text](//src/spec/Description/pic/add2.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/add2.png)
 
 
 ### Multiplication of two numbers
@@ -92,7 +92,7 @@ following:
 ```
 P (State9) * P (R) * P (State8) = 2 * 1 * 3 = 6
 ```
-![alt text](//src/spec/Description/pic/mult2.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/mult2.png)
 
 
 ### Division of two numbers
@@ -103,12 +103,12 @@ add just one node. And to set for him not parameters, but the incoming vector a 
 vector b. At the same time, the parameters "I" and "O" should appear on the screen at the node, indicating
 dimension by vector.
 
-![alt text](//src/spec/Description/pic/div2.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/div2.png)
 
 Next, the calculation type is marked "Identification" and click "Calculate". In quality of
 measure we take the incoming vector is 3, and outgoing - 6. As a result of the calculation:
 
-![alt text](//src/spec/Description/pic/div22.png)
+![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/div22.png)
 
 
 ## Matrix actions
