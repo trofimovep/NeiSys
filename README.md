@@ -14,7 +14,7 @@ and matrices.
 
 ![main](https://user-images.githubusercontent.com/23281289/47664359-f0c4f700-dbaf-11e8-9e02-f7d8faa60898.png)
 
-##Getting Started
+## Getting Started
 
 When connecting a connection between two nodes: the parameters of the node from which the
 multiply by the communication parameters and affect the second node depending on the type of communication:
@@ -82,7 +82,7 @@ P (State9) * P (R) + P (State8) = 2 * 1 + 3 = 5.
 ![add2](https://user-images.githubusercontent.com/23281289/47664356-f02c6080-dbaf-11e8-84ca-f8b5db9272f8.png)
 
 
-###Multiplication of two numbers
+### Multiplication of two numbers
 
 n order to multiply two numbers you need to perform all the actions as for complex
 instead of an additive relationship, choose a multiplicative. Then the example above will give
