@@ -18,7 +18,7 @@
     <orderEntry type="module-library">
       <library name="Maven: javax.jnlp:jnlp:1.6">
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/javax/jnlp/jnlp/1.6/jnlp-1.6.jar!/" />
+          <root url="jar:///usr/lib/jvm/java-8-oracle/jre/lib/javaws.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
