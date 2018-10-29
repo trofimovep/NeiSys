@@ -62,7 +62,7 @@ Out = [P (Control2) * P (R Control2 ) * P (State1)] + [P (State7) * P (R State7 
 Features of this program allow you to perform the simplest arithmic actions
 effects on numbers: addition, multiplication and division.
 
-###Addition of two numbers
+### Addition of two numbers
 
 In order to add two numbers you need to add two nodes to the panel, the type of connection
 choose an additive and communication parameter set to 1. Example:
