@@ -21,7 +21,7 @@ multiply by the communication parameters and affect the second node depending on
 addition or multiplication.
 Consider an example. Suppose there are two connected nodes:
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus.png)
+![plus](https://user-images.githubusercontent.com/23281289/47664361-f0c4f700-dbaf-11e8-9ae4-41a43530b27f.png)
 
 The parameters of all parts of the system are scalars and are equal to 2. Then, if the type of bond is additive
 "we get:
@@ -29,7 +29,7 @@ The parameters of all parts of the system are scalars and are equal to 2. Then, 
 ```
 Out = P (Control2) * P (R) + P (State1) = 2 * 2 + 2 = 6
 ```
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus6.png)
+![plus6](https://user-images.githubusercontent.com/23281289/47664364-f0c4f700-dbaf-11e8-8317-4dddab0c499f.png)
 
 If the type of connection is "m" (multiplicative), then
 
@@ -37,16 +37,14 @@ If the type of connection is "m" (multiplicative), then
 Out = P (Control2) * P (R) * P (State1) = 2 * 2 * 2 = 8
 ```
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/plus8.png)
+![plus8](https://user-images.githubusercontent.com/23281289/47664366-f15d8d80-dbaf-11e8-9367-84bd5f6d01f6.png)
 
 
 At the same time, if the node has several incoming connections, then the outgoing vector gets
 by summing all input parameters. For example, add to the previous
 occasion is another node.
 
-
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state7.png)
-
+![state7](https://user-images.githubusercontent.com/23281289/47664367-f15d8d80-dbaf-11e8-8d32-5ab13fee056e.png)
 Here the parameter of the State7 node is 3, and the parameter of its outgoing connection is 1. Then,
 the output vector for State1 is:
 
@@ -55,7 +53,8 @@ the output vector for State1 is:
 Out = [P (Control2) * P (R Control2 ) * P (State1)] + [P (State7) * P (R State7 ) + P (State1)] =
 = [2 * 2 * 2] + [3 * 1 + 2] = 8 + 5 = 13
 ```
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state72.png)
+![state72](https://user-images.githubusercontent.com/23281289/47664369-f15d8d80-dbaf-11e8-9b72-4497797989b0.png)
+
 
 
 ## Operations with numbers
@@ -68,7 +67,7 @@ effects on numbers: addition, multiplication and division.
 In order to add two numbers you need to add two nodes to the panel, the type of connection
 choose an additive and communication parameter set to 1. Example:
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/state8.png)
+![state8](https://user-images.githubusercontent.com/23281289/47664368-f15d8d80-dbaf-11e8-869b-90674c4f4ca2.png)
 
 There:
 ```
@@ -80,7 +79,7 @@ P (State9) * P (R) + P (State8) = 2 * 1 + 3 = 5.
 ```
 
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/add2.png)
+![add2](https://user-images.githubusercontent.com/23281289/47664356-f02c6080-dbaf-11e8-84ca-f8b5db9272f8.png)
 
 
 ### Multiplication of two numbers
@@ -92,7 +91,7 @@ following:
 ```
 P (State9) * P (R) * P (State8) = 2 * 1 * 3 = 6
 ```
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/mult2.png)
+![mult2](https://user-images.githubusercontent.com/23281289/47664360-f0c4f700-dbaf-11e8-871b-80ad42cd2ba1.png)
 
 
 ### Division of two numbers
@@ -103,12 +102,12 @@ add just one node. And to set for him not parameters, but the incoming vector a 
 vector b. At the same time, the parameters "I" and "O" should appear on the screen at the node, indicating
 dimension by vector.
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/div2.png)
+![div2](https://user-images.githubusercontent.com/23281289/47664357-f02c6080-dbaf-11e8-977e-95afabb3828b.png)
 
 Next, the calculation type is marked "Identification" and click "Calculate". In quality of
 measure we take the incoming vector is 3, and outgoing - 6. As a result of the calculation:
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/div22.png)
+![div22](https://user-images.githubusercontent.com/23281289/47664358-f02c6080-dbaf-11e8-8792-fa5703e97202.png)
 
 
 ## Matrix actions
