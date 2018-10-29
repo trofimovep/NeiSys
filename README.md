@@ -12,7 +12,7 @@ The program should automatically solve the identification problem for this node.
 The program allows you to perform simple arithmetic operations on scalars
 and matrices.
 
-![alt text](https://github.com/trofimovep/NeiSys/tree/master/src/spec/Description/pic/main.png)
+![main](https://user-images.githubusercontent.com/23281289/47664359-f0c4f700-dbaf-11e8-9e02-f7d8faa60898.png)
 
 ## Getting Started
 
