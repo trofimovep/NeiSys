@@ -1,4 +1,4 @@
-# DO NOT OPEN THIS IF YOU WANT TO SEE THE QUALITY OF MY CODE. IT'S AWFULL AND IN A REWRITING. CAUSE IT'S MY FIRST APP, WHICH I DON'T REMOVE CAUSE IT USED TO SOME CALCULATING AT UNIVERSITY. 
+# Do not open this if you want to see the quality of my code. It's awfull and in a rewriting. Cause it's my first app, which I don't remove because it used to some calculating at university. 
 
 # Neighborhood Systems
 
